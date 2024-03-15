@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thông tin Đơn Hàng</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 60%;
+      margin: 50px auto;
+    }
+
+    .card {
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #28a745;
+      color: #fff;
+      border-bottom: 0;
+      border-radius: 8px 8px 0 0;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    p {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Thông tin Đơn Hàng</h3>
+    </div>
+    <div class="card-body">
+      <p>Xin chào:  [<span th:text="${order.receiver}" style="font-weight: 400"></span>]</p>
+      <p>
+        Cảm ơn bạn đã mua giày tại cửa hàng chúng tôi. Dưới đây là thông tin
+        xác nhận đơn hàng của bạn:
+      </p>
+
+      <!-- Thông tin đơn hàng -->
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Sản phẩm</th>
+          <th scope="col">Phân loại</th>
+          <th scope="col">Số lượng</th>
+          <th scope="col">Giá</th>
+          <th scope="col">Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dòng này có thể được lặp lại cho từng sản phẩm trong đơn hàng -->
+        <tr th:each="c,iterStat  : ${orderDetail}">
+          <td th:text="${iterStat.index + 1}"></td>
+          <td>
+            <div style="display: flex">
+              <img width="60px" height="60px" th:src="@{${c.productDetailDTO.productDTO.imagesDTOList[0].imageName}}" alt="">
+              <span style="margin-top: 20px" th:text="${c.productDetailDTO.productDTO.name}"></span>
+            </div>
+          </td>
+          <td>
+            <div style="height: 30px"><span style="font-weight: bold">Color:</span> [[${c.productDetailDTO.colorDTO.name}]]</div>
+            <div style="height: 30px"><span style="font-weight: bold">Size: </span> [[${c.productDetailDTO.sizeDTO.sizeNumber}]]</div>
+          </td>
+          <td th:text="${c.quantity}"></td>
+          <td>[[${#numbers.formatDecimal(c.price, 0, 'COMMA', 2, 'POINT')}]] đ</td>
+          <td >[[${#numbers.formatDecimal(c.price * c.quantity, 0, 'COMMA', 2, 'POINT')}]] đ</td>
+        </tr>
+        </tbody>
+      </table>
+
+<!--      <p>Phí ship: [[${#numbers.formatDecimal(order.shipPrice, 0, 'COMMA', 2, 'POINT')}]] đ</p>-->
+      <p>Tổng số tiền: [[${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 2, 'POINT')}]] đ</p>
+      <p>Tổng số tiền phải thanh toán: [[${#numbers.formatDecimal(order.totalPayment, 0, 'COMMA', 2, 'POINT')}]] đ</p>
+      <p>Phương thức thanh toán: [[${order.paymentType == 0 ? 'Thanh toán COD' : 'Thanh toán VNPay'}]]</p>
+      <p>Trạng thái đơn hàng: [[${order.statusSendEmail}]]</p>
+      <!-- Thêm thông tin khác nếu cần -->
+      <p>
+        Cảm ơn bạn đã chọn chúng tôi. Chúng tôi hy vọng bạn sẽ hài lòng với
+        sản phẩm của mình.
+      </p>
+      <p>
+        Chúng tôi sẽ thông báo cho bạn khi đơn hàng của bạn đã được gửi đi.
+      </p>
+
+      <p>Trân trọng,</p>
+      <p style="font-weight: 600">T2 STORE</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

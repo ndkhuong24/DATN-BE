@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voucher xịn tặng bạn nè</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /*.card {*/
+        /*    !*border: 1px solid #ced4da;*!*/
+        /*    border-radius: 8px;*/
+        /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+        /*    width: 80%;*/
+        /*    max-width: 600px;*/
+        /*}*/
+
+        .card-header {
+            background-color: #28a745;
+            color: #fff;
+            border-bottom: 0;
+            border-radius: 8px 8px 0 0;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="card-header">
+        <h3>Thông Tin Voucher</h3>
+    </div>
+    <div class="card-body">
+        <span th:if="${voucher != null and voucher.customerAdminDTO != null}" th:text="${voucher.customerAdminDTO.fullname}"></span>
+        <p>
+            Cảm ơn bạn đã ủng hộ chúng tôi trong suốt thời gian vừa qua.
+        </p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Điều Kiện Áp Dụng</th>
+                <th>Ngày Bắt Đầu</th>
+                <th>Ngày Kết Thúc</th>
+                <th>Loại Voucher</th>
+                <th>Giá Trị Giảm</th>
+                <th>Số Lượng</th>
+                <th>Mô Tả</th>
+                <th>Áp Dụng</th>
+                <th>Giảm Tối Đa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${voucher.code}"></td>
+                <td th:text="${voucher.name}"></td>
+                <td th:text="${voucher.conditionApply}"></td>
+                <td th:text="${voucher.startDate}"></td>
+                <td th:text="${voucher.endDate}"></td>
+                <td>
+                    <span th:if="${voucher.voucherType == 0}">Theo %</span>
+                    <span th:if="${voucher.voucherType != 1}">Theo Tiền</span>
+                </td>
+                <td th:text="${voucher.reducedValue}"></td>
+                <td th:text="${voucher.quantity}"></td>
+                <td th:text="${voucher.description}"></td>
+                <td>
+                    <span th:if="${voucher.apply == 0}">Tại cửa hàng</span>
+                    <span th:if="${voucher.apply == 1}">Mua online</span>
+                    <span th:if="${voucher.apply == 2}">Tất cả mọi nơi</span>
+                </td>
+                <td th:if="${voucher.voucherType == 1}" th:text="${voucher.maxReduced}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>Trân trọng,</p>
+        <p style="font-weight: 600">T2 STORE</p>
+    </div>
+</div>
+</body>
+</html>
