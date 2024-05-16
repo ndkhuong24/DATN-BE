@@ -31,6 +31,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -154,7 +155,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         VoucherFreeShip voucher = voucherAdminMapper.toEntity(voucherAdminDTO);
         List<VoucherFreeShip> voucherList = new ArrayList<>();
         voucher.setCode("VCS" + Instant.now().getEpochSecond());
-        voucher.setCreateDate(java.util.Date.from(Instant.now()));
+        voucher.setCreateDate(LocalDate.now());
         voucher.setStatus(0);
         voucher.setIdel(0);
         voucher.setDelete(0);
@@ -162,8 +163,8 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         voucher.setConditionApply(voucherAdminDTO.getConditionApply());
         voucher.setDescription(voucherAdminDTO.getDescription());
         voucher.setCreateName(voucherAdminDTO.getCreateName());
-        voucher.setStartDate(DateUtil.formatDate(voucherAdminDTO.getStartDate()));
-        voucher.setEndDate(DateUtil.formatDate(voucherAdminDTO.getEndDate()));
+        voucher.setStartDate(voucherAdminDTO.getStartDate());
+        voucher.setEndDate(voucherAdminDTO.getEndDate());
         if (voucherAdminDTO.getOptionCustomer() == 0) {
             voucher.setIdCustomer(null);
         } else {
@@ -215,8 +216,8 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
             voucher.setName(voucherAdminDTO.getName());
             voucher.setLimitCustomer(voucherAdminDTO.getLimitCustomer());
             voucher.setReducedValue(voucherAdminDTO.getReducedValue());
-            voucher.setStartDate(DateUtil.formatDate(voucherAdminDTO.getStartDate()));
-            voucher.setEndDate(DateUtil.formatDate(voucherAdminDTO.getEndDate()));
+            voucher.setStartDate(voucherAdminDTO.getStartDate());
+            voucher.setEndDate(voucherAdminDTO.getEndDate());
             if (voucherAdminDTO.getOptionCustomer() == 0) {
                 voucher.setIdCustomer(null);
             } else {

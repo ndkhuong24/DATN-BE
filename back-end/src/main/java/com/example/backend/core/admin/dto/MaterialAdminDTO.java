@@ -3,6 +3,8 @@ package com.example.backend.core.admin.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -11,8 +13,8 @@ import java.time.Instant;
 public class MaterialAdminDTO {
     private Long id;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String description;
     private Integer status;
 }

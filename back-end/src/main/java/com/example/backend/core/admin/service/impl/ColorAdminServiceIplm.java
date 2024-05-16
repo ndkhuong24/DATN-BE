@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class ColorAdminServiceIplm implements ColorAdminService {
     @Override
     public ServiceResult<ColorAdminDTO> addColor(ColorAdminDTO colorADDTO) {
         Color color = colorAdminMapper.toEntity(colorADDTO);
-        color.setCreateDate(Instant.now());
+        color.setCreateDate(LocalDate.now());
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
         result.setData(colorADDTO);

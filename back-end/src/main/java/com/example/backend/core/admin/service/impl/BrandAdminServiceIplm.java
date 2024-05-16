@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +46,8 @@ public class BrandAdminServiceIplm implements BrandAdminService {
     @Override
     public ServiceResult<BrandAdminDTO> add(BrandAdminDTO brandAdminDTO) {
         Brand brand =  brandAdminMapper.toEntity(brandAdminDTO);
-        brand.setCreateDate(Instant.now());
-        brand.setUpdateDate(Instant.now());
+        brand.setCreateDate(LocalDate.now());
+        brand.setUpdateDate(LocalDate.now());
         this.brrp.save(brand);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
@@ -62,7 +63,7 @@ public class BrandAdminServiceIplm implements BrandAdminService {
             brand.setId(id);
             brand.setName(brandAdminDTO.getName());
             brand.setStatus(brandAdminDTO.getStatus());
-            brand.setUpdateDate(Instant.now());
+            brand.setUpdateDate(LocalDate.now());
             Brand brandUpdate =  this.brrp.save(brand);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class OrderHistoryAdminDTO {
     private Long idStaff;
     private Long idCustomer;
     private Integer status;
-    private Instant createDate;
+    private LocalDate createDate;
     private String note;
     private StaffAdminDTO staffDTO;
     private CustomerAdminDTO customerAdminDTO;

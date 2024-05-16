@@ -1,12 +1,13 @@
 package com.example.backend.core.view.dto;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDate;
 
 public class OtpDTO {
     private final String otp;
-    private final Instant creationTime;
+    private final LocalDate creationTime;
 
-    public OtpDTO(String otp, Instant creationTime) {
+    public OtpDTO(String otp, LocalDate creationTime) {
         this.otp = otp;
         this.creationTime = creationTime;
     }
@@ -15,11 +16,11 @@ public class OtpDTO {
         return otp;
     }
 
-    public Instant getCreationTime() {
+    public LocalDate getCreationTime() {
         return creationTime;
     }
 
     public boolean isValid() {
-        return Instant.now().isBefore(creationTime.plusSeconds(300));
+        return LocalDate.now().isBefore(creationTime.plusDays(360));
     }
 }

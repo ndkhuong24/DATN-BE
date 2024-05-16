@@ -4,7 +4,7 @@ package com.example.backend.core.view.dto;
 
 import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,8 +16,8 @@ public class SoleDTO {
     private Long id;
     private String soleHeight;
     private String soleMaterial;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String description;
     private Integer status;
 

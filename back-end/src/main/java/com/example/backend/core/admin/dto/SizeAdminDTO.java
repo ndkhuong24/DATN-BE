@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +15,6 @@ import java.time.Instant;
 public class SizeAdminDTO {
     private Long id;
     private String sizeNumber;
-    private Instant createDate;
+    private LocalDate createDate;
     private Integer status;
 }

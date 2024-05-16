@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -26,13 +27,13 @@ public class Staff implements Serializable {
     @Column(name = "fullname")
     private String fullname;
     @Column(name = "birthday")
-    private Date birthday;
+    private LocalDate birthday;
     @Column(name = "gender")
     private String gender;
     @Column(name = "phone")
     private String phone;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "description")
     private String description;
     @Column(name = "email")

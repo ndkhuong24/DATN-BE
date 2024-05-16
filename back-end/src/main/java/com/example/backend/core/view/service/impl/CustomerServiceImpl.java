@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setEmail(customerDTO.getEmail());
             customer.setBirthday(customerDTO.getBirthday());
             customer.setGender(customerDTO.getGender());
-            customer.setUpdateDate(Instant.now());
+            customer.setUpdateDate(LocalDate.now());
             this.repository.save(customer);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

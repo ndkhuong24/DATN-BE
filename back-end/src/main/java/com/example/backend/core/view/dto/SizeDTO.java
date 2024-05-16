@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import java.time.Instant;
 public class SizeDTO {
     private Long id;
     private String sizeNumber;
-    private Instant createDate;
+    private LocalDate createDate;
     private Integer status;
 
 

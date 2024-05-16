@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class OrderAdminDTO {
     private Long idStaff;
     private String codeVoucher;
     private String codeVoucherShip;
-    private Instant createDate;
-    private Instant paymentDate;
-    private Date deliveryDate;
-    private Date receivedDate;
+    private LocalDate createDate;
+    private LocalDate paymentDate;
+    private LocalDate deliveryDate;
+    private LocalDate receivedDate;
     private String addressReceived;
     private String shipperPhone;
     private String receiverPhone;

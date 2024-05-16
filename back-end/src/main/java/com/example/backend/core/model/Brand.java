@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,9 +25,9 @@ public class Brand implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "update_date")
-    private Instant updateDate;
+    private LocalDate updateDate;
     @Column(name = "status")
     private int status;
     @Column(name = "idel")

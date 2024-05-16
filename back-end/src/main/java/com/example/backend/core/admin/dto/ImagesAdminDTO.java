@@ -3,6 +3,7 @@ package com.example.backend.core.admin.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -15,5 +16,5 @@ public class ImagesAdminDTO {
     private Long id;
     private Long idProduct;
     private String imageName;
-    private Instant createDate;
+    private LocalDate createDate;
 }

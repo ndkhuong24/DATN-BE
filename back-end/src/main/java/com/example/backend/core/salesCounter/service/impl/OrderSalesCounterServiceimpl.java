@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,8 +69,8 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             order.setCode("HD" + Instant.now().getEpochSecond());
             order.setIdStaff(orderSalesDTO.getIdStaff());
             order.setIdCustomer(null);
-            order.setCreateDate(Instant.now());
-            order.setPaymentDate(Instant.now());
+            order.setCreateDate(LocalDate.now());
+            order.setPaymentDate(LocalDate.now());
             order.setAddressReceived(orderSalesDTO.getAddressReceived());
             order.setPaymentType(orderSalesDTO.getPaymentType());
             order.setStatusPayment(orderSalesDTO.getStatusPayment());
@@ -90,8 +91,8 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             result.setMessage("Success");
         } else {
             order.setCode("HD" + Instant.now().getEpochSecond());
-            order.setCreateDate(Instant.now());
-            order.setPaymentDate(Instant.now());
+            order.setCreateDate(LocalDate.now());
+            order.setPaymentDate(LocalDate.now());
             order.setAddressReceived(orderSalesDTO.getAddressReceived());
             order.setReceiver(orderSalesDTO.getReceiver());
             order.setIdCustomer(orderSalesDTO.getIdCustomer());

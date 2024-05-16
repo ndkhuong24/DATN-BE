@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +15,8 @@ import java.time.Instant;
 public class BrandAdminDTO {
     private Long id;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private int status;
     private int isDel;
 }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class SizeAdminServiceIplm implements SizeAdminService {
     @Override
     public ServiceResult<SizeAdminDTO> add(SizeAdminDTO sizeAdminDTO) {
         Size size =  sizeAdminMapper.toEntity(sizeAdminDTO);
-        size.setCreateDate(Instant.now());
+        size.setCreateDate(LocalDate.now());
         this.srp.save(size);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +26,6 @@ public class Images implements Serializable {
     @Column(name = "image_name")
     private String imageName;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
 
 }

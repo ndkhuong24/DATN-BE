@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.time.Instant;
 public class AddressDTO {
     private Long id;
     private Long idCustomer;
-    private Instant createDate;
+    private LocalDate createDate;
     private Integer provinceId;
     private String province;
     private Integer districtId;

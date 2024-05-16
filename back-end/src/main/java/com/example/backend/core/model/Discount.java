@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -24,11 +25,11 @@ public class Discount {
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDate createDate;
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
     @Column(name = "description")
     private String description;
     @Column(name = "create_name")

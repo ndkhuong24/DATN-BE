@@ -8,6 +8,7 @@ import com.example.backend.core.commons.ExportDTO;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -20,8 +21,8 @@ public class ProductAdminDTO extends ExportDTO {
     private Long id;
     private String code;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String createName;
     private String updateName;
     private Long idBrand;

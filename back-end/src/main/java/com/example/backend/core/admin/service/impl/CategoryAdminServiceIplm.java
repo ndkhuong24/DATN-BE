@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +43,8 @@ public class CategoryAdminServiceIplm implements CategoryAdminService {
     @Override
     public ServiceResult<CategoryAdminDTO> add(CategoryAdminDTO categoryAdminDTO) {
         Category category =  categoryAdminMapper.toEntity(categoryAdminDTO);
-        category.setCreateDate(Instant.now());
-        category.setUpdateDate(Instant.now());
+        category.setCreateDate(LocalDate.now());
+        category.setUpdateDate(LocalDate.now());
         this.ctrp.save(category);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
@@ -57,7 +58,7 @@ public class CategoryAdminServiceIplm implements CategoryAdminService {
         if (optional.isPresent()){
             Category category = optional.get();
             category.setId(id);
-            category.setUpdateDate(Instant.now());
+            category.setUpdateDate(LocalDate.now());
             category.setStatus(categoryAdminDTO.getStatus());
             category.setName(categoryAdminDTO.getName());
             category  =  this.ctrp.save(category);

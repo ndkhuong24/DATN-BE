@@ -3,6 +3,8 @@ package com.example.backend.core.salesCounter.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,7 +14,7 @@ public class CustomerSCDTO {
     private Long id;
     private String code;
     private String fullname;
-    private Instant birthday;
+    private LocalDate birthday;
     private String phone;
     private String email;
     private String gender;

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class VoucherAdminDTO extends ExportDTO {
     private String code;
     private String name;
     private String idCustomer;
-    private Date createDate;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate createDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private BigDecimal conditionApply;
     private String createName;
     private Integer voucherType;

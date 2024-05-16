@@ -4,6 +4,7 @@ package com.example.backend.core.view.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,8 +14,8 @@ import java.time.Instant;
 public class MaterialDTO {
     private Long id;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String description;
     private Integer status;
 

@@ -3,6 +3,8 @@ package com.example.backend.core.admin.dto;
 import lombok.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,6 +15,6 @@ public class ColorAdminDTO {
     private Long id;
     private String code;
     private String name;
-    private Instant createDate;
+    private LocalDate createDate;
 
 }

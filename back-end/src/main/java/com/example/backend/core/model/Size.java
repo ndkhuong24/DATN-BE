@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Size implements Serializable {
     @Column(name = "size_number")
     private String sizeNumber;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "status")
     private Integer status;
 }

@@ -52,6 +52,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
         CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findByCode(orderDTO.getCustomerDTO().getCode()));
         if (customerDTO != null) {
             order.setCode("HD" + Instant.now().getEpochSecond());
-            order.setCreateDate(Instant.now());
+            order.setCreateDate(LocalDate.now());
             order.setReceiver(orderDTO.getReceiver());
             order.setIdCustomer(customerDTO.getId());
             order.setShipPrice(orderDTO.getShipPrice());
@@ -134,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
             if (orderDTO.getPaymentType() == 1) {
                 order.setPaymentType(orderDTO.getPaymentType());
                 order.setTotalPayment(orderDTO.getTotalPayment());
-                order.setPaymentDate(Instant.now());
+                order.setPaymentDate(LocalDate.now());
                 order.setStatusPayment(AppConstant.DA_THANH_TOAN);
             } else {
                 order.setPaymentType(orderDTO.getPaymentType());
@@ -200,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
             }
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.HUY_HISTORY);
-            orderHistory.setCreateDate(Instant.now());
+            orderHistory.setCreateDate(LocalDate.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdCustomer(orderDTO.getIdCustomer());
             orderHistory.setNote(orderDTO.getNote());
@@ -227,7 +228,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
 
         order.setCode("HD" + Instant.now().getEpochSecond());
-        order.setCreateDate(Instant.now());
+        order.setCreateDate(LocalDate.now());
         order.setReceiver(orderDTO.getReceiver());
         order.setPaymentType(orderDTO.getPaymentType());
         order.setShipPrice(orderDTO.getShipPrice());
@@ -241,7 +242,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentType(orderDTO.getPaymentType());
             order.setTotalPayment(orderDTO.getTotalPayment());
             order.setStatusPayment(AppConstant.DA_THANH_TOAN);
-            order.setPaymentDate(Instant.now());
+            order.setPaymentDate(LocalDate.now());
         } else {
             order.setPaymentType(orderDTO.getPaymentType());
             order.setTotalPayment(orderDTO.getTotalPayment());

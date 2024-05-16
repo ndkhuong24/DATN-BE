@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -163,7 +164,7 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         Voucher voucher = voucherAdminMapper.toEntity(voucherAdminDTO);
         List<Voucher> voucherList = new ArrayList<>();
         voucher.setCode("VC" + Instant.now().getEpochSecond());
-        voucher.setCreateDate(java.util.Date.from(Instant.now()));
+        voucher.setCreateDate(LocalDate.now());
         voucher.setStatus(0);
         voucher.setIdel(0);
         voucher.setDelete(0);
@@ -172,8 +173,8 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         voucher.setDescription(voucherAdminDTO.getDescription());
         voucher.setApply(voucherAdminDTO.getApply());
         voucher.setCreateName(voucherAdminDTO.getCreateName());
-        voucher.setStartDate(DateUtil.formatDate(voucherAdminDTO.getStartDate()));
-        voucher.setEndDate(DateUtil.formatDate(voucherAdminDTO.getEndDate()));
+        voucher.setStartDate(voucherAdminDTO.getStartDate());
+        voucher.setEndDate(voucherAdminDTO.getEndDate());
         voucher.setAllow(voucherAdminDTO.getAllow());
         if (voucherAdminDTO.getVoucherType() == 0) {
             voucher.setMaxReduced(voucher.getMaxReduced());
@@ -227,8 +228,8 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
             voucher.setDescription(voucherAdminDTO.getDescription());
             voucher.setApply(voucherAdminDTO.getApply());
             voucher.setCreateName(voucherAdminDTO.getCreateName());
-            voucher.setStartDate(DateUtil.formatDate(voucherAdminDTO.getStartDate()));
-            voucher.setEndDate(DateUtil.formatDate(voucherAdminDTO.getEndDate()));
+            voucher.setStartDate(voucherAdminDTO.getStartDate());
+            voucher.setEndDate(voucherAdminDTO.getEndDate());
             voucher.setReducedValue(voucherAdminDTO.getReducedValue());
             voucher.setVoucherType(voucherAdminDTO.getVoucherType());
             voucher.setAllow(voucherAdminDTO.getAllow());

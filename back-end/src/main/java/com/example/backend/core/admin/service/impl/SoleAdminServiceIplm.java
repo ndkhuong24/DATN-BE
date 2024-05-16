@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,8 +39,8 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
     @Override
     public ServiceResult<SoleAdminDTO> add(SoleAdminDTO soleAdminDTO) {
         Sole sole =  soleAdminMapper.toEntity(soleAdminDTO);
-        sole.setCreateDate(Instant.now());
-        sole.setUpdateDate(Instant.now());
+        sole.setCreateDate(LocalDate.now());
+        sole.setUpdateDate(LocalDate.now());
         this.slrp.save(sole);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
@@ -54,7 +55,7 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
             Sole sole = optional.get();
             sole.setId(id);
             sole.setStatus(soleAdminDTO.getStatus());
-            sole.setUpdateDate(Instant.now());
+            sole.setUpdateDate(LocalDate.now());
             sole.setSoleHeight(soleAdminDTO.getSoleHeight());
             sole.setSoleMaterial(soleAdminDTO.getSoleMaterial());
             sole.setDescription(soleAdminDTO.getDescription());

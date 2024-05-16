@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,9 +26,9 @@ public class Material implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "update_date")
-    private Instant updateDate;
+    private LocalDate updateDate;
     @Column(name = "description")
     private String description;
     @Column(name = "status")

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class AddressServiceImpl implements AddressService {
     public ServiceResult<AddressDTO> save(AddressDTO addressDTO) {
         ServiceResult<AddressDTO> result = new ServiceResult<>();
         Address address = addressMapper.toEntity(addressDTO);
-        address.setCreateDate(Instant.now());
+        address.setCreateDate(LocalDate.now());
         if(addressDTO.getConfig() == null){
             address.setConfig(1);
         }

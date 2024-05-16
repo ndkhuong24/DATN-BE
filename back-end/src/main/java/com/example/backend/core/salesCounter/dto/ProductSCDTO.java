@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,8 +17,8 @@ public class ProductSCDTO {
     private Long id;
     private String code;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String createName;
     private String updateName;
     private Long idBrand;

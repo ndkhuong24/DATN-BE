@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -21,8 +22,8 @@ public class ProductDetailDTO {
     private Long idColor;
     private Long idSize;
     private Integer quantity;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private Integer shoeCollar;
     private ProductDTO productDTO;
     private ColorDTO colorDTO;

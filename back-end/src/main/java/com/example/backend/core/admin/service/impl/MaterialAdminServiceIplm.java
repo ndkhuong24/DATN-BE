@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +42,8 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
     @Override
     public ServiceResult<MaterialAdminDTO> add(MaterialAdminDTO materialAdminDTO) {
         Material material =  materialAdminMapper.toEntity(materialAdminDTO);
-        material.setCreateDate(Instant.now());
-        material.setUpdateDate(Instant.now());
+        material.setCreateDate(LocalDate.now());
+        material.setUpdateDate(LocalDate.now());
         this.mtrp.save(material);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
@@ -59,7 +60,7 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
             material.setName(materialAdminDTO.getName());
             material.setStatus(materialAdminDTO.getStatus());
             material.setDescription(materialAdminDTO.getDescription());
-            material.setUpdateDate(Instant.now());
+            material.setUpdateDate(LocalDate.now());
             material =  this.mtrp.save(material);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class CloudinaryAdminController {
             String imageURL = fileUpload.uploadFile(file.get(i));
             Images images = new Images();
             images.setImageName(imageURL);
-            images.setCreateDate(Instant.now());
+            images.setCreateDate(LocalDate.now());
             images.setIdProduct(idProduct);
             imagesAdminRepository.save(images);
         }

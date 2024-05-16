@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class Customer implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "birthday")
-    private Date birthday;
+    private LocalDate birthday;
     @Column(name = "phone")
     private String phone;
     @Column(name = "gender")
@@ -37,9 +38,9 @@ public class Customer implements Serializable {
     @Column(name = "password")
     private String password;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "update_date")
-    private Instant updateDate;
+    private LocalDate updateDate;
     @Column(name = "status")
     private Integer status = 0;
     @Column(name = "idel")

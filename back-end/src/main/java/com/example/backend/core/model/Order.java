@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -33,13 +34,13 @@ public class Order implements Serializable {
     @Column(name = "code_voucher_ship")
     private String codeVoucherShip;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "payment_date")
-    private Instant paymentDate;
+    private LocalDate paymentDate;
     @Column(name = "delivery_date")
-    private Instant deliveryDate;
+    private LocalDate deliveryDate;
     @Column(name = "received_date")
-    private Instant receivedDate;
+    private LocalDate receivedDate;
     @Column(name = "address_received")
     private String addressReceived;
     @Column(name = "shipper_phone")

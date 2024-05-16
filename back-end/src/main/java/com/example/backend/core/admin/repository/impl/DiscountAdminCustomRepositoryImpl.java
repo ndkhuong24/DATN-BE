@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -85,21 +87,21 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    Date createDate = dateFormat.parse(row[3].toString());
-                    Date startDate = dateFormat.parse(row[5].toString());
-                    Date endDate = dateFormat.parse(row[6].toString());
+                    LocalDate createDate = LocalDate.parse(row[3].toString());
+                    LocalDate startDate = LocalDate.parse(row[5].toString());
+                    LocalDate endDate = LocalDate.parse(row[6].toString());
 
                     discount.setStartDate(startDate);
                     discount.setEndDate(endDate);
                     discount.setCreateDate(createDate);
 
-                    if (new Date(System.currentTimeMillis()).after(endDate)) {
+                    if (LocalDate.now().isAfter(endDate)) {
                         discount.setStatus(1);
                     } else {
                         discount.setStatus(0);
                     }
 
-                } catch (ParseException e) {
+                } catch (DateTimeParseException e) {
                     e.printStackTrace();
                     continue;
                 }
@@ -152,19 +154,19 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    Date startDate = dateFormat.parse(row[3].toString());
-                    Date endDate = dateFormat.parse(row[4].toString());
+                    LocalDate startDate = LocalDate.parse(row[3].toString());
+                    LocalDate endDate = LocalDate.parse(row[4].toString());
 
                     discount.setStartDate(startDate);
                     discount.setEndDate(endDate);
 
-                    if (new Date(System.currentTimeMillis()).after(endDate)) {
+                    if (LocalDate.now().isAfter(endDate)) {
                         discount.setStatus(1);
                     } else {
                         discount.setStatus(0);
                     }
 
-                } catch (ParseException e) {
+                } catch (DateTimeParseException e) {
                     e.printStackTrace();
                     continue;
                 }
@@ -215,19 +217,19 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
 
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -277,19 +279,19 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
 
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -350,18 +352,18 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -423,18 +425,18 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -487,18 +489,18 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -552,18 +554,18 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                     try {
-                        Date startDate = dateFormat.parse(row[3].toString());
-                        Date endDate = dateFormat.parse(row[4].toString());
+                        LocalDate startDate = LocalDate.parse(row[3].toString());
+                        LocalDate endDate = LocalDate.parse(row[4].toString());
 
                         discount.setStartDate(startDate);
                         discount.setEndDate(endDate);
 
-                        if (new Date(System.currentTimeMillis()).after(endDate)) {
+                        if (LocalDate.now().isAfter(endDate)) {
                             discount.setStatus(1);
                         } else {
                             discount.setStatus(0);
                         }
-                    } catch (ParseException e) {
+                    } catch (DateTimeParseException e) {
                         e.printStackTrace();
                         continue;
                     }
@@ -624,18 +626,18 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    Date startDate = dateFormat.parse(row[3].toString());
-                    Date endDate = dateFormat.parse(row[4].toString());
+                    LocalDate startDate = LocalDate.parse(row[3].toString());
+                    LocalDate endDate = LocalDate.parse(row[4].toString());
 
                     discount.setStartDate(startDate);
                     discount.setEndDate(endDate);
 
-                    if (new Date(System.currentTimeMillis()).after(endDate)) {
+                    if (LocalDate.now().isAfter(endDate)) {
                         discount.setStatus(1);
                     } else {
                         discount.setStatus(0);
                     }
-                } catch (ParseException e) {
+                } catch (DateTimeParseException e) {
                     e.printStackTrace();
                     continue;
                 }

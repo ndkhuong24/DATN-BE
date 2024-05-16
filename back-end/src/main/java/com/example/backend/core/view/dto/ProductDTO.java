@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
 @Getter
 @Setter
@@ -13,8 +14,8 @@ public class ProductDTO {
     private Long id;
     private String code;
     private String name;
-    private Instant createDate;
-    private Instant updateDate;
+    private LocalDate createDate;
+    private LocalDate updateDate;
     private String createName;
     private String updateName;
     private Long idBrand;
@@ -145,7 +146,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String code, String name, Instant createDate, Instant updateDate, String description, Integer status, List<ImagesDTO> imagesDTOList, Integer idel) {
+    public ProductDTO(Long id, String code, String name, LocalDate createDate, LocalDate updateDate, String description, Integer status, List<ImagesDTO> imagesDTOList, Integer idel) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -181,19 +182,19 @@ public class ProductDTO {
         this.name = name;
     }
 
-    public Instant getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Instant createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
-    public Instant getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Instant updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 

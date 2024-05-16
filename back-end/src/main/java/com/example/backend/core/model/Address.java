@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class Address implements Serializable {
     @Column(name ="id_customer")
     private Long idCustomer;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "province_id")
     private Integer provinceId;
     @Column(name = "province")

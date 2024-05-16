@@ -72,7 +72,7 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                 ProductAdminDTO productAdminDTO = new ProductAdminDTO();
                 productAdminDTO.setCode((String) obj[0]);
                 productAdminDTO.setName((String) obj[1]);
-                productAdminDTO.setCreateDate(((Timestamp) obj[2]).toInstant());
+                productAdminDTO.setCreateDate(((Timestamp) obj[2]).toLocalDateTime().toLocalDate());
                 productAdminDTO.setBrandName((String) obj[3]);
                 productAdminDTO.setCategoryName((String) obj[4]);
                 productAdminDTO.setMaterialName((String) obj[5]);

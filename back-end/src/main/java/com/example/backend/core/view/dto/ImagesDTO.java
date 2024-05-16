@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class ImagesDTO {
     private Long id;
     private Long idProduct;
     private String imageName;
-    private Instant createDate;
+    private LocalDate createDate;
 
 
 }

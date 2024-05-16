@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,12 +18,12 @@ public class StaffAdminDTO {
     private Long id;
     private String code;
     private String fullname;
-    private Date birthday;
+    private LocalDate birthday;
     private String gender;
     private String address;
     private String phone;
     private String email;
-    private Instant createDate;
+    private LocalDate createDate;
     private String description;
     private String username;
     private String passwword;

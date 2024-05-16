@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -28,11 +29,11 @@ public class Voucher {
     @Column(name = "id_customer")
     private String idCustomer;
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDate createDate;
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
     @Column(name = "description")
     private String description;
     @Column(name = "conditions")

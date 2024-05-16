@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,9 +28,9 @@ public class Product implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "update_date")
-    private Instant updateDate;
+    private LocalDate updateDate;
     @Column(name = "create_name")
     private String createName;
     @Column(name = "update_name")

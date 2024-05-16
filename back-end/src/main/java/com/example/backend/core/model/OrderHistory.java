@@ -15,6 +15,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +38,7 @@ public class OrderHistory implements Serializable {
     @Column(name = "status")
     private Integer status;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "note")
     private String note;
 }

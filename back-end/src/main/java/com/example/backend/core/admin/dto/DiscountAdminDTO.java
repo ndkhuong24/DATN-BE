@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class DiscountAdminDTO extends ExportDTO {
     private Long id;
     private String code;
     private String name;
-    private Date createDate;
-    private java.util.Date startDate;
-    private java.util.Date endDate;
+    private LocalDate createDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
     private String createName;
     private Integer status;

@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.XU_LY_HISTORY);
-                orderHistory.setCreateDate(Instant.now());
+                orderHistory.setCreateDate(LocalDate.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -155,7 +156,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 }
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HUY_HISTORY);
-                orderHistory.setCreateDate(Instant.now());
+                orderHistory.setCreateDate(LocalDate.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -191,7 +192,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return result;
         }else {
             order.setShipperPhone("0985218603");
-            order.setDeliveryDate(Instant.now());
+            order.setDeliveryDate(LocalDate.now());
             order.setMissedOrder(0);
             order.setStatus(AppConstant.DANG_GIAO_HANG);
 //        order.setIdStaff(orderAdminDTO.getIdStaff());
@@ -199,7 +200,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.GIAO_HANG_HISTORY);
-                orderHistory.setCreateDate(Instant.now());
+                orderHistory.setCreateDate(LocalDate.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -235,18 +236,18 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return result;
         }else {
             if (order.getPaymentType() == 0) {
-                order.setPaymentDate(Instant.now());
+                order.setPaymentDate(LocalDate.now());
                 order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));
                 order.setStatusPayment(AppConstant.DA_THANH_TOAN);
             }
-            order.setReceivedDate(Instant.now());
+            order.setReceivedDate(LocalDate.now());
             order.setStatus(AppConstant.HOAN_THANH);
 //        order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HOAN_THANH_HISTORY);
-                orderHistory.setCreateDate(Instant.now());
+                orderHistory.setCreateDate(LocalDate.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -289,7 +290,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         if (orderAdminDTO.getMissedOrder() == null || orderAdminDTO.getMissedOrder() == 0) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN1_HISTORY);
-            orderHistory.setCreateDate(Instant.now());
+            orderHistory.setCreateDate(LocalDate.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());
@@ -297,7 +298,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         } else if (orderAdminDTO.getMissedOrder() == AppConstant.BO_LO_LAN1) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN2_HISTORY);
-            orderHistory.setCreateDate(Instant.now());
+            orderHistory.setCreateDate(LocalDate.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());
@@ -305,7 +306,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         } else {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN3_HISTORY);
-            orderHistory.setCreateDate(Instant.now());
+            orderHistory.setCreateDate(LocalDate.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());

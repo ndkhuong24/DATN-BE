@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,10 +69,10 @@ public class ProductAdminServiceIplm implements ProductAdminService {
     private SoleAdminMapper soleAdminMapper;
     @Autowired
     private StaffAdminRepository strp;
-    @Autowired
-    private StaffAdminMapper staffMapper;
-    @Autowired
-    private EntityManager entityManager;
+//    @Autowired
+//    private StaffAdminMapper staffMapper;
+//    @Autowired
+//    private EntityManager entityManager;
     @Autowired
     private ProductDetailAdminMapper productDetailMapper;
     @Autowired
@@ -159,8 +160,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
         productAdminDTO.setBrandAdminDTO(brandDTO);
         productAdminDTO.setCategoryAdminDTO(categoryDTO);
         productAdminDTO.setMaterialAdminDTO(materialDTO);
-        product.setCreateDate(Instant.now());
-        product.setUpdateDate(Instant.now());
+        product.setCreateDate(LocalDate.now());
+        product.setUpdateDate(LocalDate.now());
         product.setPrice(productAdminDTO.getPrice());
         product = this.prdrp.save(product);
         if (product != null) {
@@ -188,7 +189,7 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product.setId(id);
             product.setCode(productAdminDTO.getCode());
             product.setName(productAdminDTO.getName());
-            product.setUpdateDate(Instant.now());
+            product.setUpdateDate(LocalDate.now());
             product.setUpdateName(productAdminDTO.getUpdateName());
             product.setIdBrand(productAdminDTO.getIdBrand());
             product.setIdSole(productAdminDTO.getIdSole());
@@ -461,7 +462,7 @@ public class ProductAdminServiceIplm implements ProductAdminService {
                 for (String str : dto.getImageNameImport().split(",")) {
                     Images images = new Images();
                     images.setIdProduct(product.getId());
-                    images.setCreateDate(Instant.now());
+                    images.setCreateDate(LocalDate.now());
                     images.setImageName(str.trim());
                     images = imageAdminRepository.save(images);
                 }
@@ -676,7 +677,7 @@ public class ProductAdminServiceIplm implements ProductAdminService {
                 messErr.add("Mã đã tồn tại");
                 fieldErr.add("code");
             } else {
-                productAdminDTO.setCreateDate(Instant.now());
+                productAdminDTO.setCreateDate(LocalDate.now());
             }
         }
 

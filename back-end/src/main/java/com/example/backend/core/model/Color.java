@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +27,6 @@ public class Color implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
 
 }
