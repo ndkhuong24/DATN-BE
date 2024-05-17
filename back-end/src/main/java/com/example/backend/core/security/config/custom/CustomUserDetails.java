@@ -27,7 +27,6 @@ public class CustomUserDetails implements UserDetails {
     private String username;
     @JsonIgnore
     private String password;
-    private String isdn;
     private String role;
     public Collection<? extends GrantedAuthority> authorities;
 
@@ -41,7 +40,7 @@ public class CustomUserDetails implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
-    public CustomUserDetails(Long id, String code, String fullname, Date birthday, String gender, String phone,String email, String username, String password, String isdn, String role) {
+    public CustomUserDetails(Long id, String code, String fullname, Date birthday, String gender, String phone,String email, String username, String password, String role) {
         this.id = id;
         this.code = code;
         this.fullname = fullname;
@@ -51,7 +50,6 @@ public class CustomUserDetails implements UserDetails {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.isdn = isdn;
         this.role = role;
     }
 
@@ -66,7 +64,6 @@ public class CustomUserDetails implements UserDetails {
                 users.getEmail(),
                 users.getUsername(),
                 users.getPassword(),
-                users.getIsdn(),
                 users.getRole()
         );
     }

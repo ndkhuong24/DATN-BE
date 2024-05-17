@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -31,7 +32,7 @@ public class Users {
     @Column(name = "phone")
     private String phone;
     @Column(name = "create_date")
-    private Instant createDate;
+    private LocalDate createDate;
     @Column(name = "description")
     private String description;
     @Column(name = "email")
@@ -42,10 +43,6 @@ public class Users {
     private String password;
     @Column(name = "roles")
     private String role;
-    @Column(name = "status")
-    private Integer status;
     @Column(name = "idel")
     private Integer idel;
-    @Column(name = "isdn")
-    private String isdn;
 }

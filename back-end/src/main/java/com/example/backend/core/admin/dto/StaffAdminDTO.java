@@ -28,7 +28,5 @@ public class StaffAdminDTO {
     private String username;
     private String passwword;
     private String role;
-    private Integer status;
     private Integer idel;
-    private String isdn;
 }

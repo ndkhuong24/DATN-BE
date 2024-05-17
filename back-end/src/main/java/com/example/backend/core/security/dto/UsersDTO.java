@@ -20,7 +20,6 @@ public class UsersDTO {
     private String phone;
     private String email;
     private String username;
-    private String isdn;
     private String role;
     public UsersDTO toStaffDTO(CustomUserDetails customUserDetails){
         this.setId(customUserDetails.getId());
@@ -31,7 +30,6 @@ public class UsersDTO {
         this.setUsername(customUserDetails.getUsername());
         this.setEmail(customUserDetails.getEmail());
         this.setPhone(customUserDetails.getPhone());
-        this.setIsdn(customUserDetails.getIsdn());
         this.setRole(customUserDetails.getRole());
         return  UsersDTO.this;
     }

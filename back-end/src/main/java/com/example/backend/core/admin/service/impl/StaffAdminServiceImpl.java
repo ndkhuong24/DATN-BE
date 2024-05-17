@@ -51,22 +51,27 @@ public class StaffAdminServiceImpl implements StaffAdminService {
 
     @Override
     public ServiceResult<StaffAdminDTO> updateStaff(StaffAdminDTO staffAdminDTO, Staff staff) {
-        if (!staff.getPhone().equals(staffAdminDTO.getPhone())){
+        if (staff.getPhone() != null && !staff.getPhone().equals(staffAdminDTO.getPhone())){
             if (repository.existsByPhone(staffAdminDTO.getPhone())){
                 result.setStatus(HttpStatus.OK);
                 result.setMessage("Phone existed");
                 result.setData(staffMapper.toDto(staff));
                 return result;
             }
+        }else {
+            staff.setPhone(staffAdminDTO.getPhone());
         }
-        if (!staff.getEmail().equals(staffAdminDTO.getEmail())){
+        if (staff.getEmail() != null && !staff.getEmail().equals(staffAdminDTO.getEmail())){
             if (repository.existsByEmail(staffAdminDTO.getEmail())){
                 result.setStatus(HttpStatus.OK);
                 result.setMessage("Email existed");
                 result.setData(staffMapper.toDto(staff));
                 return result;
             }
+        }else{
+            staff.setEmail(staffAdminDTO.getEmail());
         }
+
         if (!staff.equals("")){
             staff.setFullname(staffAdminDTO.getFullname());
             staff.setPhone(staffAdminDTO.getPhone());
@@ -78,6 +83,7 @@ public class StaffAdminServiceImpl implements StaffAdminService {
             }
             staff.setIdel(staffAdminDTO.getIdel());
             staff.setRole(staffAdminDTO.getRole());
+            staff.setDescription(staffAdminDTO.getDescription());
             this.repository.save(staff);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

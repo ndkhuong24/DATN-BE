@@ -26,10 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
-
 
 @RestController
 @RequestMapping("/admin/api")
@@ -52,6 +51,8 @@ public class SercurityController {
     @Autowired
     JwtEntryPoint jwtEntryPoint;
 
+    public static int counter = 0;
+
     @PostMapping("/sign-up")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpRepquest signUpFormRequest) {
         if (usersService.existsByUsername(signUpFormRequest.getUsername())) {
@@ -63,17 +64,17 @@ public class SercurityController {
         if (usersService.existsByPhone(signUpFormRequest.getPhone())) {
             return new ResponseEntity<>(new MessageResponse("The phone is existed"), HttpStatus.OK);
         }
+        counter++;
         Users users = Users.builder()
-                .code("NV" + Instant.now().getEpochSecond())
+                .code("NV" + counter)
                 .fullname(signUpFormRequest.getFullname())
                 .gender(signUpFormRequest.getGender())
                 .birthday(signUpFormRequest.getBirthday())
                 .phone(signUpFormRequest.getPhone())
                 .email(signUpFormRequest.getEmail())
-                .createDate(Instant.now())
+                .createDate(LocalDate.now())
                 .description(signUpFormRequest.getDescription())
                 .idel(signUpFormRequest.getIdel())
-                .isdn(String.valueOf(Instant.now().getEpochSecond()))
                 .username(signUpFormRequest.getUsername())
                 .password(passwordEncoder.encode(signUpFormRequest.getPassword())).build();
         String strRoles = signUpFormRequest.getRole();
@@ -89,7 +90,8 @@ public class SercurityController {
             users.setRole(roles);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new MessageResponse("Error occurred during registration"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new MessageResponse("Error occurred during registration"),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
         usersService.saveOrUpdate(users);
         return new ResponseEntity<>(new MessageResponse("Create Success"), HttpStatus.CREATED);
@@ -100,7 +102,8 @@ public class SercurityController {
         String uri = request.getRequestURI();
         UserDetails userDetails = customUserDetailService.loadUserByUsername(signInRequet.getUsername());
         if (userDetails != null) {
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+                    null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             UsersDTO usersDTO = new UsersDTO();
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -109,7 +112,7 @@ public class SercurityController {
             usersDTO = usersDTO.toStaffDTO(customUserDetails);
             System.out.println(usersDTO);
             return ResponseEntity.ok(new JwtResponse(token, usersDTO.toStaffDTO(customUserDetails)));
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

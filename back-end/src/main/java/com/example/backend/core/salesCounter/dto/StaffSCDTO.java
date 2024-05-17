@@ -22,6 +22,5 @@ public class StaffSCDTO {
     private LocalDate updateDate;
     private String username;
     private String password;
-    private Integer status;
     private Integer idel;
 }

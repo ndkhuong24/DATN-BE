@@ -12,7 +12,7 @@ import java.util.Date;
 @Slf4j // ghi log cua lombok
 public class JwtTokenProvider {
     private String jWT_SECRET="aasdasdasdasdasdasdqweqeqwe";
-    private int jWT_EXPIRATION= 50 * 60 * 1000;
+    private int jWT_EXPIRATION= 14 * 60 * 60 * 1000;
     //tao jwt tu thong tin user
     public String generateToken(CustomUserDetails customUserDetails){
         Date now = new Date();
