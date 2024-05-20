@@ -7,30 +7,21 @@ import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.DiscountAdminService;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
 import com.example.backend.core.commons.CellConfigDTO;
-import com.example.backend.core.commons.DateUtil;
 import com.example.backend.core.commons.FileExportUtil;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.commons.SheetConfigDTO;
 import com.example.backend.core.constant.AppConstant;
 import com.example.backend.core.model.Discount;
 import com.example.backend.core.model.DiscountDetail;
-import com.example.backend.core.model.Order;
-import com.example.backend.core.model.OrderDetail;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminService {
