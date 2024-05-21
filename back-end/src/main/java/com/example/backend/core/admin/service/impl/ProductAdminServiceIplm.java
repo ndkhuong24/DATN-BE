@@ -115,8 +115,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     private ServiceResult<ProductAdminDTO> result = new ServiceResult<>();
 
-    public static int counter = 0;
-
     @Override
     public List<ProductAdminDTO> getAll() {
 
@@ -144,9 +142,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     @Override
     public ServiceResult<ProductAdminDTO> add(ProductAdminDTO productAdminDTO) {
-        counter++;
         Product product = productAdminMapper.toEntity(productAdminDTO);
-        product.setCode("SP" + counter);
+        product.setCode("SP" + Instant.now().getEpochSecond());
         Optional<Brand> brand = brrp.findById(product.getIdBrand());
         Optional<Material> material = mtrp.findById(product.getIdMaterial());
         Optional<Sole> sole = slrp.findById(product.getIdSole());
@@ -193,7 +190,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product.setCode(productAdminDTO.getCode());
             product.setName(productAdminDTO.getName());
             product.setUpdateDate(LocalDate.now());
-            product.setUpdateName(productAdminDTO.getUpdateName());
             product.setIdBrand(productAdminDTO.getIdBrand());
             product.setIdSole(productAdminDTO.getIdSole());
             product.setIdMaterial(productAdminDTO.getIdMaterial());
@@ -302,8 +298,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
             ProductAdminDTO productAdminDTO = new ProductAdminDTO();
             productAdminDTO.setId(product.getId());
-            productAdminDTO.setCreateName(product.getCreateName());
-            productAdminDTO.setUpdateName(product.getUpdateName());
             productAdminDTO.setCode(product.getCode());
             productAdminDTO.setDescription(product.getDescription());
             productAdminDTO.setPrice(product.getPrice());

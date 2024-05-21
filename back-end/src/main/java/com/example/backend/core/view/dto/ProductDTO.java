@@ -16,8 +16,6 @@ public class ProductDTO {
     private String name;
     private LocalDate createDate;
     private LocalDate updateDate;
-    private String createName;
-    private String updateName;
     private Long idBrand;
     private Long idCategory;
     private Long idMaterial;
@@ -84,22 +82,6 @@ public class ProductDTO {
 
     public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
-    }
-
-    public String getCreateName() {
-        return createName;
-    }
-
-    public void setCreateName(String createName) {
-        this.createName = createName;
-    }
-
-    public String getUpdateName() {
-        return updateName;
-    }
-
-    public void setUpdateName(String updateName) {
-        this.updateName = updateName;
     }
 
     public BrandDTO getBrandDTO() {

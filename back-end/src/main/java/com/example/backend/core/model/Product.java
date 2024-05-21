@@ -31,10 +31,6 @@ public class Product implements Serializable {
     private LocalDate createDate;
     @Column(name = "update_date")
     private LocalDate updateDate;
-    @Column(name = "create_name")
-    private String createName;
-    @Column(name = "update_name")
-    private String updateName;
     @Column(name = "id_brand")
     private Long idBrand;
     @Column(name = "id_category")

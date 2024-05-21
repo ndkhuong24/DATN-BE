@@ -51,8 +51,6 @@ public class SercurityController {
     @Autowired
     JwtEntryPoint jwtEntryPoint;
 
-    public static int counter = 0;
-
     @PostMapping("/sign-up")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpRepquest signUpFormRequest) {
         if (usersService.existsByUsername(signUpFormRequest.getUsername())) {
@@ -64,9 +62,8 @@ public class SercurityController {
         if (usersService.existsByPhone(signUpFormRequest.getPhone())) {
             return new ResponseEntity<>(new MessageResponse("The phone is existed"), HttpStatus.OK);
         }
-        counter++;
         Users users = Users.builder()
-                .code("NV" + counter)
+                .code("NV" + Instant.now().getEpochSecond())
                 .fullname(signUpFormRequest.getFullname())
                 .gender(signUpFormRequest.getGender())
                 .birthday(signUpFormRequest.getBirthday())
