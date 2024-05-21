@@ -58,14 +58,16 @@ public class webConfig{
         http.cors(c -> c.disable()).csrf(cf -> cf.disable());
         http.authorizeHttpRequests(author -> {
             try {
-                author.requestMatchers("/view/api/sign-in").permitAll()
-                        .requestMatchers("/view/api/sign-up").permitAll()
-                        .requestMatchers("/admin/api/sign-in").permitAll()
-                        .requestMatchers("/admin/api/sign-up").permitAll()
-                        .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
-                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
-                        .requestMatchers(AppConstant.API_STAFF).permitAll()
-                        .and().exceptionHandling()
+                 author.requestMatchers("/view/api/sign-in").permitAll()
+//                        .requestMatchers("/view/api/sign-up").permitAll()
+//                        .requestMatchers("/admin/api/sign-in").permitAll()
+//                        .requestMatchers("/admin/api/sign-up").permitAll()
+//                        .requestMatchers("/api/admin/upload-img-file?idProduct=**").permitAll()
+//                        .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
+//                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
+//                        .requestMatchers(AppConstant.API_STAFF).permitAll()
+                .anyRequest().permitAll()
+                .and().exceptionHandling()
                         .authenticationEntryPoint(jwtEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -52,16 +52,15 @@ public class CloudinaryAdminController {
 //        return ResponseEntity.ok("Image saved successfully");
 //    }
     @PostMapping("/upload-img-file")
-    public String uploadFile(@RequestParam(value = "file") List<MultipartFile> file,
+    public String uploadFile(@RequestParam(value = "file") MultipartFile file,
                              @RequestParam(required = false) Long idProduct) throws IOException {
-        for (int i = 0; i < file.size(); i++) {
-            String imageURL = fileUpload.uploadFile(file.get(i));
+            String imageURL = fileUpload.uploadFile(file);
             Images images = new Images();
             images.setImageName(imageURL);
             images.setCreateDate(LocalDate.now());
             images.setIdProduct(idProduct);
             imagesAdminRepository.save(images);
-        }
+
         return "Success";
     }
 }

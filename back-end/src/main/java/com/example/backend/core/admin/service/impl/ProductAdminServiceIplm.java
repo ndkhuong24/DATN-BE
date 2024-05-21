@@ -115,6 +115,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     private ServiceResult<ProductAdminDTO> result = new ServiceResult<>();
 
+    public static int counter = 0;
+
     @Override
     public List<ProductAdminDTO> getAll() {
 
@@ -142,8 +144,9 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     @Override
     public ServiceResult<ProductAdminDTO> add(ProductAdminDTO productAdminDTO) {
+        counter++;
         Product product = productAdminMapper.toEntity(productAdminDTO);
-        product.setCode("SP" + Instant.now().getEpochSecond());
+        product.setCode("SP" + counter);
         Optional<Brand> brand = brrp.findById(product.getIdBrand());
         Optional<Material> material = mtrp.findById(product.getIdMaterial());
         Optional<Sole> sole = slrp.findById(product.getIdSole());

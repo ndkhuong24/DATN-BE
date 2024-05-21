@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                 ProductAdminDTO productAdminDTO = new ProductAdminDTO();
                 productAdminDTO.setCode((String) obj[0]);
                 productAdminDTO.setName((String) obj[1]);
-                productAdminDTO.setCreateDate(((Timestamp) obj[2]).toLocalDateTime().toLocalDate());
+                productAdminDTO.setCreateDate(((LocalDate) obj[2]));
                 productAdminDTO.setBrandName((String) obj[3]);
                 productAdminDTO.setCategoryName((String) obj[4]);
                 productAdminDTO.setMaterialName((String) obj[5]);
