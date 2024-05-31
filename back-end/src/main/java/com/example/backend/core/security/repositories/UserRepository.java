@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<Users,Long> {
-    public Users findByUsername(String username);
+    Users findByUsername(String username);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     boolean existsByPhone(String email);

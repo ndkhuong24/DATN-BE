@@ -180,6 +180,9 @@ public class AppConstant {
                 "/view/api/tra-cuu-order",
                 "/view/api/get-product-tuong-tu",
                 "/sales-counter/api/list-bill-all",
-
+                "/admin/api/sign-in/**",
+                "/admin/api/sign-up/**",
+                "/view/api/sign-in/**",
+                "/view/api/sign-up/**",
         };
 }

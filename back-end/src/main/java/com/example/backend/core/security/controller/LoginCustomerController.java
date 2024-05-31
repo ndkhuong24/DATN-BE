@@ -1,6 +1,5 @@
 package com.example.backend.core.security.controller;
 
-import com.example.backend.core.security.config.custom.CustomerUserDetails;
 import com.example.backend.core.security.config.custom.CustomerUserDetalsService;
 import com.example.backend.core.security.dto.UsersDTO;
 import com.example.backend.core.security.dto.request.SignInRequet;
@@ -8,9 +7,11 @@ import com.example.backend.core.security.dto.request.SignUpRepquest;
 import com.example.backend.core.security.dto.response.JwtResponse;
 import com.example.backend.core.security.dto.response.MessageResponse;
 import com.example.backend.core.security.entity.CustomerLogin;
+import com.example.backend.core.security.entity.ERole;
 import com.example.backend.core.security.jwt.JwtEntryPoint;
-import com.example.backend.core.security.jwt.JwtTokenProvider;
+import com.example.backend.core.security.jwt.JwtUtils;
 import com.example.backend.core.security.serivce.CustomerLoginService;
+import com.example.backend.core.security.serivce.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +35,7 @@ public class LoginCustomerController {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    JwtUtils jwtUtils;
     @Autowired
     CustomerLoginService customerSPService;
     @Autowired
@@ -45,7 +45,10 @@ public class LoginCustomerController {
 
     @Autowired
     private CustomerUserDetalsService customerUserDetalsService;
-
+    @Autowired
+    UserService usersService;
+    @Autowired
+    CustomerLoginService customerService;
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUpCustomer(@Valid @RequestBody SignUpRepquest signUpFormRequest){
         if (customerSPService.existsByUsername(signUpFormRequest.getUsername())){
@@ -83,10 +86,11 @@ public class LoginCustomerController {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    CustomerUserDetails customerUserDetails = (CustomerUserDetails) authentication.getPrincipal();
-                    String token = jwtTokenProvider.generateTokenCustomer(customerUserDetails);
-                    UsersDTO usersDTO = new UsersDTO();
-                    return ResponseEntity.ok(new JwtResponse(token, usersDTO.toCustomerDTO(customerUserDetails)));
+                    UserDetails customerUserDetails = (UserDetails) authentication.getPrincipal();
+                    String token = jwtUtils.generateToken(customerUserDetails);
+                    CustomerLogin customer = customerService.findByUsername(signInRequet.getUsername());
+                    return ResponseEntity.ok(new JwtResponse(token,new UsersDTO(customer.getId(), customer.getFullname(),userDetails.getUsername())));
+
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
                 }

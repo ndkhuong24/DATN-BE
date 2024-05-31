@@ -1,16 +1,15 @@
 package com.example.backend.core.security.controller;
 
 import com.example.backend.core.security.config.custom.CustomUserDetailService;
-import com.example.backend.core.security.config.custom.CustomUserDetails;
-import com.example.backend.core.security.config.custom.CustomerUserDetalsService;
 import com.example.backend.core.security.dto.UsersDTO;
 import com.example.backend.core.security.dto.request.SignInRequet;
 import com.example.backend.core.security.dto.request.SignUpRepquest;
 import com.example.backend.core.security.dto.response.JwtResponse;
 import com.example.backend.core.security.dto.response.MessageResponse;
+import com.example.backend.core.security.entity.ERole;
 import com.example.backend.core.security.entity.Users;
 import com.example.backend.core.security.jwt.JwtEntryPoint;
-import com.example.backend.core.security.jwt.JwtTokenProvider;
+import com.example.backend.core.security.jwt.JwtUtils;
 import com.example.backend.core.security.serivce.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -19,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/admin/api")
@@ -38,7 +35,7 @@ public class SercurityController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    JwtUtils jwtUtils;
 
     @Autowired
     UserService usersService;
@@ -102,13 +99,11 @@ public class SercurityController {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
                     null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            UsersDTO usersDTO = new UsersDTO();
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            String token = jwtTokenProvider.generateToken(customUserDetails);
-            usersDTO = usersDTO.toStaffDTO(customUserDetails);
-            System.out.println(usersDTO);
-            return ResponseEntity.ok(new JwtResponse(token, usersDTO.toStaffDTO(customUserDetails)));
+            UserDetails customUserDetails = (UserDetails) authentication.getPrincipal();
+            String token = jwtUtils.generateToken(customUserDetails);
+            Users users = usersService.findByUsername(signInRequet.getUsername());
+            return ResponseEntity.ok(new JwtResponse(token,new UsersDTO(users.getId(), users.getFullname(),userDetails.getUsername())));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

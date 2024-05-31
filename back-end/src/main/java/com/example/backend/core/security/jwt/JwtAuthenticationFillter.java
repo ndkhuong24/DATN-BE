@@ -4,6 +4,7 @@ import com.example.backend.core.security.config.custom.CustomUserDetailService;
 import com.example.backend.core.security.config.custom.CustomerUserDetalsService;
 import com.example.backend.core.security.serivce.CustomerLoginService;
 import com.example.backend.core.security.serivce.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,60 +24,50 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFillter extends OncePerRequestFilter {
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtUtils jwtUtils;
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
     @Autowired
     private CustomerUserDetalsService customerUserDetailService;
 
-    @Autowired
-    private CustomerLoginService customerSPService;
-
-    @Autowired
-    private UserService userService;
-
-    private String getJwtFromRequest(HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer")) {
-            return authHeader.replace("Bearer", "");
-        }
-        return null;
-    }
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)){
-                //lay userName tu chuoi jwt
-                String userName = jwtTokenProvider.getUserNameFromJwt(jwt);
-                //lay thong tin nguoi dung tu userName
-                String uri = request.getRequestURI();
-                if (uri.contains("view")){
-                    UserDetails userDetails = customerUserDetailService.loadUserByUsername(userName);
-                    if(userDetails != null){
-                        // Neu nguoi dung hop le set thong tin cho security context
-                        UsernamePasswordAuthenticationToken authentication
-                                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
-                if (uri.contains("admin")){
-                    UserDetails userDetails = customUserDetailService.loadUserByUsername(userName);
-                    if(userDetails != null){
-                        // Neu nguoi dung hop le set thong tin cho security context
-                        UsernamePasswordAuthenticationToken authentication
-                                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        //lấy thông tin từ request
+        //FilterChain giúp chuyển tiếp request đến các filter khác
 
+        final String requestTokenHeader = request.getHeader("Authorization"); // lấy tiêu đề authorization từ request
+        //
+        String username = null;
+        String jwtToken = null;
+        //kiểm tra tiêu đề authotity có tồn tại và bắt đầu bằng bearer không
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+            try {
+                //lấy tên người dùng từ token
+                username = jwtUtils.getUsernameFromToken(jwtToken);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
             }
-        }catch (Exception ex){
-            log.error("fail on set user authentication", ex);
         }
-        filterChain.doFilter(request,response);
+        //kiểm tra xem người dùng đã được xác thực và được đặt vào SecurityContextHolder chưa
+        // không hợp lệ sẽ chuyển tiếp đến doFilter lọc tiếp theo
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            //tìm kiếm thông tin người dùng  từ csdl
+            UserDetails userDetails = this.customUserDetailService.loadUserByUsername(username);
+            System.out.println(":)))))"+userDetails.getAuthorities());
+            //kiểm tra xem token có hợp lệ khoong
+            if (jwtUtils.validateToken(jwtToken, userDetails)) {
+                //tạo đối tượng với userdetail và danh sách quyền truy cập của người dùng
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                //đặt đối tượng vào SecurityContextHolder để xác thực
+                //SecurityContextHolder chứa thông tin về người dùng đang được xác thực
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
+        chain.doFilter(request, response); //chuyển tiếp request đến các filter khác
     }
 }

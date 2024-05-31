@@ -62,10 +62,9 @@ public class webConfig{
                         .requestMatchers("/view/api/sign-up").permitAll()
                         .requestMatchers("/admin/api/sign-in").permitAll()
                         .requestMatchers("/admin/api/sign-up").permitAll()
-                        //.requestMatchers("/api/admin/upload-img-file**").permitAll()
                         .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
-                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
-                        .requestMatchers(AppConstant.API_STAFF).permitAll()
+                        .requestMatchers(AppConstant.API_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(AppConstant.API_STAFF).hasAnyAuthority("ADMIN","STAFF")
                 //.anyRequest().permitAll()
                 .and().exceptionHandling()
                         .authenticationEntryPoint(jwtEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
