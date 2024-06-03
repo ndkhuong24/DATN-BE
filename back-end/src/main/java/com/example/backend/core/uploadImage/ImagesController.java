@@ -13,12 +13,13 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
+@RequestMapping("/api/upload")
 public class ImagesController {
     @Autowired
     private ImagesRepository imagesRepository;
 
-    @PostMapping("/upload/image")
+    @PostMapping("/add/image")
     public ResponseEntity<ImageUploadResponse> uploadImages(@RequestParam("image") MultipartFile file, @RequestParam("idProduct") Long idProduct) throws IOException {
         imagesRepository.save(Images.builder()
                 .imageName(file.getOriginalFilename())

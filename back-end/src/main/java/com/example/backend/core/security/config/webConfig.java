@@ -63,8 +63,8 @@ public class webConfig{
                         .requestMatchers("/admin/api/sign-in").permitAll()
                         .requestMatchers("/admin/api/sign-up").permitAll()
                         .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
-                        .requestMatchers(AppConstant.API_ADMIN).hasAuthority("ADMIN")
-                        .requestMatchers(AppConstant.API_STAFF).hasAnyAuthority("ADMIN","STAFF")
+                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
+                        .requestMatchers(AppConstant.API_STAFF).permitAll()
                 //.anyRequest().permitAll()
                 .and().exceptionHandling()
                         .authenticationEntryPoint(jwtEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

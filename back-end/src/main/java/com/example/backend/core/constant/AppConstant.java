@@ -138,6 +138,8 @@ public class AppConstant {
                 "/api/sc-voucher/get-all-voucher",
                 "/api/sc-voucher/get-voucher",
 
+                "/api/upload/**"
+
         };
         public static final String[] API_STAFF = {
                 "/api/staff/home"
