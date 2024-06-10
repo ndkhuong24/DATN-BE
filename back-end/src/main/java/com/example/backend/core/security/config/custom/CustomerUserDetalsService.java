@@ -2,7 +2,6 @@ package com.example.backend.core.security.config.custom;
 
 import com.example.backend.core.security.entity.CustomerLogin;
 import com.example.backend.core.security.entity.ERole;
-import com.example.backend.core.security.entity.Users;
 import com.example.backend.core.security.repositories.CustomerLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +16,15 @@ import java.util.Set;
 
 @Service
 public class CustomerUserDetalsService implements UserDetailsService {
+
     @Autowired
     CustomerLoginRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CustomerLogin customer = repository.findByUsername(username);
-        if (customer==null){
-            throw  new UsernameNotFoundException("Khong Tim Thay User");
+        if (customer == null) {
+            throw new UsernameNotFoundException("Khong Tim Thay User");
         }
         UserDetails userDetails;
         // lấy quyền của người dùng

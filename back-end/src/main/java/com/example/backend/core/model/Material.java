@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -25,12 +24,16 @@ public class Material implements Serializable {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "create_date")
     private LocalDate createDate;
+
     @Column(name = "update_date")
     private LocalDate updateDate;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "status")
     private Integer status;
 

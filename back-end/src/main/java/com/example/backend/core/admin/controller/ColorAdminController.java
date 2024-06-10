@@ -13,22 +13,25 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class ColorAdminController {
     @Autowired
-    private ColorAdminService clsv;
+    private ColorAdminService colorAdminService;
+
     @GetMapping("/color/hien-thi")
-    public ResponseEntity<List<ColorAdminDTO>> index(){
-        return ResponseEntity.ok(clsv.getAll());
-    }
-    @DeleteMapping("/color/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
-        return ResponseEntity.ok(clsv.delete(id));
-    }
-    @PutMapping("/color/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody ColorAdminDTO colorAdminDTO){
-        return ResponseEntity.ok(clsv.update(colorAdminDTO,id));
-    }
-    @PostMapping("/color/add")
-    public ResponseEntity<?> add(@RequestBody ColorAdminDTO colorAdminDTO){
-        return ResponseEntity.ok(clsv.addColor(colorAdminDTO));
+    public ResponseEntity<List<ColorAdminDTO>> index() {
+        return ResponseEntity.ok(colorAdminService.getAll());
     }
 
+    @PostMapping("/color/add")
+    public ResponseEntity<?> add(@RequestBody ColorAdminDTO colorAdminDTO) {
+        return ResponseEntity.ok(colorAdminService.addColor(colorAdminDTO));
+    }
+
+    @PutMapping("/color/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ColorAdminDTO colorAdminDTO) {
+        return ResponseEntity.ok(colorAdminService.update(colorAdminDTO, id));
+    }
+
+    @DeleteMapping("/color/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(colorAdminService.delete(id));
+    }
 }
