@@ -1,7 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
 import com.example.backend.core.admin.dto.*;
-import com.example.backend.core.admin.dto.ProductDetailAdminDTO;
 import com.example.backend.core.admin.mapper.*;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.OrderDetailAdminService;
@@ -24,6 +23,7 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
 
     @Autowired
     private OrderDetailAdminRepository orderDetailAdminRepository;
+
     @Autowired
     private OrderDetailAdminMapper orderDetailAdminMapper;
 
@@ -36,16 +36,19 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
 
     @Autowired
     private ImagesAdminRepository imagesAdminRepository;
+
     @Autowired
     private ImagesAdminMapper imagesAdminMapper;
 
     @Autowired
     private ColorAdminMapper colorAdminMapper;
+
     @Autowired
     private ColorAdminRepository colorAdminRepository;
 
     @Autowired
     private SizeAdminRepository sizeAdminRepository;
+
     @Autowired
     private SizeAdminMapper sizeAdminMapper;
 
@@ -60,18 +63,22 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
 
     @Autowired
     private StaffAdminMapper staffMapper;
+
     @Autowired
     private StaffAdminRepository staffAdminRepository;
+
     @Autowired
     private StaffAdminMapper staffAdminMapper;
 
     @Autowired
     private OrderHistoryMapper orderHistoryMapper;
+
     @Autowired
     private CustomerMapper customerMapper;
 
     @Autowired
     private CustomerRepository customerRepository;
+
     public OrderDetailAdminServiceImpl(ProductAdminRepository productAdminRepository, ProductDetailAdminRepository productDetailAdminRepository) {
         this.productAdminRepository = productAdminRepository;
         this.productDetailAdminRepository = productDetailAdminRepository;
@@ -87,8 +94,8 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
         List<OrderHistoryDTO> orderHistoryViewList = new ArrayList<>();
         List<OrderHistory> orderHistoryList = orderHistoryAdminRepository.getAllOrderHistoryByOrder(idOrder);
         for (int i = 0; i < orderHistoryList.size(); i++) {
-            if(null != orderHistoryList.get(i).getIdStaff()){
-                if(staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).isPresent()){
+            if (null != orderHistoryList.get(i).getIdStaff()) {
+                if (staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).isPresent()) {
                     StaffAdminDTO staffAdminDTO = staffAdminMapper.toDto(staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).orElse(null));
                     OrderHistoryAdminDTO orderHistoryAdminDTO = orderHistoryAdminMapper.toDto(orderHistoryList.get(i));
                     orderHistoryAdminDTO.setStaffDTO(staffAdminDTO);
@@ -97,8 +104,8 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
             }
         }
         for (int i = 0; i < orderHistoryList.size(); i++) {
-            if(null != orderHistoryList.get(i).getIdCustomer()){
-                if(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).isPresent()){
+            if (null != orderHistoryList.get(i).getIdCustomer()) {
+                if (customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).isPresent()) {
                     CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).orElse(null));
                     OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
                     orderHistoryAdminDTO.setCustomerDTO(customerDTO);

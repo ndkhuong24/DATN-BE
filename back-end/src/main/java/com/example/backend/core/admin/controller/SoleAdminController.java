@@ -1,6 +1,5 @@
 package com.example.backend.core.admin.controller;
 
-import com.example.backend.core.admin.dto.SizeAdminDTO;
 import com.example.backend.core.admin.dto.SoleAdminDTO;
 import com.example.backend.core.admin.service.SoleAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +13,25 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class SoleAdminController {
     @Autowired
-    private SoleAdminService slsv;
+    private SoleAdminService soleAdminService;
 
     @GetMapping("sole/hien-thi")
-    public ResponseEntity<List<SoleAdminDTO>> hienthi(){
-        return ResponseEntity.ok(slsv.getAll());
+    public ResponseEntity<List<SoleAdminDTO>> hienthi() {
+        return ResponseEntity.ok(soleAdminService.getAll());
     }
+
     @PostMapping("sole/add")
-    public ResponseEntity<?> add(@RequestBody SoleAdminDTO soleAdminDTO){
-        return ResponseEntity.ok(slsv.add(soleAdminDTO));
+    public ResponseEntity<?> add(@RequestBody SoleAdminDTO soleAdminDTO) {
+        return ResponseEntity.ok(soleAdminService.add(soleAdminDTO));
     }
+
     @PutMapping("sole/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody SoleAdminDTO soleAdminDTO){
-        return ResponseEntity.ok(slsv.update(soleAdminDTO,id));
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SoleAdminDTO soleAdminDTO) {
+        return ResponseEntity.ok(soleAdminService.update(soleAdminDTO, id));
     }
+
     @DeleteMapping("sole/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id")Long id){
-        return ResponseEntity.ok(slsv.delete(id));
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(soleAdminService.delete(id));
     }
 }

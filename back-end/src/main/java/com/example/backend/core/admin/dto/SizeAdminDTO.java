@@ -16,5 +16,6 @@ public class SizeAdminDTO {
     private Long id;
     private String sizeNumber;
     private LocalDate createDate;
+    private LocalDate updateDate;
     private Integer status;
 }

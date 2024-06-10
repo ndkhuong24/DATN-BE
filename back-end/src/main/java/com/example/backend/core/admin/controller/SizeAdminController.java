@@ -1,4 +1,5 @@
 package com.example.backend.core.admin.controller;
+
 import com.example.backend.core.admin.dto.SizeAdminDTO;
 import com.example.backend.core.admin.service.SizeAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +13,25 @@ import java.util.List;
 @RequestMapping("api/admin")
 public class SizeAdminController {
     @Autowired
-    private SizeAdminService ssv;
+    private SizeAdminService sizeAdminService;
+
     @GetMapping("size/hien-thi")
-    public ResponseEntity<List<SizeAdminDTO>> hienthi(){
-        return ResponseEntity.ok(ssv.getAll());
+    public ResponseEntity<List<SizeAdminDTO>> hienthi() {
+        return ResponseEntity.ok(sizeAdminService.getAll());
     }
+
     @PostMapping("size/add")
-    public ResponseEntity<?> add(@RequestBody SizeAdminDTO sizeAdminDTO){
-        return ResponseEntity.ok(ssv.add(sizeAdminDTO));
+    public ResponseEntity<?> add(@RequestBody SizeAdminDTO sizeAdminDTO) {
+        return ResponseEntity.ok(sizeAdminService.add(sizeAdminDTO));
     }
+
     @PutMapping("size/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id,@RequestBody SizeAdminDTO sizeAdminDTO){
-        return ResponseEntity.ok(ssv.update(sizeAdminDTO,id));
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody SizeAdminDTO sizeAdminDTO) {
+        return ResponseEntity.ok(sizeAdminService.update(sizeAdminDTO, id));
     }
+
     @DeleteMapping("size/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id")Long id){
-        return ResponseEntity.ok(ssv.delete(id));
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(sizeAdminService.delete(id));
     }
 }

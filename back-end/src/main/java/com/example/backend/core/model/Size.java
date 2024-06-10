@@ -21,10 +21,16 @@ public class Size implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "size_number")
     private String sizeNumber;
+
     @Column(name = "create_date")
     private LocalDate createDate;
+
+    @Column(name = "update_date")
+    private LocalDate updateDate;
+
     @Column(name = "status")
     private Integer status;
 }
