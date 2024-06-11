@@ -13,25 +13,25 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class MaterialAdminController {
     @Autowired
-    private MaterialAdminService mtsv;
+    private MaterialAdminService materialAdminService;
 
     @GetMapping("material/hien-thi")
     public ResponseEntity<List<MaterialAdminDTO>> hienthi() {
-        return ResponseEntity.ok(mtsv.getAll());
+        return ResponseEntity.ok(materialAdminService.getAll());
     }
 
     @PostMapping("material/add")
     public ResponseEntity<?> add(@RequestBody MaterialAdminDTO materialAdminDTO) {
-        return ResponseEntity.ok(mtsv.add(materialAdminDTO));
+        return ResponseEntity.ok(materialAdminService.add(materialAdminDTO));
     }
 
     @PutMapping("material/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody MaterialAdminDTO materialAdminDTO) {
-        return ResponseEntity.ok(mtsv.update(materialAdminDTO, id));
+        return ResponseEntity.ok(materialAdminService.update(materialAdminDTO, id));
     }
 
     @DeleteMapping("material/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(mtsv.delete(id));
+        return ResponseEntity.ok(materialAdminService.delete(id));
     }
 }

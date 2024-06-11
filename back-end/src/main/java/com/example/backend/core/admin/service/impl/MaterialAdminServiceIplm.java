@@ -27,8 +27,8 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
 
     @Override
     public List<MaterialAdminDTO> getAll() {
-        List<MaterialAdminDTO> list = materialAdminMapper.toDto(this.materialAdminRepository.findAll());
-        return list;
+        List<MaterialAdminDTO> listMaterialAdminDTO = materialAdminMapper.toDto(this.materialAdminRepository.findAll());
+        return listMaterialAdminDTO;
     }
 
     @Override
