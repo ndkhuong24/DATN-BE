@@ -22,7 +22,7 @@ public class ColorAdminController {
 
     @PostMapping("/color/add")
     public ResponseEntity<?> add(@RequestBody ColorAdminDTO colorAdminDTO) {
-        return ResponseEntity.ok(colorAdminService.addColor(colorAdminDTO));
+        return ResponseEntity.ok(colorAdminService.add(colorAdminDTO));
     }
 
     @PutMapping("/color/update/{id}")

@@ -22,8 +22,6 @@ public class ColorAdminServiceIplm implements ColorAdminService {
     @Autowired
     private ColorAdminMapper colorAdminMapper;
 
-    private ServiceResult<ColorAdminDTO> result = new ServiceResult<>();
-
     @Override
     public List<ColorAdminDTO> getAll() {
         List<ColorAdminDTO> lstdto = colorAdminMapper.toDto(this.colorAdminRepository.findAll());
@@ -31,22 +29,26 @@ public class ColorAdminServiceIplm implements ColorAdminService {
     }
 
     @Override
-    public ServiceResult<ColorAdminDTO> addColor(ColorAdminDTO colorAdminDTO) {
+    public ServiceResult<ColorAdminDTO> add(ColorAdminDTO colorAdminDTO) {
+        ServiceResult<ColorAdminDTO> result = new ServiceResult<>();
+
         Color color = colorAdminMapper.toEntity(colorAdminDTO);
         color.setCreateDate(LocalDate.now());
         color.setUpdateDate(LocalDate.now());
 
+        this.colorAdminRepository.save(color);
+
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
         result.setData(colorAdminDTO);
-
-        this.colorAdminRepository.save(color);
 
         return result;
     }
 
     @Override
     public ServiceResult<ColorAdminDTO> update(ColorAdminDTO colorAdminDTO, Long id) {
+        ServiceResult<ColorAdminDTO> result = new ServiceResult<>();
+
         Optional<Color> optional = this.colorAdminRepository.findById(id);
         if (optional.isPresent()) {
             Color color = optional.get();
@@ -55,11 +57,13 @@ public class ColorAdminServiceIplm implements ColorAdminService {
             color.setCode(colorAdminDTO.getCode());
             color.setStatus(colorAdminDTO.getStatus());
             color.setUpdateDate(LocalDate.now());
-            color = this.colorAdminRepository.save(color);
+
+            Color updateColor = this.colorAdminRepository.save(color);
+            ColorAdminDTO updateColorAdminDTO = colorAdminMapper.toDto(updateColor);
 
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");
-            result.setData(colorAdminMapper.toDto(color));
+            result.setData(updateColorAdminDTO);
         } else {
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Id khong ton tai");
@@ -70,6 +74,8 @@ public class ColorAdminServiceIplm implements ColorAdminService {
 
     @Override
     public ServiceResult<ColorAdminDTO> delete(Long id) {
+        ServiceResult<ColorAdminDTO> result = new ServiceResult<>();
+
         Optional<Color> optional = this.colorAdminRepository.findById(id);
         if (optional.isPresent()) {
             this.colorAdminRepository.deleteById(id);

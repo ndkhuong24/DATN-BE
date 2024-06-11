@@ -8,7 +8,7 @@ import java.util.List;
 public interface ColorAdminService {
     List<ColorAdminDTO> getAll();
 
-    ServiceResult<ColorAdminDTO> addColor(ColorAdminDTO colorADDTO);
+    ServiceResult<ColorAdminDTO> add(ColorAdminDTO colorADDTO);
 
     ServiceResult<ColorAdminDTO> update(ColorAdminDTO colorAdminDTO, Long id);
 

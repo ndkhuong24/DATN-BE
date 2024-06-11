@@ -23,8 +23,6 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
     @Autowired
     private MaterialAdminMapper materialAdminMapper;
 
-    private ServiceResult<MaterialAdminDTO> result = new ServiceResult<>();
-
     @Override
     public List<MaterialAdminDTO> getAll() {
         List<MaterialAdminDTO> listMaterialAdminDTO = materialAdminMapper.toDto(this.materialAdminRepository.findAll());
@@ -38,6 +36,8 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
 
     @Override
     public ServiceResult<MaterialAdminDTO> add(MaterialAdminDTO materialAdminDTO) {
+        ServiceResult<MaterialAdminDTO> result = new ServiceResult<>();
+
         Material material = materialAdminMapper.toEntity(materialAdminDTO);
         material.setCreateDate(LocalDate.now());
         material.setUpdateDate(LocalDate.now());
@@ -53,6 +53,8 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
 
     @Override
     public ServiceResult<MaterialAdminDTO> update(MaterialAdminDTO materialAdminDTO, Long id) {
+        ServiceResult<MaterialAdminDTO> result = new ServiceResult<>();
+
         Optional<Material> optional = this.materialAdminRepository.findById(id);
         if (optional.isPresent()) {
             Material material = optional.get();
@@ -61,12 +63,13 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
             material.setStatus(materialAdminDTO.getStatus());
             material.setDescription(materialAdminDTO.getDescription());
             material.setUpdateDate(LocalDate.now());
-            material = this.materialAdminRepository.save(material);
+
+            Material updateMaterial = this.materialAdminRepository.save(material);
+            MaterialAdminDTO upMaterialAdminDTO =  materialAdminMapper.toDto(updateMaterial);
 
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");
-            result.setData(materialAdminMapper.toDto(material));
-
+            result.setData(upMaterialAdminDTO);
         } else {
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Id khong ton tai ");
@@ -77,6 +80,8 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
 
     @Override
     public ServiceResult<MaterialAdminDTO> delete(Long id) {
+        ServiceResult<MaterialAdminDTO> result = new ServiceResult<>();
+
         Optional<Material> optional = this.materialAdminRepository.findById(id);
         if (optional.isPresent()) {
             this.materialAdminRepository.deleteById(id);
@@ -89,10 +94,14 @@ public class MaterialAdminServiceIplm implements MaterialAdminService {
 
     @Override
     public ServiceResult<MaterialAdminDTO> findbyid(Long id) {
+        ServiceResult<MaterialAdminDTO> result = new ServiceResult<>();
+
         Optional<Material> optional = this.materialAdminRepository.findById(id);
         if (optional.isPresent()) {
             Material material = optional.get();
+
             MaterialAdminDTO materialAdminDTO = materialAdminMapper.toDto(material);
+
             result.setStatus(HttpStatus.OK);
             result.setMessage("Tìm thấy material thành công");
             result.setData(materialAdminDTO);

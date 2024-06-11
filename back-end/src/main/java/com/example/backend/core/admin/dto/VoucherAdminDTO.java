@@ -1,9 +1,6 @@
 package com.example.backend.core.admin.dto;
 
 import com.example.backend.core.commons.ExportDTO;
-import com.example.backend.core.model.Staff;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +8,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -41,7 +37,7 @@ public class VoucherAdminDTO extends ExportDTO {
     private Integer apply;
     private Integer useVoucher;
     private Integer amountUsed;
-    private Integer  delete;
+    private Integer delete;
     private CustomerAdminDTO customerAdminDTO;
     private List<CustomerAdminDTO> customerAdminDTOList;
     private String dateFrom;
