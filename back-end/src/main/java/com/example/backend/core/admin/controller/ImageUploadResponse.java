@@ -1,4 +1,4 @@
-package com.example.backend.core.uploadImage;
+package com.example.backend.core.admin.controller;
 
 public class ImageUploadResponse {
     private String message;

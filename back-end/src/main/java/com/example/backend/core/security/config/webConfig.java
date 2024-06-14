@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 import java.util.Arrays;
 
 @Configuration
@@ -53,28 +54,61 @@ public class webConfig{
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(c -> c.disable()).csrf(cf -> cf.disable());
-        http.authorizeHttpRequests(author -> {
-            try {
-                 author.requestMatchers("/view/api/sign-in").permitAll()
-                        .requestMatchers("/view/api/sign-up").permitAll()
-                        .requestMatchers("/admin/api/sign-in").permitAll()
-                        .requestMatchers("/admin/api/sign-up").permitAll()
-                        .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
-                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
-                        .requestMatchers(AppConstant.API_STAFF).permitAll()
-                //.anyRequest().permitAll()
-                .and().exceptionHandling()
-                        .authenticationEntryPoint(jwtEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        });
+        http.cors(c -> c.disable())
+                .csrf(cf -> cf.disable())
+                .authorizeHttpRequests(author -> {
+                    try {
+                        author
+                                .requestMatchers("/view/anh/**").permitAll()
+                                .requestMatchers("/api/admin/images/upload").permitAll()
+                                .requestMatchers("/view/api/sign-in").permitAll()
+                                .requestMatchers("/view/api/sign-up").permitAll()
+                                .requestMatchers("/admin/api/sign-in").permitAll()
+                                .requestMatchers("/admin/api/sign-up").permitAll()
+                                .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
+                                .requestMatchers(AppConstant.API_ADMIN).permitAll()
+                                .requestMatchers(AppConstant.API_STAFF).permitAll()
+                                .anyRequest().authenticated(); // Thay .permitAll() bằng .authenticated() cho các request còn lại
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+                })
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(jwtEntryPoint))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.cors(c -> c.disable()).csrf(cf -> cf.disable());
+//        http.authorizeHttpRequests(author -> {
+//            try {
+//                 author.requestMatchers("/view/api/sign-in").permitAll()
+//                        .requestMatchers("/view/api/sign-up").permitAll()
+//                        .requestMatchers("/admin/api/sign-in").permitAll()
+//                        .requestMatchers("/admin/api/sign-up").permitAll()
+//                        .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
+//                        .requestMatchers(AppConstant.API_ADMIN).permitAll()
+//                        .requestMatchers(AppConstant.API_STAFF).permitAll()
+//                //.anyRequest().permitAll()
+//                .and().exceptionHandling()
+//                        .authenticationEntryPoint(jwtEntryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                throw new RuntimeException(e);
+//            }
+//        });
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        return http.build();
+//    }
 
 }

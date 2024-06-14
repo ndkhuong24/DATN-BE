@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderDetailAdminService {
-    Map<String, Object> getAllByOrder(Long idOrder);
+//    Map<String, Object> getAllByOrder(Long idOrder);
 }

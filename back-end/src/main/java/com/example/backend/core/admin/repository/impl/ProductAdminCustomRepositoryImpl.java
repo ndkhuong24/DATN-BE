@@ -78,12 +78,12 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                 productAdminDTO.setCategoryName((String) obj[4]);
                 productAdminDTO.setMaterialName((String) obj[5]);
 //                productAdminDTO.setSoleHeight((String) obj[6]);
-                productAdminDTO.setPriceExport(new BigDecimal(obj[6].toString()).toString());
+//                productAdminDTO.setPriceExport(new BigDecimal(obj[6].toString()).toString());
                 productAdminDTO.setDescription((String) obj[7]);
                 productAdminDTO.setStatus((Integer) obj[8]);
-                productAdminDTO.setTotalQuantity(((BigDecimal) obj[9]).intValue());
-                productAdminDTO.setSizeExport((String) obj[10]);
-                productAdminDTO.setColorExport((String) obj[11]);
+//                productAdminDTO.setTotalQuantity(((BigDecimal) obj[9]).intValue());
+//                productAdminDTO.setSizeExport((String) obj[10]);
+//                productAdminDTO.setColorExport((String) obj[11]);
                 lstProduct.add(productAdminDTO);
             }
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                 dto.setId(((Number) obj[0]).longValue());
                 dto.setCode((String) obj[1]);
                 dto.setName((String) obj[2]);
-                dto.setPrice((BigDecimal) obj[3]);
+//                dto.setPrice((BigDecimal) obj[3]);
                 dto.setBrandName((String) obj[5]);
                 dto.setTotalBestSeller(((Number) obj[6]).intValue());
                 String imagesString = (String) obj[4];

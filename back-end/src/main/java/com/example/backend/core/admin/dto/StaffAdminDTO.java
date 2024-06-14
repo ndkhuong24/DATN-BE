@@ -1,14 +1,11 @@
 package com.example.backend.core.admin.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +17,7 @@ public class StaffAdminDTO {
     private String fullname;
     private LocalDate birthday;
     private String gender;
-    private String address;
+//    private String address;
     private String phone;
     private String email;
     private LocalDate createDate;

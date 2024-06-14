@@ -51,7 +51,6 @@ public class AppConstant {
 
 
         public static final  String[] API_ADMIN = {
-
                 "/api/admin/discount",
                 "/api/admin/discount/*",
                 "/api/admin/discount/product",
@@ -65,7 +64,7 @@ public class AppConstant {
                 "/api/admin/discount/KH",
                 "/api/admin/discount/KKH",
                 "/api/admin/discount/discount/export-data",
-
+//                "/api/admin/images/upload",
                 "/api/admin/voucher",
                 "/api/admin/voucher/*",
                 "/api/admin/voucher/searchByDate*",
@@ -77,7 +76,6 @@ public class AppConstant {
                 "/api/admin/voucher/KKH",
                 "/api/admin/voucher/export-data",
                 "/api/admin/voucher/sendEmail",
-
                 "/api/admin/voucherFS",
                 "/api/admin/voucherFS/*",
                 "/api/admin/voucherFS/searchByDate*",
@@ -89,7 +87,6 @@ public class AppConstant {
                 "/api/admin/voucherFS/KKH",
                 "/api/admin/voucherFS/sendEmail",
                 "/api/admin/voucherFS/export-data",
-
                 "/api/admin/home",
                 "/api/admin/brand/*/*",
                 "/api/admin/brand/*",
@@ -131,20 +128,22 @@ public class AppConstant {
                 "/api/admin/staff-getall",
                 "/api/admin/staff-update/*",
                 "/api/admin/staff-search/*",
-
                 "/sales-counter/api/get-all-order",
                 "/api/sales-couter/create-payment",
                 "sales-counter/product/get-all",
                 "/api/sc-voucher/get-all-voucher",
                 "/api/sc-voucher/get-voucher",
-
                 "/api/upload/**"
 
         };
+
         public static final String[] API_STAFF = {
                 "/api/staff/home"
         };
+
         public static final String[] API_VIEW_PERMIT = {
+                "/view/anh/**",
+                "/api/admin/images/upload",
                 "/view/api/get-product-noi-bat",
                 "/view/api/get-detail-product/*",
                 "/view/api/get-all-size",

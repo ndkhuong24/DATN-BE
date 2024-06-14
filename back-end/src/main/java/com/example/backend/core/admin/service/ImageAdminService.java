@@ -15,8 +15,4 @@ public interface ImageAdminService {
 //    boolean exists(Long id);
 //    void saveImage(byte[] imageData,Long idproduct);
     String UploadFile(MultipartFile multipartFile) throws IOException;
-
-
-
-
 }

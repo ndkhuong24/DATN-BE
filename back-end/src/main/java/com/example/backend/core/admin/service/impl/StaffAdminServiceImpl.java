@@ -81,7 +81,7 @@ public class StaffAdminServiceImpl implements StaffAdminService {
             if (staffAdminDTO.getPasswword() != null){
                 staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
             }
-            staff.setIdel(staffAdminDTO.getIdel());
+//            staff.setIdel(staffAdminDTO.getIdel());
             staff.setRole(staffAdminDTO.getRole());
             staff.setDescription(staffAdminDTO.getDescription());
             this.repository.save(staff);

@@ -1,4 +1,4 @@
-package com.example.backend.core.uploadImage;
+package com.example.backend.core.util;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;

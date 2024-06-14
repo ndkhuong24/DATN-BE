@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -23,28 +21,34 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "code")
     private String code;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "create_date")
     private LocalDate createDate;
+
     @Column(name = "update_date")
     private LocalDate updateDate;
+
     @Column(name = "id_brand")
     private Long idBrand;
+
     @Column(name = "id_category")
     private Long idCategory;
+
     @Column(name = "id_material")
     private Long idMaterial;
-    @Column(name = "price")
-    private BigDecimal price;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "status")
     private Integer status;
-    @Column(name = "idel")
-    private Integer idel;
+
     @Column(name = "id_sole")
     private Long idSole;
 
@@ -58,7 +62,6 @@ public class Product implements Serializable {
         this.idCategory = dto.getIdCategory();
         this.idMaterial = dto.getIdMaterial();
         this.idSole = dto.getIdSole();
-        this.price = dto.getPrice();
         this.status = 0;
     }
 }

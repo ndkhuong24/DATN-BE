@@ -19,14 +19,22 @@ public class ProductDetail implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "id_product")
     private Long idProduct;
+
     @Column(name = "id_color")
     private Long idColor;
+
     @Column(name = "id_size")
     private Long idSize;
+
     @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
     @Column(name = "shoe_collar")
     private Integer shoeCollar;
 
