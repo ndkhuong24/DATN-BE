@@ -15,8 +15,9 @@ public interface ProductAdminService {
     void activateProduct(Long productId);
 
     void deactivateProduct(Long productId);
-//    ServiceResult<ProductAdminDTO> add(ProductAdminDTO productAdminDTO);
-//    ServiceResult<ProductAdminDTO> update(ProductAdminDTO productAdminDTO,Long id);
+
+    ServiceResult<ProductAdminDTO> update(ProductAdminDTO productAdminDTO, Long id);
+
 //    ServiceResult<ProductAdminDTO> delete(Long id);
 
 //    List<ProductAdminDTO> findByNameLikeOrCodeLike(String param);

@@ -64,6 +64,7 @@ public class webConfig{
                         author
                                 .requestMatchers("/view/anh/**").permitAll()
                                 .requestMatchers("/api/admin/images/upload").permitAll()
+                                .requestMatchers("/api/admin/images/update").permitAll()
                                 .requestMatchers("/view/api/sign-in").permitAll()
                                 .requestMatchers("/view/api/sign-up").permitAll()
                                 .requestMatchers("/admin/api/sign-in").permitAll()

@@ -44,10 +44,10 @@ public class ProductAdminController {
         productAdminService.activateProduct(id);
     }
 
-//    @PutMapping("product/update/{id}")
-//    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ProductAdminDTO productAdminDTO) {
-//        return ResponseEntity.ok(productAdminService.update(productAdminDTO, id));
-//    }
+    @PutMapping("product/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ProductAdminDTO productAdminDTO) {
+        return ResponseEntity.ok(productAdminService.update(productAdminDTO, id));
+    }
 
 //    @GetMapping("product/hien-thii")
 //    public ResponseEntity<List<ProductAdminDTO>> hienthiall(@RequestParam(value = "search", required = false, defaultValue = "") String search) {

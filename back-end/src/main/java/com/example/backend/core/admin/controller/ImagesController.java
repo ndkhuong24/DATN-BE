@@ -62,6 +62,49 @@ public class ImagesController {
         }
     }
 
+    @PostMapping("/api/admin/images/update")
+    public ResponseEntity<ImageUploadResponse> updateImage(@RequestParam("image") MultipartFile file, @RequestParam("idProduct") Long idProduct) {
+        try {
+            logger.info("Updating image for product ID: " + idProduct);
+
+            // Check if the file is empty
+            if (file.isEmpty()) {
+                logger.warning("Failed to update because the file is empty.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ImageUploadResponse("File is empty"));
+            }
+
+            // Find existing images for the product
+            List<Images> existingImages = imagesAdminRepository.findByIdProduct(idProduct);
+
+            if (!existingImages.isEmpty()) {
+                // Update the first image (or you can loop through and update all if needed)
+                Images existingImage = existingImages.get(0);
+                existingImage.setImageName(file.getOriginalFilename());
+                existingImage.setCreateDate(LocalDate.now());
+                existingImage.setImage(ImageUtility.compressImage(file.getBytes()));
+
+                imagesAdminRepository.save(existingImage);
+
+                logger.info("Image updated successfully: " + file.getOriginalFilename());
+
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ImageUploadResponse("Image updated successfully: " + file.getOriginalFilename()));
+            } else {
+                logger.warning("No existing image found for product ID: " + idProduct);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ImageUploadResponse("No existing image found for product ID: " + idProduct));
+            }
+        } catch (IOException e) {
+            logger.severe("Error updating image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ImageUploadResponse("Image update failed: " + e.getMessage()));
+        } catch (Exception e) {
+            logger.severe("Unexpected error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ImageUploadResponse("Unexpected error occurred: " + e.getMessage()));
+        }
+    }
 
     @GetMapping(path = {"/view/anh/{idProduct}"})
     public ResponseEntity<byte[]> getImage(@PathVariable("idProduct") Long idProduct) {

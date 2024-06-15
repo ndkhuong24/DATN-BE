@@ -144,6 +144,7 @@ public class AppConstant {
         public static final String[] API_VIEW_PERMIT = {
                 "/view/anh/**",
                 "/api/admin/images/upload",
+                "/api/admin/images/update",
                 "/view/api/get-product-noi-bat",
                 "/view/api/get-detail-product/*",
                 "/view/api/get-all-size",
