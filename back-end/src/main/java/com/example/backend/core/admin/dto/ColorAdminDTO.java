@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class ColorAdminDTO {
-
     private Long id;
     private String code;
     private String name;

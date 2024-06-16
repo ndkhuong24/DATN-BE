@@ -100,9 +100,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     @Override
     public List<ProductAdminDTO> getAll() {
-//        ServiceResult<ProductAdminDTO> result = new ServiceResult<>();
-
         List<Product> productList = productAdminRepository.findAll();
+
         List<ProductAdminDTO> productAdminDTOList = new ArrayList<>();
 
         for (Product product : productList) {

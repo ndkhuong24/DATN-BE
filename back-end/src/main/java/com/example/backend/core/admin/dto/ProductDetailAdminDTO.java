@@ -10,17 +10,6 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class ProductDetailAdminDTO {
-    //    private Long id;
-//    private Long idProduct;
-//    private Long idColor;
-//    private Long idSize;
-//    private Integer quantity;
-//    private BigDecimal listedPrice;
-//    private BigDecimal price;
-//    private Integer shoeCollar;
-//    private ProductAdminDTO productDTO;
-//    private ColorAdminDTO colorDTO;
-//    private SizeAdminDTO sizeDTO;
     private Long id;
     private Long idProduct;
     private Long idColor;
@@ -29,10 +18,9 @@ public class ProductDetailAdminDTO {
     private BigDecimal price;
     private Integer shoeCollar;
 
-    private String colorName;
-    private String sizeName;
+    private BigDecimal listedPrice;
 
-    private  ProductAdminDTO productDTO;
+    private ProductAdminDTO productDTO;
     private ColorAdminDTO colorDTO;
     private SizeAdminDTO sizeDTO;
 }
