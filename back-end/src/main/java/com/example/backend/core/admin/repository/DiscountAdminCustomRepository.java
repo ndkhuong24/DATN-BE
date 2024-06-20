@@ -1,14 +1,6 @@
 package com.example.backend.core.admin.repository;
 
-import com.example.backend.core.admin.dto.DiscountAdminDTO;
-import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
-import com.example.backend.core.admin.dto.ProductAdminDTO;
-
-import java.util.Date;
-import java.util.List;
-
 public interface DiscountAdminCustomRepository {
-
 //    void deleteAllDiscountDetailByDiscount(Long id);
 //    List<DiscountAdminDTO> getAll();
 //    List<DiscountAdminDTO> getAllKichHoat();

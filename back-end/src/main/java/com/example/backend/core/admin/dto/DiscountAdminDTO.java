@@ -25,13 +25,14 @@ public class DiscountAdminDTO extends ExportDTO {
     private String createName;
     private Integer status;
     private Integer idel;
-    private Integer  used_count;
     private Integer  delete;
+    private BigDecimal reducedValue; //giá trị giảm
+    private BigDecimal maxReduced; //giá trị giảm tối
+    private Integer discountType; //loại giảm giá
 
+    private Integer  used_count;
     private List<ProductAdminDTO> productDTOList;
-    private BigDecimal reducedValue;
-    private BigDecimal maxReduced;
-    private Integer discountType;
+    private List<ProductDetailAdminDTO> productDetailAdminDTOList;
     private Integer isUpdate = 0;
 
 }

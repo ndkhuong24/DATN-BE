@@ -4,7 +4,6 @@ import com.example.backend.core.admin.dto.CustomerAdminDTO;
 import com.example.backend.core.admin.dto.VoucherAdminDTO;
 import com.example.backend.core.admin.repository.CustomerAdminRepository;
 import com.example.backend.core.admin.repository.VoucherAdminCustomRepository;
-import com.example.backend.core.admin.repository.VoucherAdminRepository;
 import com.example.backend.core.model.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -14,12 +13,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,6 +25,7 @@ import java.util.List;
 public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepository {
     @Autowired
     private EntityManager entityManager;
+
     @Autowired
     private CustomerAdminRepository customerAdminRepository;
 
@@ -103,6 +102,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
             return null;
         }
     }
+
     @Override
     public List<VoucherAdminDTO> getAllVouchersExport() {
         try {
@@ -112,7 +112,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
 
             Query query = entityManager.createNativeQuery(sql);
             List<Object[]> resultList = query.getResultList();
-            List<CustomerAdminDTO> customerAdminDTOList=new ArrayList<>();
+            List<CustomerAdminDTO> customerAdminDTOList = new ArrayList<>();
             List<VoucherAdminDTO> vouchers = new ArrayList<>();
             for (Object[] row : resultList) {
                 VoucherAdminDTO voucher = new VoucherAdminDTO();
@@ -144,11 +144,11 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     e.printStackTrace();
                     continue;
                 }
-                if(StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()){
+                if (StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()) {
                     String listCodeCustomer = "";
-                    for (String str: voucher.getIdCustomer().split(",")) {
+                    for (String str : voucher.getIdCustomer().split(",")) {
                         Customer customer = customerAdminRepository.findById(Long.parseLong(str)).orElse(null);
-                        if(customer != null){
+                        if (customer != null) {
                             listCodeCustomer += customer.getCode() + ",";
                         }
                     }
@@ -186,7 +186,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
                     "where v.idel = 1 and v.dele=0 " +
                     "GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
-                   "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ";
+                    "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ";
 
             Query query = entityManager.createNativeQuery(sql);
             List<Object[]> resultList = query.getResultList();
@@ -314,7 +314,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
     @Override
     public List<VoucherAdminDTO> getVouchersByTimeRange(String fromDate, String toDate) {
         try {
-            StringBuilder sql =new StringBuilder(
+            StringBuilder sql = new StringBuilder(
                     "SELECT " +
                             "  v.id, " +
                             "  v.code, " +
@@ -335,20 +335,20 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                             "where  dele=0 "
             );
 
-            if(StringUtils.isNotBlank(fromDate)){
+            if (StringUtils.isNotBlank(fromDate)) {
                 sql.append("and  (:dateFrom is null or STR_TO_DATE(DATE_FORMAT(v.start_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom , '%d/%m/%Y')) ");
             }
-            if (StringUtils.isNotBlank(toDate)){
+            if (StringUtils.isNotBlank(toDate)) {
                 sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(v.start_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y'))  ");
             }
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ");
             Query query = entityManager.createNativeQuery(sql.toString());
-            if (StringUtils.isNotBlank(fromDate)){
+            if (StringUtils.isNotBlank(fromDate)) {
                 query.setParameter("dateFrom", fromDate);
             }
             if (StringUtils.isNotBlank(toDate)) {
-                query.setParameter("dateTo",toDate);
+                query.setParameter("dateTo", toDate);
             }
 
             List<Object[]> resultList = query.getResultList();
@@ -503,7 +503,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                         "   OR LOWER(c.fullname) LIKE LOWER(:searchTerm) " +
                         "   OR c.phone LIKE  :searchTerm ");
             }
-            sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow " );
+            sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ");
 
             Query query = entityManager.createNativeQuery(sql.toString());
 
@@ -558,6 +558,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
             return null;
         }
     }
+
     @Override
     public List<CustomerAdminDTO> getAllCustomer() {
         try {

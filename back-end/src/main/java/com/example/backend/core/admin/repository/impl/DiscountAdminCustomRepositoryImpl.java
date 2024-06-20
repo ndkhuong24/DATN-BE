@@ -1,22 +1,11 @@
 package com.example.backend.core.admin.repository.impl;
 
-import com.example.backend.core.admin.dto.DiscountAdminDTO;
-import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
-import com.example.backend.core.admin.dto.ProductAdminDTO;
 import com.example.backend.core.admin.repository.DiscountAdminCustomRepository;
 import com.example.backend.core.admin.repository.DiscountDetailAdminRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 @Transactional

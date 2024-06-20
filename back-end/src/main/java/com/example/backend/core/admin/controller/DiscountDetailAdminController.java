@@ -1,35 +1,54 @@
 package com.example.backend.core.admin.controller;
+
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
 import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
-import com.example.backend.core.admin.dto.ProductAdminDTO;
+import com.example.backend.core.admin.service.DiscountAdminService;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
-import com.example.backend.core.commons.FileExportUtil;
-import com.example.backend.core.constant.AppConstant;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/discount")
+@RequestMapping("/api/admin")
 @CrossOrigin("*")
 public class DiscountDetailAdminController {
     @Autowired
-    private DiscountDetailAdminService discountService;
+    private DiscountDetailAdminService discountDetailAdminService;//cu
+
     @Autowired
-    private FileExportUtil fileExportUtil;
+    private DiscountAdminService discountAdminService;//moi
+
     private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
+
+    @GetMapping("discount")
+    public ResponseEntity<List<DiscountAdminDTO>> hienThi() {
+        try {
+            List<DiscountAdminDTO> discountAdminDTOList = discountAdminService.getAll();
+            return ResponseEntity.ok(discountAdminDTOList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+//    @PutMapping("discount/kichHoat/{id}")
+//    public ResponseEntity<?> kichHoat(@PathVariable Long id) {
+//        return ResponseEntity.ok(discountDetailAdminService.KichHoat(id));
+//    }
+//
+//    @PutMapping("discount/setIdel/{id}")
+//    public ResponseEntity<?> setIdel(@PathVariable Long id) {
+//        return ResponseEntity.ok(discountDetailAdminService.setIdel(id));
+//    }
 
 //    @GetMapping()
 //    public ResponseEntity<?> getAllDiscount() {
-//        return ResponseEntity.ok(discountService.getAll());
+//        return ResponseEntity.ok(discountService.getAll());//cu
 //    }
 //
 //    @GetMapping("/KH")
@@ -58,16 +77,7 @@ public class DiscountDetailAdminController {
 //        khuyenMaiDTO.setIdDiscount(idDiscount);
 //        return ResponseEntity.ok(discountService.updateDiscount(khuyenMaiDTO));
 //    }
-//
-//    @PutMapping("/kichHoat/{id}")
-//    public ResponseEntity<?> kichHoat(@PathVariable Long id) {
-//        return ResponseEntity.ok(discountService.KichHoat(id));
-//    }
-//    @PutMapping("/setIdel/{id}")
-//    public ResponseEntity<?> setIdel(@PathVariable Long id) {
-//        return ResponseEntity.ok(discountService.setIdel(id));
-//    }
-//
+
 //    @GetMapping("/{idDiscount}")
 //    public ResponseEntity<?> getDetailDiscount(@PathVariable Long idDiscount) {
 //        return ResponseEntity.ok(discountService.getDetailDiscount(idDiscount));

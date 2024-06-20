@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -22,46 +22,67 @@ public class Voucher {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "code")
-    private String code;
+    private String code; //
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "id_customer")
     private String idCustomer;
+
     @Column(name = "create_date")
     private LocalDate createDate;
+
     @Column(name = "start_date")
     private LocalDate startDate;
+
     @Column(name = "end_date")
     private LocalDate endDate;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "conditions")
     private BigDecimal conditionApply;
+
     @Column(name = "status")
     private int status;
+
     @Column(name = "idel")
     private int idel;
+
     @Column(name = "create_name")
     private String createName;
+
     @Column(name = "voucher_type")
     private int voucherType;
+
     @Column(name = "reduced_value")
     private BigDecimal reducedValue;
+
     @Column(name = "quantity")
     private int quantity;
+
     @Column(name = "amount_used")
     private Integer amountUsed;
+
     @Column(name = "apply")
     private Integer apply;
+
     @Column(name = "option_customer")
     private Integer optionCustomer;
+
     @Column(name = "max_reduced")
     private BigDecimal maxReduced;
+
     @Column(name = "limit_customer")
     private Integer limitCustomer;
+
     @Column(name = "allow")
     private Integer allow;
+
     @Column(name = "dele")
     private Integer delete;
 
