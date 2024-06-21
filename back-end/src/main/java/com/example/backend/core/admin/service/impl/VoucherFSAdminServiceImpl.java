@@ -1,6 +1,6 @@
 package com.example.backend.core.admin.service.impl;
+
 import com.example.backend.core.admin.dto.CustomerAdminDTO;
-import com.example.backend.core.admin.dto.VoucherAdminDTO;
 import com.example.backend.core.admin.dto.VoucherFreeShipDTO;
 import com.example.backend.core.admin.mapper.CustomerAdminMapper;
 import com.example.backend.core.admin.repository.CustomerAdminRepository;
@@ -8,11 +8,10 @@ import com.example.backend.core.admin.repository.OrderAdminRepository;
 import com.example.backend.core.admin.repository.VoucherFSCustomerRepository;
 import com.example.backend.core.admin.repository.VoucherFreeShipAdminRepository;
 import com.example.backend.core.admin.service.VoucherFSAdminService;
-import com.example.backend.core.commons.*;
-import com.example.backend.core.constant.AppConstant;
+import com.example.backend.core.commons.FileExportUtil;
+import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.model.Customer;
 import com.example.backend.core.model.Order;
-import com.example.backend.core.model.Voucher;
 import com.example.backend.core.model.VoucherFreeShip;
 import com.example.backend.core.view.mapper.VoucherFSMapper;
 import jakarta.mail.MessagingException;
@@ -28,12 +27,12 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
@@ -44,17 +43,22 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
     private final SpringTemplateEngine templateEngine;
     @Autowired
     private VoucherFreeShipAdminRepository voucherFreeShipAdminRepository;
+
     @Autowired
-    private CustomerAdminRepository  customerAdminRepository;
+    private CustomerAdminRepository customerAdminRepository;
 
     @Autowired
     private VoucherFSMapper voucherAdminMapper;
+
     @Autowired
     private CustomerAdminMapper customerAdminMapper;
+
     @Autowired
     private VoucherFSCustomerRepository voucherFSCustomerRepository;
-    @Autowired
-    FileExportUtil fileExportUtil;
+
+//    @Autowired
+//    FileExportUtil fileExportUtil;
+
     @Autowired
     private OrderAdminRepository orderAdminRepository;
 
@@ -82,7 +86,6 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
     @Override
     @Async
     public void sendMessageUsingThymeleafTemplate(VoucherFreeShipDTO voucherAdminDTO) throws MessagingException {
-
         String id = voucherAdminDTO.getIdCustomer();
         String[] idArray = id.split(",");
 
@@ -111,7 +114,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
 
     @Override
     public List<VoucherFreeShipDTO> getAllVouchers() {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getAllVouchers();
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllVouchers();
         Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
         while (iterator.hasNext()) {
             VoucherFreeShipDTO voucherAdminDTO = iterator.next();
@@ -122,30 +125,34 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         }
         return list;
     }
+
     @Override
     public List<VoucherFreeShipDTO> getAllKichHoat() {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getAllKichHoat();
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllKichHoat();
         return list;
     }
+
     @Override
     public List<VoucherFreeShipDTO> getAllKhongKH() {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getAllKhongKH();
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllKhongKH();
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getVouchersByTimeRange(String fromDate, String toDate) {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getVouchersByTimeRange(fromDate,toDate);
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByTimeRange(fromDate, toDate);
         return list;
     }
+
     @Override
     public List<VoucherFreeShipDTO> getVouchersByKeyword(String keyword) {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getVouchersByKeyword(keyword);
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByKeyword(keyword);
         return list;
     }
+
     @Override
     public List<VoucherFreeShipDTO> getVouchersByCustomer(String searchTerm) {
-        List<VoucherFreeShipDTO> list= voucherFSCustomerRepository.getVouchersByCustomer(searchTerm);
+        List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByCustomer(searchTerm);
         return list;
     }
 
@@ -255,6 +262,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
 
         return serviceResult;
     }
+
     @Override
     public ServiceResult<VoucherFreeShipDTO> setIdel(Long idVoucher) {
         ServiceResult<VoucherFreeShipDTO> serviceResult = new ServiceResult<>();
@@ -263,7 +271,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         if (optionalVoucher.isPresent()) {
             VoucherFreeShip voucher = optionalVoucher.get();
             voucher.setIdel(0);
-            voucher =  voucherFreeShipAdminRepository.save(voucher);
+            voucher = voucherFreeShipAdminRepository.save(voucher);
             VoucherFreeShipDTO voucherAdminDTO = voucherAdminMapper.toDto(voucher);
             serviceResult.setData(voucherAdminDTO);
             serviceResult.setStatus(HttpStatus.OK);
@@ -277,7 +285,6 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
 
         return serviceResult;
     }
-
 
 
     @Override
@@ -298,7 +305,8 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         }
         return serviceResult;
     }
-//
+
+    //
     @Override
     public VoucherFreeShipDTO getDetailVoucher(Long id) {
 
@@ -310,7 +318,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
 
         List<CustomerAdminDTO> toList = new ArrayList<>();
 
-        if(StringUtils.isNotBlank(idCustomer)){
+        if (StringUtils.isNotBlank(idCustomer)) {
             String[] idArray = idCustomer.split(",");
             for (String idCustomer1 : idArray) {
                 try {
@@ -338,13 +346,12 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         return voucherAdminDTO;
     }
 
-
-
     @Override
     public List<CustomerAdminDTO> getAllCustomer() {
-        List<CustomerAdminDTO> list= voucherFSCustomerRepository.getAllCustomer();
+        List<CustomerAdminDTO> list = voucherFSCustomerRepository.getAllCustomer();
         return list;
     }
+
     @Override
     public ServiceResult<VoucherFreeShipDTO> KichHoat(Long idVoucher) {
         ServiceResult<VoucherFreeShipDTO> serviceResult = new ServiceResult<>();
@@ -354,7 +361,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
             VoucherFreeShip voucher = optionalVoucher.get();
 
             voucher.setIdel(voucher.getIdel() == 1 ? 0 : 1);
-            voucher =  voucherFreeShipAdminRepository.save(voucher);
+            voucher = voucherFreeShipAdminRepository.save(voucher);
             VoucherFreeShipDTO voucherAdminDTO = voucherAdminMapper.toDto(voucher);
             serviceResult.setData(voucherAdminDTO);
             serviceResult.setStatus(HttpStatus.OK);
@@ -367,78 +374,78 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         return serviceResult;
     }
 
-    @Override
-    public byte[] exportExcelVoucher() throws IOException {
-        List<SheetConfigDTO> sheetConfigList = new ArrayList<>();
-        List<VoucherFreeShipDTO> voucherAdminDTOS = voucherFSCustomerRepository.getAllVoucherFSsExport();
-        sheetConfigList = getDataForExcel("Danh Sách Voucher FreeShip", voucherAdminDTOS, sheetConfigList, AppConstant.EXPORT_DATA);
-        try {
-            String title = "DANH SÁCH VOUCHER FREESHIP ";
-            return fileExportUtil.exportXLSX(false, sheetConfigList, title);
-        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ioE) {
-            throw new IOException("Lỗi Export" + ioE.getMessage(), ioE);
-        }
-    }
+//    @Override
+//    public byte[] exportExcelVoucher() throws IOException {
+//        List<SheetConfigDTO> sheetConfigList = new ArrayList<>();
+//        List<VoucherFreeShipDTO> voucherAdminDTOS = voucherFSCustomerRepository.getAllVoucherFSsExport();
+//        sheetConfigList = getDataForExcel("Danh Sách Voucher FreeShip", voucherAdminDTOS, sheetConfigList, AppConstant.EXPORT_DATA);
+//        try {
+//            String title = "DANH SÁCH VOUCHER FREESHIP ";
+//            return fileExportUtil.exportXLSX(false, sheetConfigList, title);
+//        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ioE) {
+//            throw new IOException("Lỗi Export" + ioE.getMessage(), ioE);
+//        }
+//    }
 
-    private List<SheetConfigDTO> getDataForExcel(String sheetName,
-                                                 List<VoucherFreeShipDTO> listDataSheet,
-                                                 List<SheetConfigDTO> sheetConfigList,
-                                                 Long exportType) {
-        SheetConfigDTO sheetConfig = new SheetConfigDTO();
-        String[] headerArr = null;
-        if (AppConstant.EXPORT_DATA.equals(exportType)) {
-            headerArr =
-                    new String[]{
-                            "STT",
-                            "Mã Voucher",
-                            "Tên Voucher",
-                            "Ngày Bắt Đầu",
-                            "Ngày Kết Thúc",
-                            "Điều kiện áp dụng",
-                            "Giá Trị Giảm",
-                            "Số lượng",
-                            "Giới hạn sử dụng với mỗi khách hàng",
-                            "Trạng thái",
-                            "Tên khách hàng",
-                    };
-        }
-        sheetConfig.setSheetName(sheetName);
-        sheetConfig.setHeaders(headerArr);
-        int recordNo = 1;
-        List<CellConfigDTO> cellConfigCustomList = new ArrayList<>();
-            for (VoucherFreeShipDTO item : listDataSheet) {
-                item.setRecordNo(recordNo++);
-            }
-        List<CellConfigDTO> cellConfigList = new ArrayList<>();
-        sheetConfig.setList(listDataSheet);
-        cellConfigList.add(new CellConfigDTO("recordNo", AppConstant.ALIGN_LEFT, AppConstant.NO));
-        cellConfigList.add(new CellConfigDTO("code", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("name", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("startDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("endDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("conditionApply", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("reducedValue", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("quantity", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-        cellConfigList.add(new CellConfigDTO("limitCustomer", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-//        cellConfigList.add(new CellConfigDTO("allow", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-        cellConfigList.add(new CellConfigDTO("status", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-        cellConfigList.add(new CellConfigDTO("listCodeCustomerExport", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        if (AppConstant.EXPORT_DATA.equals(exportType) || AppConstant.EXPORT_ERRORS.equals(exportType)) {
-            cellConfigList.add(new CellConfigDTO("messageStr", AppConstant.ALIGN_LEFT, AppConstant.ERRORS));
-        }
-        sheetConfig.setHasIndex(false);
-        sheetConfig.setHasBorder(true);
-        sheetConfig.setExportType(exportType.intValue());
-        sheetConfig.setCellConfigList(cellConfigList);
-        sheetConfig.setCellCustomList(cellConfigCustomList);
-        sheetConfigList.add(sheetConfig);
-        return sheetConfigList;
-    }
-    public List<String> getAllVoucherExport() {
-        List<String> lstStr = voucherFreeShipAdminRepository.findAll()
-                .stream()
-                .map(b -> b.getId() + "-" + b.getName())
-                .collect(Collectors.toList());
-        return lstStr;
-    }
+//    private List<SheetConfigDTO> getDataForExcel(String sheetName,
+//                                                 List<VoucherFreeShipDTO> listDataSheet,
+//                                                 List<SheetConfigDTO> sheetConfigList,
+//                                                 Long exportType) {
+//        SheetConfigDTO sheetConfig = new SheetConfigDTO();
+//        String[] headerArr = null;
+//        if (AppConstant.EXPORT_DATA.equals(exportType)) {
+//            headerArr =
+//                    new String[]{
+//                            "STT",
+//                            "Mã Voucher",
+//                            "Tên Voucher",
+//                            "Ngày Bắt Đầu",
+//                            "Ngày Kết Thúc",
+//                            "Điều kiện áp dụng",
+//                            "Giá Trị Giảm",
+//                            "Số lượng",
+//                            "Giới hạn sử dụng với mỗi khách hàng",
+//                            "Trạng thái",
+//                            "Tên khách hàng",
+//                    };
+//        }
+//        sheetConfig.setSheetName(sheetName);
+//        sheetConfig.setHeaders(headerArr);
+//        int recordNo = 1;
+//        List<CellConfigDTO> cellConfigCustomList = new ArrayList<>();
+//            for (VoucherFreeShipDTO item : listDataSheet) {
+//                item.setRecordNo(recordNo++);
+//            }
+//        List<CellConfigDTO> cellConfigList = new ArrayList<>();
+//        sheetConfig.setList(listDataSheet);
+//        cellConfigList.add(new CellConfigDTO("recordNo", AppConstant.ALIGN_LEFT, AppConstant.NO));
+//        cellConfigList.add(new CellConfigDTO("code", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("name", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("startDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("endDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("conditionApply", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("reducedValue", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("quantity", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+//        cellConfigList.add(new CellConfigDTO("limitCustomer", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+////        cellConfigList.add(new CellConfigDTO("allow", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+//        cellConfigList.add(new CellConfigDTO("status", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+//        cellConfigList.add(new CellConfigDTO("listCodeCustomerExport", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        if (AppConstant.EXPORT_DATA.equals(exportType) || AppConstant.EXPORT_ERRORS.equals(exportType)) {
+//            cellConfigList.add(new CellConfigDTO("messageStr", AppConstant.ALIGN_LEFT, AppConstant.ERRORS));
+//        }
+//        sheetConfig.setHasIndex(false);
+//        sheetConfig.setHasBorder(true);
+//        sheetConfig.setExportType(exportType.intValue());
+//        sheetConfig.setCellConfigList(cellConfigList);
+//        sheetConfig.setCellCustomList(cellConfigCustomList);
+//        sheetConfigList.add(sheetConfig);
+//        return sheetConfigList;
+//    }
+//    public List<String> getAllVoucherExport() {
+//        List<String> lstStr = voucherFreeShipAdminRepository.findAll()
+//                .stream()
+//                .map(b -> b.getId() + "-" + b.getName())
+//                .collect(Collectors.toList());
+//        return lstStr;
+//    }
 }

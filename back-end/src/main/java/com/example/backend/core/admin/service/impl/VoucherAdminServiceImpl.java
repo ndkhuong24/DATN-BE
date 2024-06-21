@@ -9,11 +9,8 @@ import com.example.backend.core.admin.repository.OrderAdminRepository;
 import com.example.backend.core.admin.repository.VoucherAdminCustomRepository;
 import com.example.backend.core.admin.repository.VoucherAdminRepository;
 import com.example.backend.core.admin.service.VoucherAdminService;
-import com.example.backend.core.commons.CellConfigDTO;
 import com.example.backend.core.commons.FileExportUtil;
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.commons.SheetConfigDTO;
-import com.example.backend.core.constant.AppConstant;
 import com.example.backend.core.model.Customer;
 import com.example.backend.core.model.Order;
 import com.example.backend.core.model.Voucher;
@@ -30,11 +27,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -396,70 +390,70 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         return serviceResult;
     }
 
-    @Override
-    public byte[] exportExcelVoucher() throws IOException {
-        List<SheetConfigDTO> sheetConfigList = new ArrayList<>();
-        List<VoucherAdminDTO> voucherAdminDTOS = voucherAdminCustomRepository.getAllVouchersExport();
-        sheetConfigList = getDataForExcel("Danh Sách Voucher", voucherAdminDTOS, sheetConfigList, AppConstant.EXPORT_DATA);
-        try {
-            String title = "DANH SÁCH VOUCHER";
-            return fileExportUtil.exportXLSX(false, sheetConfigList, title);
-        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ioE) {
-            throw new IOException("Lỗi Export" + ioE.getMessage(), ioE);
-        }
-    }
-
-    private List<SheetConfigDTO> getDataForExcel(String sheetName,
-                                                 List<VoucherAdminDTO> listDataSheet,
-                                                 List<SheetConfigDTO> sheetConfigList,
-                                                 Long exportType) {
-        SheetConfigDTO sheetConfig = new SheetConfigDTO();
-        String[] headerArr = null;
-        if (AppConstant.EXPORT_DATA.equals(exportType)) {
-            headerArr =
-                    new String[]{
-                            "STT",
-                            "Mã Voucher",
-                            "Tên Voucher",
-                            "Ngày Bắt Đầu",
-                            "Ngày Kết Thúc",
-                            "Điều kiện áp dụng",
-                            "Giá Trị Giảm",
-                            "Số lượng",
-                            "Giới hạn sử dụng với mỗi khách hàng",
-                            "Tên khách hàng",
-                    };
-        }
-        sheetConfig.setSheetName(sheetName);
-        sheetConfig.setHeaders(headerArr);
-        int recordNo = 1;
-        List<CellConfigDTO> cellConfigCustomList = new ArrayList<>();
-        for (VoucherAdminDTO item : listDataSheet) {
-            item.setRecordNo(recordNo++);
-        }
-        List<CellConfigDTO> cellConfigList = new ArrayList<>();
-        sheetConfig.setList(listDataSheet);
-        cellConfigList.add(new CellConfigDTO("recordNo", AppConstant.ALIGN_LEFT, AppConstant.NO));
-        cellConfigList.add(new CellConfigDTO("code", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("name", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("startDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("endDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("conditionApply", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("reducedValue", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        cellConfigList.add(new CellConfigDTO("quantity", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-        cellConfigList.add(new CellConfigDTO("limitCustomer", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
-        cellConfigList.add(new CellConfigDTO("listCodeCustomerExport", AppConstant.ALIGN_LEFT, AppConstant.STRING));
-        if (AppConstant.EXPORT_DATA.equals(exportType) || AppConstant.EXPORT_ERRORS.equals(exportType)) {
-            cellConfigList.add(new CellConfigDTO("messageStr", AppConstant.ALIGN_LEFT, AppConstant.ERRORS));
-        }
-        sheetConfig.setHasIndex(false);
-        sheetConfig.setHasBorder(true);
-        sheetConfig.setExportType(exportType.intValue());
-        sheetConfig.setCellConfigList(cellConfigList);
-        sheetConfig.setCellCustomList(cellConfigCustomList);
-        sheetConfigList.add(sheetConfig);
-        return sheetConfigList;
-    }
+//    @Override
+//    public byte[] exportExcelVoucher() throws IOException {
+//        List<SheetConfigDTO> sheetConfigList = new ArrayList<>();
+//        List<VoucherAdminDTO> voucherAdminDTOS = voucherAdminCustomRepository.getAllVouchersExport();
+//        sheetConfigList = getDataForExcel("Danh Sách Voucher", voucherAdminDTOS, sheetConfigList, AppConstant.EXPORT_DATA);
+//        try {
+//            String title = "DANH SÁCH VOUCHER";
+//            return fileExportUtil.exportXLSX(false, sheetConfigList, title);
+//        } catch (IOException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ioE) {
+//            throw new IOException("Lỗi Export" + ioE.getMessage(), ioE);
+//        }
+//    }
+//
+//    private List<SheetConfigDTO> getDataForExcel(String sheetName,
+//                                                 List<VoucherAdminDTO> listDataSheet,
+//                                                 List<SheetConfigDTO> sheetConfigList,
+//                                                 Long exportType) {
+//        SheetConfigDTO sheetConfig = new SheetConfigDTO();
+//        String[] headerArr = null;
+//        if (AppConstant.EXPORT_DATA.equals(exportType)) {
+//            headerArr =
+//                    new String[]{
+//                            "STT",
+//                            "Mã Voucher",
+//                            "Tên Voucher",
+//                            "Ngày Bắt Đầu",
+//                            "Ngày Kết Thúc",
+//                            "Điều kiện áp dụng",
+//                            "Giá Trị Giảm",
+//                            "Số lượng",
+//                            "Giới hạn sử dụng với mỗi khách hàng",
+//                            "Tên khách hàng",
+//                    };
+//        }
+//        sheetConfig.setSheetName(sheetName);
+//        sheetConfig.setHeaders(headerArr);
+//        int recordNo = 1;
+//        List<CellConfigDTO> cellConfigCustomList = new ArrayList<>();
+//        for (VoucherAdminDTO item : listDataSheet) {
+//            item.setRecordNo(recordNo++);
+//        }
+//        List<CellConfigDTO> cellConfigList = new ArrayList<>();
+//        sheetConfig.setList(listDataSheet);
+//        cellConfigList.add(new CellConfigDTO("recordNo", AppConstant.ALIGN_LEFT, AppConstant.NO));
+//        cellConfigList.add(new CellConfigDTO("code", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("name", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("startDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("endDate", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("conditionApply", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("reducedValue", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        cellConfigList.add(new CellConfigDTO("quantity", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+//        cellConfigList.add(new CellConfigDTO("limitCustomer", AppConstant.ALIGN_LEFT, AppConstant.NUMBER));
+//        cellConfigList.add(new CellConfigDTO("listCodeCustomerExport", AppConstant.ALIGN_LEFT, AppConstant.STRING));
+//        if (AppConstant.EXPORT_DATA.equals(exportType) || AppConstant.EXPORT_ERRORS.equals(exportType)) {
+//            cellConfigList.add(new CellConfigDTO("messageStr", AppConstant.ALIGN_LEFT, AppConstant.ERRORS));
+//        }
+//        sheetConfig.setHasIndex(false);
+//        sheetConfig.setHasBorder(true);
+//        sheetConfig.setExportType(exportType.intValue());
+//        sheetConfig.setCellConfigList(cellConfigList);
+//        sheetConfig.setCellCustomList(cellConfigCustomList);
+//        sheetConfigList.add(sheetConfig);
+//        return sheetConfigList;
+//    }
 
     public List<String> getAllVoucherExport() {
         List<String> lstStr = voucherAdminRepository.findAll()

@@ -13,14 +13,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Repository
 @Transactional
@@ -98,67 +95,69 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             return null;
         }
     }
-    @Override
-    public List<VoucherFreeShipDTO> getAllVoucherFSsExport() {
-        try {
-            String sql = "SELECT v.* \n" +
-                    "FROM voucher_free_ship v\n" +
-                    " where v.dele=0;";
 
-            Query query = entityManager.createNativeQuery(sql);
-            List<Object[]> resultList = query.getResultList();
-            List<VoucherFreeShipDTO> vouchers = new ArrayList<>();
-            for (Object[] row : resultList) {
-                VoucherFreeShipDTO voucher = new VoucherFreeShipDTO();
+//    @Override
+//    public List<VoucherFreeShipDTO> getAllVoucherFSsExport() {
+//        try {
+//            String sql = "SELECT v.* \n" +
+//                    "FROM voucher_free_ship v\n" +
+//                    " where v.dele=0;";
+//
+//            Query query = entityManager.createNativeQuery(sql);
+//            List<Object[]> resultList = query.getResultList();
+//            List<VoucherFreeShipDTO> vouchers = new ArrayList<>();
+//            for (Object[] row : resultList) {
+//                VoucherFreeShipDTO voucher = new VoucherFreeShipDTO();
+//
+//                voucher.setId(Long.parseLong(row[0].toString()));
+//                voucher.setCode(row[1].toString());
+//                voucher.setName(row[2].toString());
+//                voucher.setIdCustomer((String) row[3]);
+//                voucher.setConditionApply(new BigDecimal(row[7].toString()));
+//                voucher.setReducedValue(new BigDecimal(row[9].toString()));
+//                voucher.setQuantity(Integer.valueOf(row[14].toString()));
+//                voucher.setLimitCustomer(row[15] != null ? Integer.valueOf((row[15].toString())) : null);
+//                voucher.setStatus(row[11] != null ? Integer.valueOf((row[11].toString())) : null);
+//
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//
+//                try {
+//                    LocalDate startDate = LocalDate.parse(row[3].toString());
+//                    LocalDate endDate = LocalDate.parse(row[4].toString());
+//
+//                    voucher.setStartDate(startDate);
+//                    voucher.setEndDate(endDate);
+//
+//                    if (LocalDate.now().isAfter(endDate)) {
+//                        voucher.setStatus(1);
+//                    } else {
+//                        voucher.setStatus(0);
+//                    }
+//
+//                } catch (DateTimeParseException e) {
+//                    e.printStackTrace();
+//                    continue;
+//                }
+//                if (StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()) {
+//                    String listCodeCustomer = "";
+//                    for (String str : voucher.getIdCustomer().split(",")) {
+//                        Customer customer = customerAdminRepository.findById(Long.parseLong(str)).orElse(null);
+//                        if (customer != null) {
+//                            listCodeCustomer += customer.getCode() + ",";
+//                        }
+//                    }
+//                    voucher.setListCodeCustomerExport(listCodeCustomer);
+//                }
+//                vouchers.add(voucher);
+//            }
+//            return vouchers;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
-                voucher.setId(Long.parseLong(row[0].toString()));
-                voucher.setCode(row[1].toString());
-                voucher.setName(row[2].toString());
-                voucher.setIdCustomer((String) row[3]);
-                voucher.setConditionApply(new BigDecimal(row[7].toString()));
-                voucher.setReducedValue(new BigDecimal(row[9].toString()));
-                voucher.setQuantity(Integer.valueOf(row[14].toString()));
-                voucher.setLimitCustomer(row[15] != null ? Integer.valueOf((row[15].toString())) : null);
-                voucher.setStatus(row[11] != null ? Integer.valueOf((row[11].toString())) : null);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-                try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
-
-                    voucher.setStartDate(startDate);
-                    voucher.setEndDate(endDate);
-
-                    if (LocalDate.now().isAfter(endDate)) {
-                        voucher.setStatus(1);
-                    } else {
-                        voucher.setStatus(0);
-                    }
-
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-                if(StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()){
-                    String listCodeCustomer = "";
-                    for (String str: voucher.getIdCustomer().split(",")) {
-                        Customer customer = customerAdminRepository.findById(Long.parseLong(str)).orElse(null);
-                        if(customer != null){
-                            listCodeCustomer += customer.getCode() + ",";
-                        }
-                    }
-                    voucher.setListCodeCustomerExport(listCodeCustomer);
-                }
-                vouchers.add(voucher);
-            }
-            return vouchers;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     @Override
     public List<VoucherFreeShipDTO> getAllKichHoat() {
         try {
@@ -226,6 +225,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             return null;
         }
     }
+
     @Override
     public List<VoucherFreeShipDTO> getAllKhongKH() {
         try {
@@ -243,7 +243,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "  COUNT(o.id) AS use_voucher " +
                     "FROM voucher_free_ship v " +
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code" +
-                    " where  idel =0 and dele=0 " +
+                    " WHERE v.idel = 0 AND v.dele = 0 " +
                     "GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.reduced_value, v.description,v.idel, v.quantity";
 
@@ -313,20 +313,20 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code " +
                     "WHERE dele=0 ");
 
-            if(StringUtils.isNotBlank(fromDate)){
+            if (StringUtils.isNotBlank(fromDate)) {
                 sql.append("and  (:dateFrom is null or STR_TO_DATE(DATE_FORMAT(v.start_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom , '%d/%m/%Y')) ");
             }
-            if (StringUtils.isNotBlank(toDate)){
+            if (StringUtils.isNotBlank(toDate)) {
                 sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(v.start_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y'))  ");
             }
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.reduced_value, v.description, v.idel, v.quantity");
             Query query = entityManager.createNativeQuery(sql.toString());
-            if (StringUtils.isNotBlank(fromDate)){
+            if (StringUtils.isNotBlank(fromDate)) {
                 query.setParameter("dateFrom", fromDate);
             }
             if (StringUtils.isNotBlank(toDate)) {
-                query.setParameter("dateTo",toDate);
+                query.setParameter("dateTo", toDate);
             }
 
 
@@ -374,6 +374,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             return null;
         }
     }
+
     @Override
     public List<VoucherFreeShipDTO> getVouchersByKeyword(String keyword) {
         try {
@@ -442,10 +443,11 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             return null;
         }
     }
+
     @Override
     public List<VoucherFreeShipDTO> getVouchersByCustomer(String searchTerm) {
         try {
-            StringBuilder sql =new StringBuilder("SELECT " +
+            StringBuilder sql = new StringBuilder("SELECT " +
                     "  v.id, " +
                     "  v.code, " +
                     "  v.name, " +
@@ -460,7 +462,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "FROM voucher_free_ship v " +
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code " +
                     "LEFT JOIN customer c ON v.id_customer = c.id " +
-                    "WHERE  dele=0 ") ;
+                    "WHERE  dele=0 ");
 
 
             if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -468,7 +470,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                         "   OR LOWER(c.fullname) LIKE LOWER(:searchTerm) " +
                         "   OR c.phone LIKE  :searchTerm ");
             }
-            sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions,v.reduced_value, v.description, v.idel, v.quantity" );
+            sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions,v.reduced_value, v.description, v.idel, v.quantity");
 
             Query query = entityManager.createNativeQuery(sql.toString());
 
@@ -519,6 +521,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             return null;
         }
     }
+
     @Override
     public List<CustomerAdminDTO> getAllCustomer() {
         try {

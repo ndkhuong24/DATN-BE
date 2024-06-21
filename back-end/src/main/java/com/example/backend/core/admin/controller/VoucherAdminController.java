@@ -25,8 +25,8 @@ public class VoucherAdminController {
     @Autowired
     private VoucherAdminService voucherAdminService;
 
-    @Autowired
-    private FileExportUtil fileExportUtil;
+//    @Autowired
+//    private FileExportUtil fileExportUtil;
 
     private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
 
@@ -110,16 +110,16 @@ public class VoucherAdminController {
         return ResponseEntity.ok(voucherAdminService.getAllKhongKH());
     }
 
-    @GetMapping("/export-data")
-    public ResponseEntity<?> exportData() {
-        try {
-            byte[] fileData = voucherAdminService.exportExcelVoucher();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstant.YYYYMMDDHHSS);
-            String fileName = "DS_CBGV" + dateFormat.format(new Date()) + AppConstant.DOT + AppConstant.EXTENSION_XLSX;
-            return fileExportUtil.responseFileExportWithUtf8FileName(fileData, fileName, AppConstant.MIME_TYPE_XLSX);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return null;
-        }
-    }
+//    @GetMapping("/export-data")
+//    public ResponseEntity<?> exportData() {
+//        try {
+//            byte[] fileData = voucherAdminService.exportExcelVoucher();
+//            SimpleDateFormat dateFormat = new SimpleDateFormat(AppConstant.YYYYMMDDHHSS);
+//            String fileName = "DS_CBGV" + dateFormat.format(new Date()) + AppConstant.DOT + AppConstant.EXTENSION_XLSX;
+//            return fileExportUtil.responseFileExportWithUtf8FileName(fileData, fileName, AppConstant.MIME_TYPE_XLSX);
+//        } catch (Exception e) {
+//            log.error(e.getMessage(), e);
+//            return null;
+//        }
+//    }
 }

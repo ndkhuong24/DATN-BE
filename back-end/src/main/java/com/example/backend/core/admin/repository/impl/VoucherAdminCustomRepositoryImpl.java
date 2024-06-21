@@ -103,66 +103,66 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
         }
     }
 
-    @Override
-    public List<VoucherAdminDTO> getAllVouchersExport() {
-        try {
-            String sql = "SELECT v.* \n" +
-                    "FROM voucher v\n" +
-                    " where v.dele=0;";
-
-            Query query = entityManager.createNativeQuery(sql);
-            List<Object[]> resultList = query.getResultList();
-            List<CustomerAdminDTO> customerAdminDTOList = new ArrayList<>();
-            List<VoucherAdminDTO> vouchers = new ArrayList<>();
-            for (Object[] row : resultList) {
-                VoucherAdminDTO voucher = new VoucherAdminDTO();
-
-                voucher.setId(Long.parseLong(row[0].toString()));
-                voucher.setCode(row[1].toString());
-                voucher.setName(row[2].toString());
-                voucher.setIdCustomer((String) row[3]);
-                voucher.setConditionApply(new BigDecimal(row[7].toString()));
-                voucher.setReducedValue(new BigDecimal(row[10].toString()));
-                voucher.setQuantity(Integer.valueOf(row[15].toString()));
-                voucher.setLimitCustomer(row[20] != null ? Integer.valueOf((row[20].toString())) : null);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-                try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
-
-                    voucher.setStartDate(startDate);
-                    voucher.setEndDate(endDate);
-
-                    if (LocalDate.now().isAfter(endDate)) {
-                        voucher.setStatus(1);
-                    } else {
-                        voucher.setStatus(0);
-                    }
-
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-                if (StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()) {
-                    String listCodeCustomer = "";
-                    for (String str : voucher.getIdCustomer().split(",")) {
-                        Customer customer = customerAdminRepository.findById(Long.parseLong(str)).orElse(null);
-                        if (customer != null) {
-                            listCodeCustomer += customer.getCode() + ",";
-                        }
-                    }
-                    voucher.setListCodeCustomerExport(listCodeCustomer);
-                }
-                vouchers.add(voucher);
-            }
-            return vouchers;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    @Override
+//    public List<VoucherAdminDTO> getAllVouchersExport() {
+//        try {
+//            String sql = "SELECT v.* \n" +
+//                    "FROM voucher v\n" +
+//                    " where v.dele=0;";
+//
+//            Query query = entityManager.createNativeQuery(sql);
+//            List<Object[]> resultList = query.getResultList();
+//            List<CustomerAdminDTO> customerAdminDTOList = new ArrayList<>();
+//            List<VoucherAdminDTO> vouchers = new ArrayList<>();
+//            for (Object[] row : resultList) {
+//                VoucherAdminDTO voucher = new VoucherAdminDTO();
+//
+//                voucher.setId(Long.parseLong(row[0].toString()));
+//                voucher.setCode(row[1].toString());
+//                voucher.setName(row[2].toString());
+//                voucher.setIdCustomer((String) row[3]);
+//                voucher.setConditionApply(new BigDecimal(row[7].toString()));
+//                voucher.setReducedValue(new BigDecimal(row[10].toString()));
+//                voucher.setQuantity(Integer.valueOf(row[15].toString()));
+//                voucher.setLimitCustomer(row[20] != null ? Integer.valueOf((row[20].toString())) : null);
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//
+//                try {
+//                    LocalDate startDate = LocalDate.parse(row[3].toString());
+//                    LocalDate endDate = LocalDate.parse(row[4].toString());
+//
+//                    voucher.setStartDate(startDate);
+//                    voucher.setEndDate(endDate);
+//
+//                    if (LocalDate.now().isAfter(endDate)) {
+//                        voucher.setStatus(1);
+//                    } else {
+//                        voucher.setStatus(0);
+//                    }
+//
+//                } catch (DateTimeParseException e) {
+//                    e.printStackTrace();
+//                    continue;
+//                }
+//                if (StringUtils.isNotBlank(voucher.getIdCustomer()) || null != voucher.getIdCustomer()) {
+//                    String listCodeCustomer = "";
+//                    for (String str : voucher.getIdCustomer().split(",")) {
+//                        Customer customer = customerAdminRepository.findById(Long.parseLong(str)).orElse(null);
+//                        if (customer != null) {
+//                            listCodeCustomer += customer.getCode() + ",";
+//                        }
+//                    }
+//                    voucher.setListCodeCustomerExport(listCodeCustomer);
+//                }
+//                vouchers.add(voucher);
+//            }
+//            return vouchers;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     @Override
     public List<VoucherAdminDTO> getAllKichHoat() {

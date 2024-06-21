@@ -14,5 +14,5 @@ public interface VoucherAdminCustomRepository {
     List<VoucherAdminDTO> getAllKhongKH();
     List<VoucherAdminDTO> getAllKichHoat();
     List<VoucherAdminDTO> getVouchersByCustomer(String searchTerm);
-    List<VoucherAdminDTO> getAllVouchersExport();
+//    List<VoucherAdminDTO> getAllVouchersExport();
 }

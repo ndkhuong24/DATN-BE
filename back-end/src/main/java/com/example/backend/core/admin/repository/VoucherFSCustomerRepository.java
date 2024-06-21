@@ -7,11 +7,18 @@ import java.util.List;
 
 public interface VoucherFSCustomerRepository {
     List<VoucherFreeShipDTO> getAllVouchers();
+
     List<CustomerAdminDTO> getAllCustomer();
+
     List<VoucherFreeShipDTO> getVouchersByTimeRange(String fromDate, String toDate);
+
     List<VoucherFreeShipDTO> getVouchersByKeyword(String keyword);
+
     List<VoucherFreeShipDTO> getVouchersByCustomer(String searchTerm);
+
     List<VoucherFreeShipDTO> getAllKhongKH();
+
     List<VoucherFreeShipDTO> getAllKichHoat();
-    List<VoucherFreeShipDTO> getAllVoucherFSsExport();
+
+//    List<VoucherFreeShipDTO> getAllVoucherFSsExport();
 }

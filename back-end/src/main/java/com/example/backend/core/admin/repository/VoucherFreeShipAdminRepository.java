@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VoucherFreeShipAdminRepository extends JpaRepository<VoucherFreeShip,Long> {
+public interface VoucherFreeShipAdminRepository extends JpaRepository<VoucherFreeShip, Long> {
 }

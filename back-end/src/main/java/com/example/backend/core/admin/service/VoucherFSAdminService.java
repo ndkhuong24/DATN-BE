@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface VoucherFSAdminService {
-
     ServiceResult<VoucherFreeShipDTO> createVoucher(VoucherFreeShipDTO voucherDTO);
     ServiceResult<VoucherFreeShipDTO> updateVoucher(Long id, VoucherFreeShipDTO updatedVoucherAdminDTO);
     ServiceResult<Void> deleteVoucher(Long voucherId);
@@ -25,5 +24,5 @@ public interface VoucherFSAdminService {
     List<VoucherFreeShipDTO> getAllKhongKH();
     List<VoucherFreeShipDTO> getAllKichHoat();
     void sendMessageUsingThymeleafTemplate(VoucherFreeShipDTO voucherAdminDTO) throws MessagingException;
-    byte[] exportExcelVoucher() throws IOException;
+//    byte[] exportExcelVoucher() throws IOException;
 }
