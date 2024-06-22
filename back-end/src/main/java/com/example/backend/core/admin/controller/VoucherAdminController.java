@@ -3,9 +3,7 @@ package com.example.backend.core.admin.controller;
 import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
 import com.example.backend.core.admin.dto.VoucherAdminDTO;
 import com.example.backend.core.admin.service.VoucherAdminService;
-import com.example.backend.core.commons.FileExportUtil;
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.constant.AppConstant;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController

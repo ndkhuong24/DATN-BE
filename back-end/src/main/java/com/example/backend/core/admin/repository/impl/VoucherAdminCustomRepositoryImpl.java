@@ -46,6 +46,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "  v.quantity," +
                     "v.max_reduced," +
                     "v.allow ," +
+                    "v.create_name ," +
                     "  COUNT(o.id) AS use_voucher " +
                     "FROM voucher v " +
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
@@ -71,9 +72,8 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setQuantity(Integer.valueOf(row[10].toString()));
                 voucher.setMaxReduced(row[11] != null ? new BigDecimal(row[11].toString()) : null);
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
-                voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                voucher.setCreateName(row[13].toString());
+                voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
                 try {
                     LocalDate startDate = LocalDate.parse(row[3].toString());
@@ -181,6 +181,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "  v.quantity," +
                     "v.max_reduced," +
                     "v.allow ," +
+                    "v.create_name ," +
                     "  COUNT(o.id) AS use_voucher " +
                     "FROM voucher v " +
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
@@ -206,9 +207,8 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setQuantity(Integer.valueOf(row[10].toString()));
                 voucher.setMaxReduced(row[11] != null ? new BigDecimal(row[11].toString()) : null);
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
-                voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                voucher.setCreateName(row[13].toString());
+                voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
                 try {
                     LocalDate startDate = LocalDate.parse(row[3].toString());
@@ -255,6 +255,7 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "  v.quantity," +
                     "v.max_reduced," +
                     "v.allow ," +
+                    "v.create_name ," +
                     "  COUNT(o.id) AS use_voucher " +
                     "FROM voucher v " +
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
@@ -279,7 +280,8 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setQuantity(Integer.valueOf(row[10].toString()));
                 voucher.setMaxReduced(row[11] != null ? new BigDecimal(row[11].toString()) : null);
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
-                voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
+                voucher.setCreateName(row[13].toString());
+                voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
