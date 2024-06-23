@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +20,9 @@ public class DiscountDTO implements Serializable {
     private Long id;
     private String code;
     private String name;
-    private Date createDate;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate createDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String description;
     private Integer status;
     private Integer idel;

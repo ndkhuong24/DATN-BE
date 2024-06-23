@@ -32,10 +32,10 @@ public class Discount {
     private LocalDate createDate;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "description")
     private String description;
