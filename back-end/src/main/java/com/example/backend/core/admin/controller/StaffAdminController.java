@@ -17,19 +17,21 @@ public class StaffAdminController {
     private CustomerAdminService customerService;
 
     @GetMapping("/staff")
-    public ResponseEntity<?> getallStaff(){
+    public ResponseEntity<?> getallStaff() {
         return ResponseEntity.ok(service.getAllStaff());
     }
+
     @GetMapping("/staff/finbyId/{id}")
     public ResponseEntity<?> findByIdStaff(
             @PathVariable("id") Long id
-    ){
+    ) {
         return ResponseEntity.ok(service.findById(id));
     }
+
     @GetMapping("/customer/finbyId/{id}")
     public ResponseEntity<?> findByIdCustomer(
             @PathVariable("id") String id
-    ){
+    ) {
         return ResponseEntity.ok(customerService.findById(id));
     }
 }
