@@ -29,6 +29,7 @@ public class ProductDTO {
     private MaterialDTO materialDTO;
     private SoleDTO soleDTO;
     private BigDecimal price;
+    private BigDecimal maxPrice;
     private BigDecimal reducePrice;
     private Integer percentageReduce;
     private String codeDiscount;
@@ -116,14 +117,21 @@ public class ProductDTO {
         this.soleDTO = soleDTO;
     }
 
-    public BigDecimal getPrice() {
+    public BigDecimal price() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setMinPrice(BigDecimal price) {
         this.price = price;
     }
 
+    public BigDecimal getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(BigDecimal maxPrice) {
+        this.maxPrice = maxPrice;
+    }
 
     public ProductDTO() {
     }
