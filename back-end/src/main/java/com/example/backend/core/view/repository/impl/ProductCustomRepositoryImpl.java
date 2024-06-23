@@ -35,7 +35,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     @Override
     public List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu) {
         try {
-            StringBuilder sql = new StringBuilder("SELECT p.id, p.code, p.name, p.price, images.image_names, IFNULL(SUM(od.quantity), 0) AS total_sold\n" +
+            StringBuilder sql = new StringBuilder("SELECT p.id, p.code, p.name, MIN(pd.price) AS price,max(pd.price)as maxPrice, images.image_names, IFNULL(SUM(od.quantity), 0) AS total_sold\n" +
                     "FROM product p\n" +
                     "JOIN product_detail pd ON p.id = pd.id_product\n" +
                     "LEFT JOIN order_detail od ON od.id_product_detail = pd.id\n" +
@@ -67,8 +67,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 productDTO.setCode((String) obj[1]);
                 productDTO.setName((String) obj[2]);
                 productDTO.setPrice((BigDecimal) obj[3]);
+                productDTO.setMaxPrice((BigDecimal) obj[4]);
 
-                String imagesString = (String) obj[4];
+                String imagesString = (String) obj[5];
                 if (imagesString != null && !imagesString.isEmpty()) {
                     for (String str : imagesString.split(",")) {
                         if (!str.trim().isEmpty()) { // Kiểm tra và bỏ qua chuỗi trống
@@ -112,7 +113,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         List<ProductDTO> lstProduct = new ArrayList<>();
         try {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT p.id, p.code, p.name, p.price, images.image_names\n" +
+            sql.append("SELECT p.id, p.code, p.name,MIN(pd.price) AS price,max(pd.price)as maxPrice, images.image_names\n" +
                     "FROM product p\n" +
                     "join category c on c.id = p.id_category\n" +
                     "LEFT JOIN (\n" +
@@ -137,8 +138,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 productDTO.setCode((String) obj[1]);
                 productDTO.setName((String) obj[2]);
                 productDTO.setPrice((BigDecimal) obj[3]);
+                productDTO.setMaxPrice((BigDecimal) obj[4]);
 
-                String imagesString = (String) obj[4];
+                String imagesString = (String) obj[5];
                 if (imagesString != null && !imagesString.isEmpty()) {
                     for (String str : imagesString.split(",")) {
                         if (!str.trim().isEmpty()) { // Kiểm tra và bỏ qua chuỗi trống
