@@ -1,8 +1,7 @@
 package com.example.backend.core.admin.dto;
 
 import com.example.backend.core.commons.ExportDTO;
-import com.example.backend.core.model.Product;
-import com.example.backend.core.view.dto.ProductDTO;
+import com.example.backend.core.view.dto.ProductDetailDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +16,22 @@ import java.util.List;
 @Setter
 public class DiscountDetailAdminDTO extends ExportDTO {
     private Long id;
-    private Long idProduct;
+    private Long idProductDetail;
     private Long idDiscount;
     private BigDecimal reducedValue;
     private Integer discountType;
     private BigDecimal maxReduced;
     private int status;
+
     private DiscountAdminDTO discountAdminDTO;
-    private ProductAdminDTO productDTO;
-    private List<ProductAdminDTO> productDTOList;
+
+    private ProductAdminDTO productAdminDTO;
+    private List<ProductAdminDTO> productAdminDTOList;
+
+    private ProductDetailAdminDTO productDetailAdminDTO;
+    private List<ProductDetailAdminDTO> productDetailAdminDTOList;
+
     private String discountTypeStr;
+
     private Integer isUpdate = 0;
-
-
-
 }

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu);
-
-    ServiceResult<?> getDetailProduct(Long idProduct);
-
-    List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory);
+//    List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu);
+//
+//    ServiceResult<?> getDetailProduct(Long idProduct);
+//
+//    List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory);
 }

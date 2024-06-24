@@ -2,25 +2,37 @@ package com.example.backend.core.admin.service.impl;
 
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
 import com.example.backend.core.admin.dto.ProductAdminDTO;
+import com.example.backend.core.admin.dto.ProductDetailAdminDTO;
 import com.example.backend.core.admin.mapper.DiscountAdminMapper;
 import com.example.backend.core.admin.mapper.DiscountDetailAdminMapper;
 import com.example.backend.core.admin.mapper.ProductAdminMapper;
+import com.example.backend.core.admin.mapper.ProductDetailAdminMapper;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.DiscountAdminService;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
+import com.example.backend.core.admin.service.ProductAdminService;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.model.Discount;
+import com.example.backend.core.model.DiscountDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminService {
     @Autowired
     private DiscountDetailAdminRepository discountDetailRepository;
+
+    @Autowired
+    private ProductDetailAdminRepository productDetailAdminRepository;
+
+    @Autowired
+    private ProductDetailAdminMapper productDetailAdminMapper;
 
     @Autowired
     private DiscountAdminService discountAdminService;
@@ -45,6 +57,162 @@ public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminServic
 
     @Autowired
     private OrderDetailAdminRepository orderDetailAdminRepository;
+
+    @Autowired
+    private ProductAdminService productAdminService;
+
+    @Override
+    public List<DiscountAdminDTO> getAll() {
+        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAll();
+        for (int i = 0; i < discountAdminDTOList.size(); i++) {
+            if (discountAdminDTOList.get(i).getUsed_count() > 0) {
+                DiscountAdminDTO discountAdminDTO = discountAdminDTOList.get(i);
+                discountAdminDTO.setIsUpdate(1);
+            }
+        }
+        return discountAdminDTOList;
+    }
+
+    @Override
+    public List<DiscountAdminDTO> getAllKichHoat() {
+        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAllKichHoat();
+        return discountAdminDTOList;
+    }
+
+    @Override
+    public List<DiscountAdminDTO> getAllKhongKichHoat() {
+        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAllKhongKichHoat();
+        return discountAdminDTOList;
+    }
+
+    @Override
+    public ServiceResult<Void> deleteDiscountById(Long idDiscount) {
+        ServiceResult<Void> serviceResult = new ServiceResult<>();
+
+        Optional<Discount> discount = discountAdminRepository.findById(idDiscount);
+
+        if (discount.isPresent()) {
+            Discount discount1 = discount.get();
+            discount1.setDelete(1);
+            discountAdminRepository.save(discount1);
+
+            serviceResult.setMessage("Xoa thanh cong");
+            serviceResult.setStatus(HttpStatus.OK);
+            serviceResult.setSuccess(true);
+        } else {
+            serviceResult.setMessage("Khong tim thay isDiscount");
+            serviceResult.setStatus(HttpStatus.NOT_FOUND);
+            serviceResult.setSuccess(false);
+        }
+        return serviceResult;
+    }
+
+    @Override
+    public DiscountAdminDTO getDetailDiscountById(Long idDiscount) {
+        Discount discount = discountAdminRepository.findById(idDiscount).get();
+        if (discount == null) {
+            return null;
+        }
+        DiscountAdminDTO discountAdminDTO = discountAdminMapper.toDto(discount);
+        List<DiscountDetail> discountDetailsList = discountDetailRepository.findDiscountDetailByIdDiscount(discount.getId());
+
+//        List<ProductAdminDTO> productAdminDTOList = new ArrayList<>();
+        List<ProductDetailAdminDTO> productDetailAdminDTOList = new ArrayList<>();
+        if (discountDetailsList.size() > 0) {
+            for (int i = 0; i < discountDetailsList.size(); i++) {
+                ProductDetailAdminDTO productDetailAdminDTO = productDetailAdminMapper.toDto(productDetailAdminRepository.findById(discountDetailsList.get(i).getIdProductDetail()).orElse(null));
+                productDetailAdminDTOList.add(productDetailAdminDTO);
+//                ProductAdminDTO productAdminDTO = productAdminMapper.toDto(productAdminRepository.findById(discountDetailsList.get(i).getIdProduct()).orElse(null));
+//                productAdminDTOList.add(productAdminDTO);
+            }
+            discountAdminDTO.setReducedValue(discountDetailsList.get(0).getReducedValue());
+            discountAdminDTO.setDiscountType(discountDetailsList.get(0).getDiscountType());
+            discountAdminDTO.setMaxReduced(discountDetailsList.get(0).getMaxReduced());
+            discountAdminDTO.setProductDetailAdminDTOList(productDetailAdminDTOList);
+        }
+        return discountAdminDTO;
+    }
+
+    @Override
+    public ServiceResult<DiscountAdminDTO> KichHoat(Long id) {
+        ServiceResult<DiscountAdminDTO> serviceResult = new ServiceResult<>();
+
+        Optional<Discount> discountOptional = discountAdminRepository.findById(id);
+
+        if (discountOptional.isPresent()) {
+            boolean flag = false;
+//            List<ProductAdminDTO> productAdminDTOList = discountAdminCustomRepository.getAllProductKickHoat();
+
+            List<ProductAdminDTO> allProducts = productAdminService.getAll();
+            List<ProductAdminDTO> productAdminDTOList = allProducts.stream()
+                    .filter(product -> product.getStatus() == 0)
+                    .collect(Collectors.toList());
+
+            DiscountAdminDTO discountAdminDTO = getDetailDiscountById(discountOptional.get().getId());
+
+
+
+        }
+//
+//        if (optionalDiscount.isPresent()) {
+//            boolean flag = false;
+//
+//            List<ProductAdminDTO> lstProduct = discountAdminCustomRepository.getAllProductKickHoat();
+//            DiscountAdminDTO discountAdminDTO = getDetailDiscount(optionalDiscount.get().getId());
+//
+//            for (int i = 0; i < lstProduct.size(); i++) {
+//                for (int j = 0; j < discountAdminDTO.getProductDTOList().size(); j++) {
+//                    if (lstProduct.get(i).getId() == discountAdminDTO.getProductDTOList().get(j).getId()) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//            }
+//            if (!flag) {
+//                Discount discount = optionalDiscount.get();
+//                discount.setIdel(discount.getIdel() == 1 ? 0 : 1);
+//                discount = discountAdminRepository.save(discount);
+//                DiscountAdminDTO voucherAdminDTO = discountAdminMapper.toDto(discount);
+//                serviceResult.setData(voucherAdminDTO);
+//                serviceResult.setStatus(HttpStatus.OK);
+//                serviceResult.setMessage("Thành công");// Lưu lại thay đổi vào cơ sở dữ liệu
+//            } else {
+//                serviceResult.setMessage("Sản phẩm trong khuyến mãi này đang được áp dụng ở nơi khác");
+//                serviceResult.setStatus(HttpStatus.BAD_REQUEST);
+//                serviceResult.setData(null);
+//            }
+//
+//        } else {
+//            serviceResult.setMessage("Không tìm thấy khuyến mãi");
+//            serviceResult.setStatus(HttpStatus.NOT_FOUND);
+//            serviceResult.setData(null);
+//        }
+//        return serviceResult;
+        return null;
+    }
+
+    @Override
+    public ServiceResult<DiscountAdminDTO> setIdel(Long id) {
+        //        ServiceResult<DiscountAdminDTO> serviceResult = new ServiceResult<>();
+//        Optional<Discount> optionalDiscount = discountAdminRepository.findById(idDiscount);
+//
+//        if (optionalDiscount.isPresent()) {
+//            Discount discount = optionalDiscount.get();
+//            discount.setIdel(0);
+//            discount = discountAdminRepository.save(discount);
+//            DiscountAdminDTO voucherAdminDTO = discountAdminMapper.toDto(discount);
+//            serviceResult.setData(voucherAdminDTO);
+//            serviceResult.setStatus(HttpStatus.OK);
+//            serviceResult.setMessage("Thành công");// Lưu lại thay đổi vào cơ sở dữ liệu
+//
+//        } else {
+//            serviceResult.setMessage("Không tìm thấy khuyến mãi");
+//            serviceResult.setStatus(HttpStatus.NOT_FOUND);
+//            serviceResult.setData(null);
+//        }
+//        return serviceResult;
+        return null;
+    }
 
 //    @Override
 //    public ServiceResult<DiscountAdminDTO> KichHoat(Long idDiscount) {
@@ -86,7 +254,7 @@ public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminServic
 //        }
 //        return serviceResult;
 //    }
-//
+
 //    @Override
 //    public ServiceResult<DiscountAdminDTO> setIdel(Long idDiscount) {
 //        ServiceResult<DiscountAdminDTO> serviceResult = new ServiceResult<>();

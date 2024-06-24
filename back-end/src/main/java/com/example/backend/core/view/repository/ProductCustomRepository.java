@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ProductCustomRepository {
 
-    List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu);
+//    List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu);
 
-    List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory);
+//    List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory);
 
 }

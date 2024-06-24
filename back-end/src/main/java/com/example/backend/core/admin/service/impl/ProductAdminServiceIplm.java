@@ -59,6 +59,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     @Autowired
     private ProductDetailAdminRepository productDetailAdminRepository;
+    @Autowired
+    private ProductDetailAdminServiceIplm productDetailAdminServiceIplm;
 
 //    @Autowired
 //    private StaffAdminRepository strp;
@@ -127,9 +129,17 @@ public class ProductAdminServiceIplm implements ProductAdminService {
                 productAdminDTO.setImagesDTOList(imagesAdminMapper.toDto(imagesList));
             }
 
-            List<ProductDetail> productDetails = productDetailAdminRepository.findByIdProduct(product.getId());
-            if (!productDetails.isEmpty()) {
-                productAdminDTO.setProductDetailAdminDTOList(productDetailAdminMapper.toDto(productDetails));
+////            List<ProductDetail> productDetails = productDetailAdminRepository.findByIdProduct(product.getId());
+//            ServiceResult<List<ProductDetailAdminDTO>> productDetails=  productDetailAdminServiceIplm.getProductDetailsByProductId(product.getId());
+//            if (!productDetails.isEmpty()) {
+//                productAdminDTO.setProductDetailAdminDTOList(productDetails);
+////                productAdminDTO.setProductDetailAdminDTOList(productDetailAdminMapper.toDto(productDetails));
+//            }
+
+            ServiceResult<List<ProductDetailAdminDTO>> productDetails = productDetailAdminServiceIplm.getProductDetailsByProductId(product.getId());
+
+            if (productDetails != null && !productDetails.getData().isEmpty()) {
+                productAdminDTO.setProductDetailAdminDTOList(productDetails.getData());
             }
 
             productAdminDTOList.add(productAdminDTO);

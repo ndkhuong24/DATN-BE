@@ -32,10 +32,10 @@ public class Discount {
     private LocalDate createDate;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "description")
     private String description;
@@ -52,12 +52,12 @@ public class Discount {
     @Column(name = "dele")
     private Integer delete;
 
-    @Column(name="reduced_value")
-    private BigDecimal reducedValue; //giá trị giảm
-
-    @Column(name = "max_reduced")
-    private BigDecimal maxReduced; //giá trị giảm tối
-
-    @Column(name = "discount_type")
-    private Integer discountType; //loại giảm giá
+//    @Column(name="reduced_value")
+//    private BigDecimal reducedValue; //giá trị giảm
+//
+//    @Column(name = "max_reduced")
+//    private BigDecimal maxReduced; //giá trị giảm tối
+//
+//    @Column(name = "discount_type")
+//    private Integer discountType; //loại giảm giá
 }

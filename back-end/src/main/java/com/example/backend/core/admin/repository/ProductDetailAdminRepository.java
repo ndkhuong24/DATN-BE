@@ -1,7 +1,5 @@
 package com.example.backend.core.admin.repository;
 
-import com.example.backend.core.admin.dto.ProductDetailAdminDTO;
-import com.example.backend.core.model.Images;
 import com.example.backend.core.model.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,5 +15,4 @@ public interface ProductDetailAdminRepository extends JpaRepository<ProductDetai
 
     @Modifying
     void deleteByIdProduct(Long idProduct);
-
 }

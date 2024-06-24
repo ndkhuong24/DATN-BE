@@ -19,10 +19,7 @@ public interface ProductAdminService {
     ServiceResult<ProductAdminDTO> update(ProductAdminDTO productAdminDTO, Long id);
 
 //    ServiceResult<ProductAdminDTO> delete(Long id);
-
 //    List<ProductAdminDTO> findByNameLikeOrCodeLike(String param);
 //    List<ProductAdminDTO> getAllProductsWithDetailsAndImages(String keyword);
 //    List<Product> searchProducts(String keyword);
-
-
 }

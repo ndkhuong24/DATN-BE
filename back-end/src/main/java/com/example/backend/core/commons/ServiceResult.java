@@ -16,4 +16,5 @@ public class ServiceResult<T> implements Serializable {
     private HttpStatus status;
     private String message;
     private T data;
+    private boolean success;
 }

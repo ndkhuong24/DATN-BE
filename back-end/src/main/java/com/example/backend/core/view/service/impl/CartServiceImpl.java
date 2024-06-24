@@ -36,16 +36,19 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private ColorRepository colorRepository;
+
     @Autowired
     private ColorMapper colorMapper;
 
     @Autowired
     private SizeRepository sizeRepository;
+
     @Autowired
     private SizeMapper sizeMapper;
 
     @Autowired
     private ImagesRepository imagesRepository;
+
     @Autowired
     private DiscountRepository discountRepository;
 
@@ -55,59 +58,59 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductMapper productMapper;
 
-    @Override
-    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {
-        ServiceResult<CartDTO> result = new ServiceResult<>();
-        CartDTO dto = new CartDTO();
-        Optional<Product> product = productRepository.findById(cartDTO.getProductId());
-        if (!product.isPresent()) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Không tìm thấy product!");
-            return result;
-        }
-        ProductDTO productDTO = productMapper.toDto(product.get());
-        ProductDetail productDetail = productDetailRepository.findByIdSizeAndIdColorAndIdProduct(cartDTO.getProductDetailDTO().getColorDTO().getId(), cartDTO.getProductDetailDTO().getSizeDTO().getId(), cartDTO.getProductId());
-        if (null == productDetail) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("product detail is null");
-            return result;
-        }
-        List<Images> imagesList = imagesRepository.findByIdProduct(product.get().getId());
-        ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetail.getIdColor()).get());
-        SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetail.getIdSize()).get());
-        ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetail);
-        productDetailDTO.setSizeDTO(sizeDTO);
-        productDetailDTO.setColorDTO(colorDTO);
-        dto.setProductDetailDTO(productDetailDTO);
-        dto.setImageName(imagesList.get(0).getImageName());
-        dto.setProductId(product.get().getId());
-        dto.setProductName(product.get().getName());
-        dto.setQuantity(cartDTO.getQuantity());
-        List<Discount> discountList = discountRepository.getDiscountConApDung();
-        for (int i = 0; i < discountList.size(); i++) {
-            DiscountDetail discountDetail = discountDetailRepository.findByIdDiscountAndIdProduct(discountList.get(i).getId(), productDTO.getId());
-            if (null != discountDetail) {
-                if (discountDetail.getDiscountType() == 0) {
-                    productDTO.setReducePrice(discountDetail.getReducedValue());
-                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
-                }
-                if (discountDetail.getDiscountType() == 1) {
-                    BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(productDTO.getPrice());
-                    if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
-                        productDTO.setReducePrice(discountDetail.getMaxReduced());
-                    }else {
-                        productDTO.setReducePrice(discountDetail.getReducedValue());
-                    }
-                    productDTO.setPercentageReduce(discountDetail.getReducedValue().intValue());
-                }
-            }
-        }
-        dto.setProductDTO(productDTO);
-        result.setStatus(HttpStatus.OK);
-        result.setMessage("Success");
-        result.setData(dto);
-        return result;
-    }
+//    @Override
+//    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {
+//        ServiceResult<CartDTO> result = new ServiceResult<>();
+//        CartDTO dto = new CartDTO();
+//        Optional<Product> product = productRepository.findById(cartDTO.getProductId());
+//        if (!product.isPresent()) {
+//            result.setData(null);
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Không tìm thấy product!");
+//            return result;
+//        }
+//        ProductDTO productDTO = productMapper.toDto(product.get());
+//        ProductDetail productDetail = productDetailRepository.findByIdSizeAndIdColorAndIdProduct(cartDTO.getProductDetailDTO().getColorDTO().getId(), cartDTO.getProductDetailDTO().getSizeDTO().getId(), cartDTO.getProductId());
+//        if (null == productDetail) {
+//            result.setData(null);
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("product detail is null");
+//            return result;
+//        }
+//        List<Images> imagesList = imagesRepository.findByIdProduct(product.get().getId());
+//        ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetail.getIdColor()).get());
+//        SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetail.getIdSize()).get());
+//        ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetail);
+//        productDetailDTO.setSizeDTO(sizeDTO);
+//        productDetailDTO.setColorDTO(colorDTO);
+//        dto.setProductDetailDTO(productDetailDTO);
+//        dto.setImageName(imagesList.get(0).getImageName());
+//        dto.setProductId(product.get().getId());
+//        dto.setProductName(product.get().getName());
+//        dto.setQuantity(cartDTO.getQuantity());
+//        List<Discount> discountList = discountRepository.getDiscountConApDung();
+//        for (int i = 0; i < discountList.size(); i++) {
+//            DiscountDetail discountDetail = discountDetailRepository.findByIdDiscountAndIdProduct(discountList.get(i).getId(), productDTO.getId());
+//            if (null != discountDetail) {
+//                if (discountDetail.getDiscountType() == 0) {
+//                    productDTO.setReducePrice(discountDetail.getReducedValue());
+//                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
+//                }
+//                if (discountDetail.getDiscountType() == 1) {
+//                    BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(productDTO.getPrice());
+//                    if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
+//                        productDTO.setReducePrice(discountDetail.getMaxReduced());
+//                    }else {
+//                        productDTO.setReducePrice(discountDetail.getReducedValue());
+//                    }
+//                    productDTO.setPercentageReduce(discountDetail.getReducedValue().intValue());
+//                }
+//            }
+//        }
+//        dto.setProductDTO(productDTO);
+//        result.setStatus(HttpStatus.OK);
+//        result.setMessage("Success");
+//        result.setData(dto);
+//        return result;
+//    }
 }
