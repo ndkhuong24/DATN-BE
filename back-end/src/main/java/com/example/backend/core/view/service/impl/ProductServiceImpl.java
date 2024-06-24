@@ -68,162 +68,60 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private DiscountDetailRepository discountDetailRepository;
 
-//    @Override
-//    public List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu) {
-//        List<ProductDTO> lst = productCustomRepository.getProductNoiBatByBrand(thuongHieu);
-//        return lst;
-//    }
+    @Override
+    public List<ProductDTO> getProductNoiBatByBrand(Long thuongHieu) {
+        List<ProductDTO> lst = productCustomRepository.getProductNoiBatByBrand(thuongHieu);
+        return lst;
+    }
 
-//    @Override
-//    public ServiceResult<ProductDTO> getDetailProduct(Long idProduct) {
-//        Optional<Product> product = productRepository.findById(idProduct);
-//        ServiceResult<ProductDTO> result = new ServiceResult<>();
-//        Integer totalQuantity = 0;
-//        if (!product.isPresent()) {
-//            result.setStatus(HttpStatus.BAD_REQUEST);
-//            result.setMessage("Product không tồn tại !");
-//            result.setData(null);
-//            return result;
-//        }
-//        ProductDTO productDTO = productMapper.toDto(product.orElse(null));
-//        Optional<Brand> brand = brandRepository.findById(product.get().getIdBrand());
-//        Optional<Material> material = materialRepository.findById(product.get().getIdMaterial());
-//        Optional<Sole> sole = soleRepository.findById(product.get().getIdSole());
-//        Optional<Category> category = categoryRepository.findById(product.get().getIdCategory());
-//        List<Images> imageList = imagesRepository.findByIdProduct(product.get().getId());
-//        List<ProductDetail> listProductDetail = productDetailRepository.findByIdProduct(idProduct);
-//        MaterialDTO materialDTO = materialMapper.toDto(material.orElse(null));
-//        SoleDTO soleDTO = soleMapper.toDto(sole.orElse(null));
-//        CategoryDTO categoryDTO = categoryMapper.toDto(category.orElse(null));
-//        BrandDTO brandDTO = brandMapper.toDto(brand.orElse(null));
-//        for (ProductDetail pd : listProductDetail) {
-//            totalQuantity += pd.getQuantity();
-//        }
-//        productDTO.setProductDetailDTOList(productDetailMapper.toDto(listProductDetail));
-//        productDTO.setImagesDTOList(imagesMapper.toDto(imageList));
-//        productDTO.setBrandDTO(brandDTO);
-//        productDTO.setMaterialDTO(materialDTO);
-//        productDTO.setSoleDTO(soleDTO);
-//        productDTO.setCategoryDTO(categoryDTO);
-//        productDTO.setTotalQuantity(totalQuantity);
-//        List<Discount> discountList = discountRepository.getDiscountConApDung();
-//        for (int i = 0; i < discountList.size(); i++) {
-//            DiscountDetail discountDetail = discountDetailRepository.findByIdDiscountAndIdProduct(discountList.get(i).getId(), productDTO.getId());
-//            if (null != discountDetail) {
-//                if (discountDetail.getDiscountType() == 0) {
-//                    productDTO.setReducePrice(discountDetail.getReducedValue());
-//                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
-//                }
-//                if (discountDetail.getDiscountType() == 1) {
-//                    BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(productDTO.getPrice());
-//                    if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
-//                        productDTO.setReducePrice(discountDetail.getMaxReduced());
-//                    }else {
-//                        productDTO.setReducePrice(discountDetail.getReducedValue());
-//                    }
-//                    productDTO.setPercentageReduce(discountDetail.getReducedValue().intValue());
-//                }
-//            }
-//
-//        }
-//        result.setStatus(HttpStatus.OK);
-//        result.setMessage("Success");
-//        result.setData(productDTO);
-//        return result;
-//    }
+    @Override
+    public ServiceResult<ProductDTO> getDetailProduct(Long idProduct) {
+        Optional<Product> product = productRepository.findById(idProduct);
 
-//    @Override
-//    public List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory) {
-//        List<ProductDTO> lst = productCustomRepository.getProductTuongTu(idProduct, idCategory);
-//        return lst;
-//    }
-//    @Override
-//    public ServiceResult<ProductDTO> getDetailProduct(Long idProduct) {
-//        Optional<Product> product = productRepository.findById(idProduct);
-//
-//        ServiceResult<ProductDTO> result = new ServiceResult<>();
-//
-//        Integer totalQuantity = 0;
-//
-//        if (!product.isPresent()) {
-//            result.setStatus(HttpStatus.BAD_REQUEST);
-//            result.setMessage("Product không tồn tại !");
-//            result.setData(null);
-//            return result;
-//        }
-//
-//        ProductDTO productDTO = productMapper.toDto(product.orElse(null));
-//
-//        Optional<Brand> brand = brandRepository.findById(product.get().getIdBrand());
-//
-//        Optional<Material> material = materialRepository.findById(product.get().getIdMaterial());
-//
-//        Optional<Sole> sole = soleRepository.findById(product.get().getIdSole());
-//
-//        Optional<Category> category = categoryRepository.findById(product.get().getIdCategory());
-//
-//        List<Images> imageList = imagesRepository.findByIdProduct(product.get().getId());
-//
-//        List<ProductDetail> listProductDetail = productDetailRepository.findByIdProduct(idProduct);
-//
-//        MaterialDTO materialDTO = materialMapper.toDto(material.orElse(null));
-//
-//        SoleDTO soleDTO = soleMapper.toDto(sole.orElse(null));
-//
-//        CategoryDTO categoryDTO = categoryMapper.toDto(category.orElse(null));
-//
-//        BrandDTO brandDTO = brandMapper.toDto(brand.orElse(null));
-//
-//        for (ProductDetail pd : listProductDetail) {
-//            totalQuantity += pd.getQuantity();
-//        }
-//
-//        productDTO.setProductDetailDTOList(productDetailMapper.toDto(listProductDetail));
-//
-//        productDTO.setImagesDTOList(imagesMapper.toDto(imageList));
-//
-//        String imageURL = "http://localhost:8081/view/anh/"+idProduct;
-//        productDTO.setImageURL(imageURL);
-//
-//        productDTO.setBrandDTO(brandDTO);
-//
-//        productDTO.setMaterialDTO(materialDTO);
-//
-//        productDTO.setSoleDTO(soleDTO);
-//
-//        productDTO.setCategoryDTO(categoryDTO);
-//
-//        productDTO.setTotalQuantity(totalQuantity);
-//
-////        List<Discount> discountList = discountRepository.getDiscountConApDung();
-////        for (int i = 0; i < discountList.size(); i++) {
-////            DiscountDetail discountDetail = discountDetailRepository.findByIdDiscountAndIdProduct(discountList.get(i).getId(), productDTO.getId());
-////            if (null != discountDetail) {
-////                if (discountDetail.getDiscountType() == 0) {
-////                    productDTO.setReducePrice(discountDetail.getReducedValue());
-////                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
-////                }
-////                if (discountDetail.getDiscountType() == 1) {
-////                    BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(productDTO.getPrice());
-////                    if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
-////                        productDTO.setReducePrice(discountDetail.getMaxReduced());
-////                    }else {
-////                        productDTO.setReducePrice(discountDetail.getReducedValue());
-////                    }
-////                    productDTO.setPercentageReduce(discountDetail.getReducedValue().intValue());
-////                }
-////            }
-////        }
-//
-//        result.setStatus(HttpStatus.OK);
-//        result.setMessage("Success");
-//        result.setData(productDTO);
-//        return result;
-//    }
+        ServiceResult<ProductDTO> result = new ServiceResult<>();
 
-//    @Override
-//    public List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory) {
-//        List<ProductDTO> lst = productCustomRepository.getProductTuongTu(idProduct, idCategory);
-//        return lst;
-//    }
+        Integer totalQuantity = 0;
+        if (!product.isPresent()) {
+            result.setStatus(HttpStatus.BAD_REQUEST);
+            result.setMessage("Product không tồn tại !");
+            result.setData(null);
+            return result;
+        }
+
+        ProductDTO productDTO = productMapper.toDto(product.orElse(null));
+        Optional<Brand> brand = brandRepository.findById(product.get().getIdBrand());
+        Optional<Material> material = materialRepository.findById(product.get().getIdMaterial());
+        Optional<Sole> sole = soleRepository.findById(product.get().getIdSole());
+        Optional<Category> category = categoryRepository.findById(product.get().getIdCategory());
+        List<ProductDetail> listProductDetail = productDetailRepository.findByIdProduct(idProduct);
+        MaterialDTO materialDTO = materialMapper.toDto(material.orElse(null));
+        SoleDTO soleDTO = soleMapper.toDto(sole.orElse(null));
+        CategoryDTO categoryDTO = categoryMapper.toDto(category.orElse(null));
+        BrandDTO brandDTO = brandMapper.toDto(brand.orElse(null));
+
+        for (ProductDetail pd : listProductDetail) {
+            totalQuantity += pd.getQuantity();
+        }
+
+        productDTO.setProductDetailDTOList(productDetailMapper.toDto(listProductDetail));
+        productDTO.setBrandDTO(brandDTO);
+        productDTO.setMaterialDTO(materialDTO);
+        productDTO.setSoleDTO(soleDTO);
+        productDTO.setCategoryDTO(categoryDTO);
+        productDTO.setTotalQuantity(totalQuantity);
+
+        String imageURL = "http://localhost:8081/view/anh/" + idProduct;
+        productDTO.setImageURL(imageURL);
+
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        result.setData(productDTO);
+        return result;
+    }
+
+    @Override
+    public List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory) {
+        List<ProductDTO> productDTOList = productCustomRepository.getProductTuongTu(idProduct, idCategory);
+        return productDTOList;
+    }
 }
