@@ -1,15 +1,12 @@
 package com.example.backend.core.view.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +21,14 @@ public class DiscountDTO implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
+    private String createName;
     private Integer status;
     private Integer idel;
     private Integer delete;
+    private BigDecimal reducedValue; //giá trị giảm
+    private BigDecimal maxReduced; //giá trị giảm tối
+    private Integer discountType; //loại giảm giá
+
+    private List<ProductDTO> productDTOList;
+    private List<ProductDetailDTO> productDetailDTOList;
 }

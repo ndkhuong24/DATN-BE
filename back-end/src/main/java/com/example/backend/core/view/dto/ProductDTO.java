@@ -1,222 +1,67 @@
 package com.example.backend.core.view.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class ProductDTO {
-
     private Long id;
     private String code;
     private String name;
     private LocalDate createDate;
     private LocalDate updateDate;
+
     private Long idBrand;
     private Long idCategory;
     private Long idMaterial;
     private Long idSole;
     private String description;
     private Integer status;
+
+    private List<ProductDetailDTO> productDetailDTOList;
     private List<ImagesDTO> imagesDTOList;
-    private Integer idel;
+
+    private String imageURL;
+
+    private ProductDetailDTO productDetailDTO;
+    private ImagesDTO imagesDTO;
+
     private BrandDTO brandDTO;
     private CategoryDTO categoryDTO;
     private MaterialDTO materialDTO;
     private SoleDTO soleDTO;
-    private BigDecimal price;
+
+    private BigDecimal minPrice;
     private BigDecimal maxPrice;
-    private BigDecimal reducePrice;
-    private Integer percentageReduce;
-    private String codeDiscount;
-    private Integer totalQuantity;
-    private List<ProductDetailDTO> productDetailDTOList;
-    private BigDecimal totalSold;
+    private BigDecimal reducePrice;//giảm giá
+    private Integer percentageReduce;//phần trăm giảm
+    private String codeDiscount;//mã giảm gia
+    private Integer totalQuantity;//tong so luong
+
+    private BigDecimal totalSold;//tong luot bat
 
     public List<ProductDetailDTO> getProductDetailDTOList() {
         return productDetailDTOList;
-    }
-
-    public void setProductDetailDTOList(List<ProductDetailDTO> productDetailDTOList) {
-        this.productDetailDTOList = productDetailDTOList;
-    }
-
-    public Integer getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public Long getIdBrand() {
-        return idBrand;
-    }
-
-    public void setIdBrand(Long idBrand) {
-        this.idBrand = idBrand;
-    }
-
-    public Long getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(Long idCategory) {
-        this.idCategory = idCategory;
-    }
-
-    public Long getIdMaterial() {
-        return idMaterial;
-    }
-
-    public void setIdMaterial(Long idMaterial) {
-        this.idMaterial = idMaterial;
-    }
-
-    public Long getIdSole() {
-        return idSole;
-    }
-
-    public void setIdSole(Long idSole) {
-        this.idSole = idSole;
-    }
-
-    public void setTotalQuantity(Integer totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
-    public BrandDTO getBrandDTO() {
-        return brandDTO;
-    }
-
-    public void setBrandDTO(BrandDTO brandDTO) {
-        this.brandDTO = brandDTO;
-    }
-
-    public CategoryDTO getCategoryDTO() {
-        return categoryDTO;
-    }
-
-    public void setCategoryDTO(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
-    }
-
-    public MaterialDTO getMaterialDTO() {
-        return materialDTO;
-    }
-
-    public void setMaterialDTO(MaterialDTO materialDTO) {
-        this.materialDTO = materialDTO;
-    }
-
-    public SoleDTO getSoleDTO() {
-        return soleDTO;
-    }
-
-    public void setSoleDTO(SoleDTO soleDTO) {
-        this.soleDTO = soleDTO;
-    }
-
-    public BigDecimal price() {
-        return price;
-    }
-
-    public void setMinPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getMaxPrice() {
-        return maxPrice;
-    }
-
-    public void setMaxPrice(BigDecimal maxPrice) {
-        this.maxPrice = maxPrice;
-    }
-
-    public ProductDTO() {
-    }
-
-    public ProductDTO(Long id, String code, String name, LocalDate createDate, LocalDate updateDate, String description, Integer status, List<ImagesDTO> imagesDTOList, Integer idel) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.description = description;
-        this.status = status;
-        this.imagesDTOList = imagesDTOList;
-        this.idel = idel;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDate getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(LocalDate updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public List<ImagesDTO> getImagesDTOList() {
         return imagesDTOList;
     }
 
+    public void setProductDetailDTOList(List<ProductDetailDTO> productDetailDTOList) {
+        this.productDetailDTOList = productDetailDTOList;
+    }
+
     public void setImagesDTOList(List<ImagesDTO> imagesDTOList) {
         this.imagesDTOList = imagesDTOList;
-    }
-
-    public Integer getIdel() {
-        return idel;
-    }
-
-    public void setIdel(Integer idel) {
-        this.idel = idel;
     }
 }

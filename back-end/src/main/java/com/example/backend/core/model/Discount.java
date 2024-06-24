@@ -52,12 +52,12 @@ public class Discount {
     @Column(name = "dele")
     private Integer delete;
 
-    @Column(name="reduced_value")
-    private BigDecimal reducedValue; //giá trị giảm
+//    @Column(name="reduced_value")
+//    private BigDecimal reducedValue; //giá trị giảm
 
-    @Column(name = "max_reduced")
-    private BigDecimal maxReduced; //giá trị giảm tối
+//    @Column(name = "max_reduced")
+//    private BigDecimal maxReduced; //giá trị giảm tối
 
-    @Column(name = "discount_type")
-    private Integer discountType; //loại giảm giá
+//    @Column(name = "discount_type")
+//    private Integer discountType; //loại giảm giá
 }

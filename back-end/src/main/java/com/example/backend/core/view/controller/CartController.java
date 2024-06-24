@@ -15,8 +15,8 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/cart")
-    public ResponseEntity<?> getCart(@RequestBody CartDTO cartDTO){
-        return ResponseEntity.ok(cartService.getCart(cartDTO));
-    }
+//    @PostMapping("/cart")
+//    public ResponseEntity<?> getCart(@RequestBody CartDTO cartDTO){
+//        return ResponseEntity.ok(cartService.getCart(cartDTO));
+//    }
 }

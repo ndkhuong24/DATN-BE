@@ -6,7 +6,7 @@ import com.example.backend.core.commons.ServiceResult;
 import java.util.List;
 
 public interface DiscountAdminService {
-    List<String> getAllDiscountExport();
-
-    List<DiscountAdminDTO> getAll();
+//    List<String> getAllDiscountExport();
+//
+//    List<DiscountAdminDTO> getAll();
 }

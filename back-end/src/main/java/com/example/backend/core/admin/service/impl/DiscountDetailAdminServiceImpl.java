@@ -1,21 +1,16 @@
 package com.example.backend.core.admin.service.impl;
 
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
-import com.example.backend.core.admin.dto.ProductAdminDTO;
 import com.example.backend.core.admin.mapper.DiscountAdminMapper;
 import com.example.backend.core.admin.mapper.DiscountDetailAdminMapper;
 import com.example.backend.core.admin.mapper.ProductAdminMapper;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.DiscountAdminService;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
-import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.model.Discount;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminService {
@@ -45,6 +40,30 @@ public class DiscountDetailAdminServiceImpl implements DiscountDetailAdminServic
 
     @Autowired
     private OrderDetailAdminRepository orderDetailAdminRepository;
+
+//    @Override
+//    public List<DiscountAdminDTO> getAll() {
+//        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAll();
+//        for (int i = 0; i < discountAdminDTOList.size(); i++) {
+//            if (discountAdminDTOList.get(i).getUsed_count() > 0) {
+//                DiscountAdminDTO discountAdminDTO = discountAdminDTOList.get(i);
+//                discountAdminDTO.setIsUpdate(1);
+//            }
+//        }
+//        return discountAdminDTOList;
+//    }
+//
+//    @Override
+//    public List<DiscountAdminDTO> getAllKichHoat() {
+//        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAllKichHoat();
+//        return discountAdminDTOList;
+//    }
+//
+//    @Override
+//    public List<DiscountAdminDTO> getAllKhongKichHoat() {
+//        List<DiscountAdminDTO> discountAdminDTOList = discountAdminCustomRepository.getAllKhongKichHoat();
+//        return discountAdminDTOList;
+//    }
 
 //    @Override
 //    public ServiceResult<DiscountAdminDTO> KichHoat(Long idDiscount) {

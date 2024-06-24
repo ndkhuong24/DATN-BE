@@ -1,5 +1,9 @@
 package com.example.backend.core.admin.repository;
 
+import com.example.backend.core.admin.dto.DiscountAdminDTO;
+
+import java.util.List;
+
 public interface DiscountAdminCustomRepository {
 //    void deleteAllDiscountDetailByDiscount(Long id);
 //    List<DiscountAdminDTO> getAll();
@@ -13,4 +17,10 @@ public interface DiscountAdminCustomRepository {
 //    List<ProductAdminDTO> getAllProduct();
 //    List<ProductAdminDTO> getAllProductKickHoat();
 //    List<DiscountDetailAdminDTO> discountExport();
+
+    List<DiscountAdminDTO> getAll();
+
+    List<DiscountAdminDTO> getAllKichHoat();
+
+    List<DiscountAdminDTO> getAllKhongKichHoat();
 }

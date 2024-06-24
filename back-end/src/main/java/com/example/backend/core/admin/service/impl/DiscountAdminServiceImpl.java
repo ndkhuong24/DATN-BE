@@ -29,20 +29,20 @@ public class DiscountAdminServiceImpl implements DiscountAdminService {
     @Autowired
     private DiscountAdminMapper discountAdminMapper;
 
-    @Override
-    public List<String> getAllDiscountExport() {
-        List<String> lstStr = discountAdminRepository.findAll()
-                .stream()
-                .map(b -> b.getId() + "-" + b.getName())
-                .collect(Collectors.toList());
-        return lstStr;
-    }
-
-    @Override
-    public List<DiscountAdminDTO> getAll() {
-        List<DiscountAdminDTO> discountAdminDTOList = discountAdminMapper.toDto(discountAdminRepository.findAll());
-        return discountAdminDTOList;
-    }
+//    @Override
+//    public List<String> getAllDiscountExport() {
+//        List<String> lstStr = discountAdminRepository.findAll()
+//                .stream()
+//                .map(b -> b.getId() + "-" + b.getName())
+//                .collect(Collectors.toList());
+//        return lstStr;
+//    }
+//
+//    @Override
+//    public List<DiscountAdminDTO> getAll() {
+//        List<DiscountAdminDTO> discountAdminDTOList = discountAdminMapper.toDto(discountAdminRepository.findAll());
+//        return discountAdminDTOList;
+//    }
 
 
 //    @Override

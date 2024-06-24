@@ -72,25 +72,25 @@ public class ProductSCServiceImpl implements ProductSCService {
             List<ProductDetailAdminDTO> productDetailAdminDTO = productDetailAdminMapper.toDto(productDetailAdminRepository.findByIdProduct(list.get(i).getId()));
             list.get(i).setProductDetailDTOList(productDetailAdminDTO);
             List<Discount> discountList = discountSCRepository.getDiscountConApDung();
-            for (int j = 0; j < discountList.size(); j++) {
-                DiscountDetail discountDetail = discountDetailAdminRepository.findByIdDiscountAndIdProduct(discountList.get(j).getId(), list.get(i).getId());
-                if (null != discountDetail) {
-                    if (discountDetail.getDiscountType() == 0) {
-                        list.get(i).setReducePrice(discountDetail.getReducedValue());
-                        list.get(i).setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(list.get(i).getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
-                    }
-                    if (discountDetail.getDiscountType() == 1) {
-                        BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(list.get(i).getPrice());
-                        if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
-                            list.get(i).setReducePrice(discountDetail.getMaxReduced());
-                        }else {
-                            list.get(i).setReducePrice(discountDetail.getReducedValue());
-                        }
-                        list.get(i).setPercentageReduce(discountDetail.getReducedValue().intValue());
-                    }
-                }
 
-            }
+//            for (int j = 0; j < discountList.size(); j++) {
+//                DiscountDetail discountDetail = discountDetailAdminRepository.findByIdDiscountAndIdProduct(discountList.get(j).getId(), list.get(i).getId());
+//                if (null != discountDetail) {
+//                    if (discountDetail.getDiscountType() == 0) {
+//                        list.get(i).setReducePrice(discountDetail.getReducedValue());
+//                        list.get(i).setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(list.get(i).getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
+//                    }
+//                    if (discountDetail.getDiscountType() == 1) {
+//                        BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(list.get(i).getPrice());
+//                        if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
+//                            list.get(i).setReducePrice(discountDetail.getMaxReduced());
+//                        }else {
+//                            list.get(i).setReducePrice(discountDetail.getReducedValue());
+//                        }
+//                        list.get(i).setPercentageReduce(discountDetail.getReducedValue().intValue());
+//                    }
+//                }
+//            }
         }
         return list;
     }

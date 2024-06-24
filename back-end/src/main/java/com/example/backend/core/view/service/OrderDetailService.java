@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface OrderDetailService {
 
-    Map<String, Object> getAllByOrder(Long idOrder);
-
-    ServiceResult<OrderDetailDTO> createOrderDetail(OrderDetailDTO orderDetailDTO);
+//    Map<String, Object> getAllByOrder(Long idOrder);
+//
+//    ServiceResult<OrderDetailDTO> createOrderDetail(OrderDetailDTO orderDetailDTO);
 }

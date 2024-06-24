@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin("*")
-//@RequestMapping("")
 public class ImagesController {
 
     private static final Logger logger = Logger.getLogger(ImagesController.class.getName());

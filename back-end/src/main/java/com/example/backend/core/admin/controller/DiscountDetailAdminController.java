@@ -2,14 +2,16 @@ package com.example.backend.core.admin.controller;
 
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
 import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
-import com.example.backend.core.admin.service.DiscountAdminService;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,23 +20,45 @@ import java.util.List;
 @CrossOrigin("*")
 public class DiscountDetailAdminController {
     @Autowired
-    private DiscountDetailAdminService discountDetailAdminService;//cu
+    private DiscountDetailAdminService discountDetailAdminService;
 
-    @Autowired
-    private DiscountAdminService discountAdminService;//moi
+//    @Autowired
+//    private DiscountAdminService discountAdminService;//moi
 
-    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
+//    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
 
-    @GetMapping("discount")
-    public ResponseEntity<List<DiscountAdminDTO>> hienThi() {
-        try {
-            List<DiscountAdminDTO> discountAdminDTOList = discountAdminService.getAll();
-            return ResponseEntity.ok(discountAdminDTOList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+//    @GetMapping("/discount")
+//    public ResponseEntity<?> getAllDiscount() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAll();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+//
+//    @GetMapping("/discount/KH")
+//    public ResponseEntity<?> getAllDiscountKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+//
+//    @GetMapping("/discount/KKH")
+//    public ResponseEntity<?> getAllDiscountKhongKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKhongKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
 
 //    @PutMapping("discount/kichHoat/{id}")
 //    public ResponseEntity<?> kichHoat(@PathVariable Long id) {
