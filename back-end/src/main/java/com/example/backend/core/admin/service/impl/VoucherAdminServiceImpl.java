@@ -28,11 +28,8 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -117,15 +114,34 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     @Override
     public List<VoucherAdminDTO> getAllVouchers() {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
         Iterator<VoucherAdminDTO> iterator = list.listIterator();
         while (iterator.hasNext()) {
             VoucherAdminDTO voucherAdminDTO = iterator.next();
             List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode());
-            if (orderList.size() > 0) {
+            if (!orderList.isEmpty()) {
                 voucherAdminDTO.setIsUpdate(1);
             }
         }
         return list;
+
+
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
+//
+//        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+//        while (iterator.hasNext()) {
+//            VoucherAdminDTO voucherAdminDTO = iterator.next();
+//            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode());
+//            if (orderList.size() > 0) {
+//                voucherAdminDTO.setIsUpdate(1);
+//            }
+//        }
+//        return list;
     }
 
     @Override
@@ -165,7 +181,7 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         Voucher voucher = voucherAdminMapper.toEntity(voucherAdminDTO);
 
         voucher.setCode("VC" + Instant.now().getEpochSecond());
-        voucher.setCreateDate(LocalDate.now());
+        voucher.setCreateDate(LocalDateTime.now());
         voucher.setStatus(0);
         voucher.setIdel(0);
         voucher.setDelete(0);
@@ -176,9 +192,9 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         voucher.setApply(voucherAdminDTO.getApply());
         voucher.setCreateName(voucherAdminDTO.getCreateName());
 
-        LocalDate startDateTime = voucherAdminDTO.getStartDate();
+        LocalDateTime startDateTime = voucherAdminDTO.getStartDate();
         voucher.setStartDate(startDateTime);
-        LocalDate endDateTime = voucherAdminDTO.getEndDate();
+        LocalDateTime endDateTime = voucherAdminDTO.getEndDate();
         voucher.setEndDate(endDateTime);
 
         voucher.setAllow(voucherAdminDTO.getAllow());

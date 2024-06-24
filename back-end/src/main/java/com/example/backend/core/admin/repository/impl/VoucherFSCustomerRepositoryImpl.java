@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,13 +70,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -199,13 +200,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -267,13 +268,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -348,13 +349,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -417,13 +418,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -495,13 +496,13 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -561,7 +562,7 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate birthday = LocalDate.parse(row[3].toString());
+                    LocalDateTime birthday = LocalDateTime.parse(row[3].toString());
 
                     customer.setBirthday(birthday);
 

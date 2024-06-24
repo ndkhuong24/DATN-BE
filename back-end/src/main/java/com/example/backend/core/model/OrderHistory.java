@@ -16,6 +16,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,16 +30,22 @@ public class OrderHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "id_order")
     private Long idOrder;
+
     @Column(name = "id_staff")
     private Long idStaff;
+
     @Column(name = "id_customer")
     private Long idCustomer;
+
     @Column(name = "status")
     private Integer status;
+
     @Column(name = "create_date")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
+
     @Column(name = "note")
     private String note;
 }

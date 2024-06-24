@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -18,12 +19,12 @@ public class CustomerAdminDTO {
     private Long id;
     private String code;
     private String fullname;
-    private LocalDate birthday;
+    private LocalDateTime birthday;
     private String phone;
     private String email;
     private String gender;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private String username;
     private String password;
     private Integer status;

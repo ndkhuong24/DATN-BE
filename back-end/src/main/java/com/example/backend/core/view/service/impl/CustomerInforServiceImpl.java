@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class CustomerInforServiceImpl implements CustomerInforSerivce {
@@ -30,7 +31,7 @@ public class CustomerInforServiceImpl implements CustomerInforSerivce {
     public ServiceResult<CustomerDTO> updatePassword(CustomerDTO customerDTO, Customer customer) {
         if (encoder.matches(customerDTO.getPassword(), customer.getPassword())) {
             customer.setPassword(encoder.encode(customerDTO.getNewPass()));
-            customer.setUpdateDate(LocalDate.now());
+            customer.setUpdateDate(LocalDateTime.now());
             this.repository.save(customer);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");
@@ -48,7 +49,7 @@ public class CustomerInforServiceImpl implements CustomerInforSerivce {
         Customer customer = repository.findByEmail(customerDTO.getEmail());
         if (customer != null){
             customer.setPassword(encoder.encode(customerDTO.getNewPass()));
-            customer.setUpdateDate(LocalDate.now());
+            customer.setUpdateDate(LocalDateTime.now());
             this.repository.save(customer);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

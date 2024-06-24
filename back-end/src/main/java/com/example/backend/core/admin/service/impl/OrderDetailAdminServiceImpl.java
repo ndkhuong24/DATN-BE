@@ -1,22 +1,13 @@
 package com.example.backend.core.admin.service.impl;
 
-import com.example.backend.core.admin.dto.*;
 import com.example.backend.core.admin.mapper.*;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.OrderDetailAdminService;
-import com.example.backend.core.model.OrderHistory;
-import com.example.backend.core.view.dto.CustomerDTO;
-import com.example.backend.core.view.dto.OrderHistoryDTO;
 import com.example.backend.core.view.mapper.CustomerMapper;
 import com.example.backend.core.view.mapper.OrderHistoryMapper;
 import com.example.backend.core.view.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {

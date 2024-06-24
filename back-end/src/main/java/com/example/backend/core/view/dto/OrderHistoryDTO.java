@@ -11,6 +11,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class OrderHistoryDTO implements Serializable {
     private Long idStaff;
     private Long idCustomer;
     private Integer status;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     private String note;
     private StaffAdminDTO staffAdminDTO;
     private CustomerDTO customerDTO;

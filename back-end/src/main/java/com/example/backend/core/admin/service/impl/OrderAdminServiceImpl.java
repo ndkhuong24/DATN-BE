@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.XU_LY_HISTORY);
-                orderHistory.setCreateDate(LocalDate.now());
+                orderHistory.setCreateDate(LocalDateTime.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -156,7 +157,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 }
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HUY_HISTORY);
-                orderHistory.setCreateDate(LocalDate.now());
+                orderHistory.setCreateDate(LocalDateTime.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -200,7 +201,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.GIAO_HANG_HISTORY);
-                orderHistory.setCreateDate(LocalDate.now());
+                orderHistory.setCreateDate(LocalDateTime.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -247,7 +248,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HOAN_THANH_HISTORY);
-                orderHistory.setCreateDate(LocalDate.now());
+                orderHistory.setCreateDate(LocalDateTime.now());
                 orderHistory.setIdOrder(order.getId());
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
@@ -290,7 +291,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         if (orderAdminDTO.getMissedOrder() == null || orderAdminDTO.getMissedOrder() == 0) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN1_HISTORY);
-            orderHistory.setCreateDate(LocalDate.now());
+            orderHistory.setCreateDate(LocalDateTime.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());
@@ -298,7 +299,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         } else if (orderAdminDTO.getMissedOrder() == AppConstant.BO_LO_LAN1) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN2_HISTORY);
-            orderHistory.setCreateDate(LocalDate.now());
+            orderHistory.setCreateDate(LocalDateTime.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());
@@ -306,7 +307,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         } else {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.BO_LO_LAN3_HISTORY);
-            orderHistory.setCreateDate(LocalDate.now());
+            orderHistory.setCreateDate(LocalDateTime.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
             orderHistory.setNote(orderAdminDTO.getNote());

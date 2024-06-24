@@ -3,6 +3,7 @@ package com.example.backend.core.admin.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,8 +14,8 @@ public class ColorAdminDTO {
     private Long id;
     private String code;
     private String name;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private Integer status;
 
 }

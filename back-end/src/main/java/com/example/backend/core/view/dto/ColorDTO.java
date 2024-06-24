@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +18,5 @@ public class ColorDTO {
     private Long id;
     private String code;
     private String name;
-    private LocalDate createDate;
-
+    private LocalDateTime createDate;
 }

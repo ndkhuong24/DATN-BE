@@ -7,6 +7,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -21,28 +22,40 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "code")
     private String code;
+
     @Column(name = "fullname")
     private String fullname;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "birthday")
-    private LocalDate birthday;
+    private LocalDateTime birthday;
+
     @Column(name = "phone")
     private String phone;
+
     @Column(name = "gender")
     private String gender;
+
     @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "create_date")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
+
     @Column(name = "update_date")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
+
     @Column(name = "status")
     private Integer status = 0;
+
     @Column(name = "idel")
     private Integer idel = 0;
 

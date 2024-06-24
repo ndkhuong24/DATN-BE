@@ -4,16 +4,18 @@ import jakarta.persistence.Column;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 public class CategoryDTO {
     private Long id;
     private String name;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private Integer status;
     private Integer isDel;
 
-    public CategoryDTO(Long id, String name, LocalDate createDate, LocalDate updateDate, Integer status, Integer isDel) {
+    public CategoryDTO(Long id, String name, LocalDateTime createDate, LocalDateTime updateDate, Integer status, Integer isDel) {
         this.id = id;
         this.name = name;
         this.createDate = createDate;
@@ -38,19 +40,19 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public LocalDate getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDate createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 

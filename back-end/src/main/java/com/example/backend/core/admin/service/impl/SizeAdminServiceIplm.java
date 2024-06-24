@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
+import com.example.backend.core.admin.dto.BrandAdminDTO;
 import com.example.backend.core.admin.dto.SizeAdminDTO;
 import com.example.backend.core.admin.mapper.SizeAdminMapper;
 import com.example.backend.core.admin.repository.SizeAdminRepository;
@@ -10,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SizeAdminServiceIplm implements SizeAdminService {
@@ -23,8 +27,12 @@ public class SizeAdminServiceIplm implements SizeAdminService {
 
     @Override
     public List<SizeAdminDTO> getAll() {
-        List<SizeAdminDTO> listSizeAdminDTO = sizeAdminMapper.toDto(sizeAdminRepository.findAll());
-        return listSizeAdminDTO;
+        List<SizeAdminDTO> sizeAdminDTOList = sizeAdminMapper.toDto(this.sizeAdminRepository.findAll());
+        // Sắp xếp brandAdminDTOList theo thứ tự giảm dần của updateDate
+        List<SizeAdminDTO> sortedList = sizeAdminDTOList.stream()
+                .sorted(Comparator.comparing(SizeAdminDTO::getUpdateDate).reversed())
+                .collect(Collectors.toList());
+        return sortedList;
     }
 
     @Override
@@ -32,8 +40,8 @@ public class SizeAdminServiceIplm implements SizeAdminService {
         ServiceResult<SizeAdminDTO> result = new ServiceResult<>();
 
         Size size = sizeAdminMapper.toEntity(sizeAdminDTO);
-        size.setCreateDate(LocalDate.now());
-        size.setUpdateDate(LocalDate.now());
+        size.setCreateDate(LocalDateTime.now());
+        size.setUpdateDate(LocalDateTime.now());
 
         Size savedSize = this.sizeAdminRepository.save(size);
         SizeAdminDTO savedSizeAdminDTO = sizeAdminMapper.toDto(savedSize);
@@ -55,7 +63,7 @@ public class SizeAdminServiceIplm implements SizeAdminService {
             Size size = optional.get();
             size.setSizeNumber(sizeAdminDTO.getSizeNumber());
             size.setStatus(sizeAdminDTO.getStatus());
-            size.setUpdateDate(LocalDate.now());
+            size.setUpdateDate(LocalDateTime.now());
 
             Size updatedSize = this.sizeAdminRepository.save(size);
             SizeAdminDTO updatedSizeAdminDTO = sizeAdminMapper.toDto(updatedSize);

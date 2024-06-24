@@ -22,16 +22,22 @@ public class OrderDetail implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "id_order")
     private Long idOrder;
+
     @Column(name = "id_product_detail")
     private Long idProductDetail;
+
     @Column(name = "quantity")
     private Integer quantity;
+
     @Column(name = "price")
     private BigDecimal price;
+
     @Column(name = "code_discount")
     private String codeDiscount;
+
     @Column(name = "status")
     private Integer status;
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,9 +18,9 @@ public class DiscountDTO implements Serializable {
     private Long id;
     private String code;
     private String name;
-    private LocalDate createDate;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime createDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String description;
     private String createName;
     private Integer status;

@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductAdminServiceIplm implements ProductAdminService {
@@ -102,7 +105,12 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
     @Override
     public List<ProductAdminDTO> getAll() {
-        List<Product> productList = productAdminRepository.findAll();
+        List<Product> productListt = productAdminRepository.findAll();
+
+//        List<ProductAdminDTO> productAdminDTOListt = productAdminMapper.toDto(this.productAdminRepository.findAll());
+        List<Product> productList = productListt.stream()
+                .sorted(Comparator.comparing(Product::getUpdateDate).reversed())
+                .collect(Collectors.toList());
 
         List<ProductAdminDTO> productAdminDTOList = new ArrayList<>();
 
@@ -175,8 +183,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
         productAdminDTO.setCategoryAdminDTO(categoryAdminDTO);
         productAdminDTO.setMaterialAdminDTO(materialAdminDTO);
 
-        product.setCreateDate(LocalDate.now());
-        product.setUpdateDate(LocalDate.now());
+        product.setCreateDate(LocalDateTime.now());
+        product.setUpdateDate(LocalDateTime.now());
 
         System.out.println(product);
         product = this.productAdminRepository.save(product);
@@ -267,7 +275,7 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product.setId(id);
 //            product.setCode(productAdminDTO.getCode());
             product.setName(productAdminDTO.getName());
-            product.setUpdateDate(LocalDate.now());
+            product.setUpdateDate(LocalDateTime.now());
 
             product.setIdBrand(productAdminDTO.getIdBrand());
             product.setIdSole(productAdminDTO.getIdSole());

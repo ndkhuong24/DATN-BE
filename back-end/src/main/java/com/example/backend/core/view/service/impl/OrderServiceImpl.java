@@ -53,6 +53,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
             }
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setStatus(AppConstant.HUY_HISTORY);
-            orderHistory.setCreateDate(LocalDate.now());
+            orderHistory.setCreateDate(LocalDateTime.now());
             orderHistory.setIdOrder(order.getId());
             orderHistory.setIdCustomer(orderDTO.getIdCustomer());
             orderHistory.setNote(orderDTO.getNote());

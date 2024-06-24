@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,8 +16,6 @@ import java.time.LocalDate;
 public class SizeDTO {
     private Long id;
     private String sizeNumber;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     private Integer status;
-
-
 }

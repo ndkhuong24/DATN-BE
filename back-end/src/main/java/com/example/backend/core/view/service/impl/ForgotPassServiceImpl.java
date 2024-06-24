@@ -18,6 +18,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import javax.naming.Context;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -58,7 +59,7 @@ public class ForgotPassServiceImpl implements ForgotPassService {
             String emailTo = customer.getEmail();
             String subject = "OPT đặt lại mật khẩu của bạn là";
             this.otp = String.valueOf(Instant.now().getEpochSecond());
-            otpMap.put(emailTo, new OtpDTO(this.otp, LocalDate.now()));
+            otpMap.put(emailTo, new OtpDTO(this.otp, LocalDateTime.now()));
             sendOTPEmail(emailTo,subject,this.otp);
         }else {
             System.out.println("không có mail trong dữ liệu");

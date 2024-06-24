@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +15,8 @@ public class SoleAdminDTO {
     private Long id;
     private String soleHeight;
     private String soleMaterial;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private String description;
     private Integer status;
 }

@@ -28,6 +28,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -161,7 +162,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         VoucherFreeShip voucher = voucherAdminMapper.toEntity(voucherAdminDTO);
         List<VoucherFreeShip> voucherList = new ArrayList<>();
         voucher.setCode("VCS" + Instant.now().getEpochSecond());
-        voucher.setCreateDate(LocalDate.now());
+        voucher.setCreateDate(LocalDateTime.now());
         voucher.setStatus(0);
         voucher.setIdel(0);
         voucher.setDelete(0);
@@ -197,6 +198,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
             }
         }
         voucherFreeShipAdminRepository.save(voucher);
+
         serviceResult.setData(voucherAdminDTO);
         serviceResult.setMessage("Thêm thành công!");
         serviceResult.setStatus(HttpStatus.OK);

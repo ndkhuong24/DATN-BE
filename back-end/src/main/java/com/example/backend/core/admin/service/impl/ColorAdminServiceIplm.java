@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
+import com.example.backend.core.admin.dto.BrandAdminDTO;
 import com.example.backend.core.admin.dto.ColorAdminDTO;
 import com.example.backend.core.admin.mapper.ColorAdminMapper;
 import com.example.backend.core.admin.repository.ColorAdminRepository;
@@ -11,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ColorAdminServiceIplm implements ColorAdminService {
@@ -24,8 +28,12 @@ public class ColorAdminServiceIplm implements ColorAdminService {
 
     @Override
     public List<ColorAdminDTO> getAll() {
-        List<ColorAdminDTO> lstdto = colorAdminMapper.toDto(this.colorAdminRepository.findAll());
-        return lstdto;
+        List<ColorAdminDTO> colorAdminDTOList = colorAdminMapper.toDto(this.colorAdminRepository.findAll());
+        // Sắp xếp brandAdminDTOList theo thứ tự giảm dần của updateDate
+        List<ColorAdminDTO> sortedList = colorAdminDTOList.stream()
+                .sorted(Comparator.comparing(ColorAdminDTO::getUpdateDate).reversed())
+                .collect(Collectors.toList());
+        return sortedList;
     }
 
     @Override
@@ -33,8 +41,8 @@ public class ColorAdminServiceIplm implements ColorAdminService {
         ServiceResult<ColorAdminDTO> result = new ServiceResult<>();
 
         Color color = colorAdminMapper.toEntity(colorAdminDTO);
-        color.setCreateDate(LocalDate.now());
-        color.setUpdateDate(LocalDate.now());
+        color.setCreateDate(LocalDateTime.now());
+        color.setUpdateDate(LocalDateTime.now());
 
         this.colorAdminRepository.save(color);
 
@@ -56,7 +64,7 @@ public class ColorAdminServiceIplm implements ColorAdminService {
             color.setName(colorAdminDTO.getName());
             color.setCode(colorAdminDTO.getCode());
             color.setStatus(colorAdminDTO.getStatus());
-            color.setUpdateDate(LocalDate.now());
+            color.setUpdateDate(LocalDateTime.now());
 
             Color updateColor = this.colorAdminRepository.save(color);
             ColorAdminDTO updateColorAdminDTO = colorAdminMapper.toDto(updateColor);

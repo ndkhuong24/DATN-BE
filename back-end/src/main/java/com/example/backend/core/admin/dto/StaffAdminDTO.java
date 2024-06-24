@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,12 +16,12 @@ public class StaffAdminDTO {
     private Long id;
     private String code;
     private String fullname;
-    private LocalDate birthday;
+    private LocalDateTime birthday;
     private String gender;
     //    private String address;
     private String phone;
     private String email;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     private String description;
     private String username;
     private String passwword;

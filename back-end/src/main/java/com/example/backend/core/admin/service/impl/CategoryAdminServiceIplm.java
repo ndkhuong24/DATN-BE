@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
+import com.example.backend.core.admin.dto.BrandAdminDTO;
 import com.example.backend.core.admin.dto.CategoryAdminDTO;
 import com.example.backend.core.admin.mapper.CategoryAdminMapper;
 import com.example.backend.core.admin.repository.CategoryAdminRepository;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,8 +28,14 @@ public class CategoryAdminServiceIplm implements CategoryAdminService {
 
     @Override
     public List<CategoryAdminDTO> getAll() {
-        List<CategoryAdminDTO> list = categoryAdminMapper.toDto(this.categoryAdminRepository.findAll());
-        return list;
+        List<CategoryAdminDTO> categoryAdminDTOList = categoryAdminMapper.toDto(this.categoryAdminRepository.findAll());
+
+        // Sắp xếp brandAdminDTOList theo thứ tự giảm dần của updateDate
+        List<CategoryAdminDTO> sortedList = categoryAdminDTOList.stream()
+                .sorted(Comparator.comparing(CategoryAdminDTO::getUpdateDate).reversed())
+                .collect(Collectors.toList());
+
+        return sortedList;
     }
 
     @Override
@@ -39,8 +48,8 @@ public class CategoryAdminServiceIplm implements CategoryAdminService {
         ServiceResult<CategoryAdminDTO> result = new ServiceResult<>();
 
         Category category = categoryAdminMapper.toEntity(categoryAdminDTO);
-        category.setCreateDate(LocalDate.now());
-        category.setUpdateDate(LocalDate.now());
+        category.setCreateDate(LocalDateTime.now());
+        category.setUpdateDate(LocalDateTime.now());
         this.categoryAdminRepository.save(category);
 
         result.setStatus(HttpStatus.OK);
@@ -57,7 +66,7 @@ public class CategoryAdminServiceIplm implements CategoryAdminService {
         if (optional.isPresent()) {
             Category category = optional.get();
             category.setId(id);
-            category.setUpdateDate(LocalDate.now());
+            category.setUpdateDate(LocalDateTime.now());
             category.setStatus(categoryAdminDTO.getStatus());
             category.setName(categoryAdminDTO.getName());
 

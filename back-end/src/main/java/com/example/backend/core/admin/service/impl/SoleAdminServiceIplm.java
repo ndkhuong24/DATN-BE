@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
+import com.example.backend.core.admin.dto.BrandAdminDTO;
 import com.example.backend.core.admin.dto.SoleAdminDTO;
 import com.example.backend.core.admin.mapper.SoleAdminMapper;
 import com.example.backend.core.admin.repository.SoleAdminRepository;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,8 +28,12 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
 
     @Override
     public List<SoleAdminDTO> getAll() {
-         List<SoleAdminDTO> listSole = soleAdminMapper.toDto(soleAdminRepository.findAll());
-         return listSole;
+        List<SoleAdminDTO> soleAdminDTOList = soleAdminMapper.toDto(this.soleAdminRepository.findAll());
+        // Sắp xếp brandAdminDTOList theo thứ tự giảm dần của updateDate
+        List<SoleAdminDTO> sortedList = soleAdminDTOList.stream()
+                .sorted(Comparator.comparing(SoleAdminDTO::getUpdateDate).reversed())
+                .collect(Collectors.toList());
+        return sortedList;
     }
 
     @Override
@@ -39,8 +46,8 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
         ServiceResult<SoleAdminDTO> result = new ServiceResult<>();
 
         Sole sole =  soleAdminMapper.toEntity(soleAdminDTO);
-        sole.setCreateDate(LocalDate.now());
-        sole.setUpdateDate(LocalDate.now());
+        sole.setCreateDate(LocalDateTime.now());
+        sole.setUpdateDate(LocalDateTime.now());
 
         this.soleAdminRepository.save(sole);
 
@@ -59,7 +66,7 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
             Sole sole = optional.get();
             sole.setId(id);
             sole.setStatus(soleAdminDTO.getStatus());
-            sole.setUpdateDate(LocalDate.now());
+            sole.setUpdateDate(LocalDateTime.now());
             sole.setSoleHeight(soleAdminDTO.getSoleHeight());
             sole.setSoleMaterial(soleAdminDTO.getSoleMaterial());
             sole.setDescription(soleAdminDTO.getDescription());

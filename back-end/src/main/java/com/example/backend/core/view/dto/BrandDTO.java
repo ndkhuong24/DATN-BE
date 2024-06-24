@@ -1,22 +1,19 @@
 package com.example.backend.core.view.dto;
 
-import jakarta.persistence.Column;
-
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class BrandDTO {
     private Long id;
     private String name;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private int status;
     private int isDel;
 
     public BrandDTO() {
     }
 
-    public BrandDTO(Long id, String name, LocalDate createDate, LocalDate updateDate, int status, int isDel) {
+    public BrandDTO(Long id, String name, LocalDateTime createDate, LocalDateTime updateDate, int status, int isDel) {
         this.id = id;
         this.name = name;
         this.createDate = createDate;
@@ -41,19 +38,19 @@ public class BrandDTO {
         this.name = name;
     }
 
-    public LocalDate getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDate createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public LocalDate getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalDate updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 

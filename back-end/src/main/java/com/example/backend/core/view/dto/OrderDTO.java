@@ -6,6 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class OrderDTO {
     private Long idStaff;
     private String codeVoucher;
     private String codeVoucherShip;
-    private LocalDate createDate;
-    private LocalDate paymentDate;
-    private LocalDate deliveryDate;
-    private LocalDate receivedDate;
+    private LocalDateTime createDate;
+    private LocalDateTime paymentDate;
+    private LocalDateTime deliveryDate;
+    private LocalDateTime receivedDate;
     private String addressReceived;
     private String shipperPhone;
     private String receiverPhone;

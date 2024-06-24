@@ -1,7 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.example.backend.core.admin.service.FileUpload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class FileUpLoadIplm implements FileUpload {
@@ -32,11 +29,11 @@ public class FileUpLoadIplm implements FileUpload {
             Map uploadResult = cloudinary.uploader().upload(uploadedFile, params);
             boolean isDeleted = uploadedFile.delete();
 
-            if (isDeleted){
+            if (isDeleted) {
                 System.out.println("File successfully deleted");
-            }else
+            } else
                 System.out.println("File doesn't exist");
-            return  uploadResult.get("url").toString();
+            return uploadResult.get("url").toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

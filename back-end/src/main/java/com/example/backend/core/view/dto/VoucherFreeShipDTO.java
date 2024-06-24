@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -18,9 +19,9 @@ public class VoucherFreeShipDTO {
     private String code;
     private BigDecimal conditionApply;
     private String idCustomer;
-    private LocalDate createDate;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime createDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String createName;
     private BigDecimal reducedValue;
     private Integer quantity;

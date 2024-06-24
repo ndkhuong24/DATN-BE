@@ -4,7 +4,6 @@ import com.example.backend.core.admin.dto.CustomerAdminDTO;
 import com.example.backend.core.admin.dto.VoucherAdminDTO;
 import com.example.backend.core.admin.repository.CustomerAdminRepository;
 import com.example.backend.core.admin.repository.VoucherAdminCustomRepository;
-import com.example.backend.core.model.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
@@ -13,8 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -76,13 +75,18 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -211,13 +215,18 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -286,13 +295,18 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -375,13 +389,13 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -450,13 +464,13 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -534,13 +548,13 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
+                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
+                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
 
-                    if (LocalDate.now().isAfter(endDate)) {
+                    if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
                     } else {
                         voucher.setStatus(0);
@@ -600,10 +614,11 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDate birthday = LocalDate.parse(row[3].toString());
+                    Timestamp birthdayTimestamp = (Timestamp) row[3];
+                    LocalDateTime birthday = birthdayTimestamp.toLocalDateTime();
+//                    LocalDateTime birthday = LocalDateTime.parse(row[3].toString());
 
                     customer.setBirthday(birthday);
-
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();
                     continue;

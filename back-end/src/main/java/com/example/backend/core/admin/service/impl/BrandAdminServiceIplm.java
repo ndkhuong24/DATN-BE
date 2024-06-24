@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,8 +26,12 @@ public class BrandAdminServiceIplm implements BrandAdminService {
 
     @Override
     public List<BrandAdminDTO> getAll() {
-        List<BrandAdminDTO> list = brandAdminMapper.toDto(this.brandAdminRepository.findAll());
-        return list;
+        List<BrandAdminDTO> brandAdminDTOList = brandAdminMapper.toDto(this.brandAdminRepository.findAll());
+        // Sắp xếp brandAdminDTOList theo thứ tự giảm dần của updateDate
+        List<BrandAdminDTO> sortedList = brandAdminDTOList.stream()
+                .sorted(Comparator.comparing(BrandAdminDTO::getUpdateDate).reversed())
+                .collect(Collectors.toList());
+        return sortedList;
     }
 
     @Override
@@ -43,8 +48,8 @@ public class BrandAdminServiceIplm implements BrandAdminService {
         ServiceResult<BrandAdminDTO> result = new ServiceResult<>();
 
         Brand brand = brandAdminMapper.toEntity(brandAdminDTO);
-        brand.setCreateDate(LocalDate.now());
-        brand.setUpdateDate(LocalDate.now());
+        brand.setCreateDate(LocalDateTime.now());
+        brand.setUpdateDate(LocalDateTime.now());
 
         this.brandAdminRepository.save(brand);
 
@@ -66,7 +71,7 @@ public class BrandAdminServiceIplm implements BrandAdminService {
             brand.setId(id);
             brand.setName(brandAdminDTO.getName());
             brand.setStatus(brandAdminDTO.getStatus());
-            brand.setUpdateDate(LocalDate.now());
+            brand.setUpdateDate(LocalDateTime.now());
 
             Brand updatedBrand = this.brandAdminRepository.save(brand);
             BrandAdminDTO updatedBrandAdminDTO = brandAdminMapper.toDto(updatedBrand);
