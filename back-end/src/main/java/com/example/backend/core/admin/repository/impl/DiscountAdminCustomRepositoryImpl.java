@@ -1,7 +1,10 @@
 package com.example.backend.core.admin.repository.impl;
 
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
+<<<<<<< HEAD
 import com.example.backend.core.admin.dto.ProductAdminDTO;
+=======
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 import com.example.backend.core.admin.repository.DiscountAdminCustomRepository;
 import com.example.backend.core.admin.repository.DiscountDetailAdminRepository;
 import jakarta.persistence.EntityManager;
@@ -238,6 +241,7 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
         }
     }
 
+<<<<<<< HEAD
     @Override
     public List<ProductAdminDTO> getAllProductKickHoat() {
 //        try {
@@ -309,6 +313,8 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
 //        return List.of();
 //    }
 
+=======
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //    @Override
 //    public void deleteAllDiscountDetailByDiscount(Long id) {
 //        try {

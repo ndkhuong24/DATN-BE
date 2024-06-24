@@ -1,11 +1,7 @@
 package com.example.backend.core.view.service.impl;
 
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.model.Discount;
-import com.example.backend.core.model.DiscountDetail;
-import com.example.backend.core.model.Images;
-import com.example.backend.core.model.Product;
-import com.example.backend.core.model.ProductDetail;
+import com.example.backend.core.model.*;
 import com.example.backend.core.view.dto.*;
 import com.example.backend.core.view.mapper.ColorMapper;
 import com.example.backend.core.view.mapper.ProductDetailMapper;
@@ -52,12 +48,13 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private DiscountRepository discountRepository;
 
-    @Autowired
-    private DiscountDetailRepository discountDetailRepository;
+//    @Autowired
+//    private DiscountDetailRepository discountDetailRepository;
 
     @Autowired
     private ProductMapper productMapper;
 
+<<<<<<< HEAD
 //    @Override
 //    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {
 //        ServiceResult<CartDTO> result = new ServiceResult<>();
@@ -89,11 +86,47 @@ public class CartServiceImpl implements CartService {
 //        dto.setProductName(product.get().getName());
 //        dto.setQuantity(cartDTO.getQuantity());
 //        List<Discount> discountList = discountRepository.getDiscountConApDung();
+=======
+    @Override
+    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {
+        ServiceResult<CartDTO> result = new ServiceResult<>();
+        CartDTO dto = new CartDTO();
+        Optional<Product> product = productRepository.findById(cartDTO.getProductId());
+        if (!product.isPresent()) {
+            result.setData(null);
+            result.setStatus(HttpStatus.BAD_REQUEST);
+            result.setMessage("Không tìm thấy product!");
+            return result;
+        }
+        ProductDTO productDTO = productMapper.toDto(product.get());
+        ProductDetail productDetail = productDetailRepository.findByIdSizeAndIdColorAndIdProduct(cartDTO.getProductDetailDTO().getColorDTO().getId(), cartDTO.getProductDetailDTO().getSizeDTO().getId(), cartDTO.getProductId());
+        if (null == productDetail) {
+            result.setData(null);
+            result.setStatus(HttpStatus.BAD_REQUEST);
+            result.setMessage("product detail is null");
+            return result;
+        }
+        List<Images> imagesList = imagesRepository.findByIdProduct(product.get().getId());
+        ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetail.getIdColor()).get());
+        SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetail.getIdSize()).get());
+        ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetail);
+        productDetailDTO.setSizeDTO(sizeDTO);
+        productDetailDTO.setColorDTO(colorDTO);
+        dto.setProductDetailDTO(productDetailDTO);
+        dto.setImageName(imagesList.get(0).getImageName());
+        dto.setProductId(product.get().getId());
+        dto.setProductName(product.get().getName());
+        dto.setQuantity(cartDTO.getQuantity());
+
+//        List<Discount> discountList = discountRepository.getDiscountConApDung();
+
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //        for (int i = 0; i < discountList.size(); i++) {
 //            DiscountDetail discountDetail = discountDetailRepository.findByIdDiscountAndIdProduct(discountList.get(i).getId(), productDTO.getId());
 //            if (null != discountDetail) {
 //                if (discountDetail.getDiscountType() == 0) {
 //                    productDTO.setReducePrice(discountDetail.getReducedValue());
+<<<<<<< HEAD
 //                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(),2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
 //                }
 //                if (discountDetail.getDiscountType() == 1) {
@@ -101,16 +134,35 @@ public class CartServiceImpl implements CartService {
 //                    if(price.compareTo(discountDetail.getMaxReduced()) >= 0){
 //                        productDTO.setReducePrice(discountDetail.getMaxReduced());
 //                    }else {
+=======
+//                    productDTO.setPercentageReduce(Math.round(discountDetail.getReducedValue().divide(productDTO.getPrice(), 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).floatValue()));
+//                }
+//                if (discountDetail.getDiscountType() == 1) {
+//                    BigDecimal price = discountDetail.getReducedValue().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).multiply(productDTO.getPrice());
+//                    if (price.compareTo(discountDetail.getMaxReduced()) >= 0) {
+//                        productDTO.setReducePrice(discountDetail.getMaxReduced());
+//                    } else {
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //                        productDTO.setReducePrice(discountDetail.getReducedValue());
 //                    }
 //                    productDTO.setPercentageReduce(discountDetail.getReducedValue().intValue());
 //                }
 //            }
 //        }
+<<<<<<< HEAD
 //        dto.setProductDTO(productDTO);
 //        result.setStatus(HttpStatus.OK);
 //        result.setMessage("Success");
 //        result.setData(dto);
 //        return result;
 //    }
+=======
+
+        dto.setProductDTO(productDTO);
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        result.setData(dto);
+        return result;
+    }
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 }

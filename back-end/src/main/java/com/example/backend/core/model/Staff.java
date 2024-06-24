@@ -55,6 +55,7 @@ public class Staff implements Serializable {
 
     @Column(name = "roles")
     private String role;
-//    @Column(name = "idel")
-//    private Integer idel;
+
+    @Column(name = "idel")
+    private Integer idel;
 }

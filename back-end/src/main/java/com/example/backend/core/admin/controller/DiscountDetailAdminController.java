@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,13 +21,14 @@ import java.util.List;
 @CrossOrigin("*")
 public class DiscountDetailAdminController {
     @Autowired
-    private DiscountDetailAdminService discountDetailAdminService;//cu
+    private DiscountDetailAdminService discountDetailAdminService;
 
 //    @Autowired
 //    private DiscountAdminService discountAdminService;//moi
 
-    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
+//    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
 
+<<<<<<< HEAD
     @GetMapping("/discount")
     public ResponseEntity<?> getAllDiscount() {
         try {
@@ -35,6 +39,40 @@ public class DiscountDetailAdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+=======
+//    @GetMapping("/discount")
+//    public ResponseEntity<?> getAllDiscount() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAll();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+//
+//    @GetMapping("/discount/KH")
+//    public ResponseEntity<?> getAllDiscountKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+//
+//    @GetMapping("/discount/KKH")
+//    public ResponseEntity<?> getAllDiscountKhongKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKhongKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 
     @GetMapping("/discount/KH")
     public ResponseEntity<?> getAllDiscountKH() {

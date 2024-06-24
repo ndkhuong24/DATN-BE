@@ -1,15 +1,12 @@
 package com.example.backend.core.view.dto;
 
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -22,11 +19,12 @@ public class ProductDetailDTO {
     private Long idColor;
     private Long idSize;
     private Integer quantity;
-    private LocalDate createDate;
-    private LocalDate updateDate;
+    private BigDecimal price;
     private Integer shoeCollar;
+
+    private BigDecimal listedPrice;//gia niem yet
+
     private ProductDTO productDTO;
     private ColorDTO colorDTO;
     private SizeDTO sizeDTO;
-
 }

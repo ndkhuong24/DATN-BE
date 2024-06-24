@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service;
 
+<<<<<<< HEAD
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
 import com.example.backend.core.commons.ServiceResult;
 
@@ -7,6 +8,10 @@ import java.util.List;
 
 public interface DiscountDetailAdminService {
     //    ServiceResult<DiscountAdminDTO> KichHoat(Long idDiscount);
+=======
+public interface DiscountDetailAdminService {
+//    ServiceResult<DiscountAdminDTO> KichHoat(Long idDiscount);
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //    ServiceResult<DiscountAdminDTO> setIdel(Long idDiscount);
 //    List<DiscountAdminDTO> getAll();
 //    ServiceResult<DiscountDetailAdminDTO> createDiscount(DiscountDetailAdminDTO khuyenMaiDTO);
@@ -24,6 +29,7 @@ public interface DiscountDetailAdminService {
 //    byte[] exportExcelDiscount() throws IOException;
     List<DiscountAdminDTO> getAll();
 
+<<<<<<< HEAD
     List<DiscountAdminDTO> getAllKichHoat();
 
     List<DiscountAdminDTO> getAllKhongKichHoat();
@@ -35,4 +41,11 @@ public interface DiscountDetailAdminService {
     ServiceResult<DiscountAdminDTO> KichHoat(Long id);
 
     ServiceResult<DiscountAdminDTO> setIdel(Long id);
+=======
+//    List<DiscountAdminDTO> getAll();
+//
+//    List<DiscountAdminDTO> getAllKichHoat();
+//
+//    List<DiscountAdminDTO> getAllKhongKichHoat();
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 }

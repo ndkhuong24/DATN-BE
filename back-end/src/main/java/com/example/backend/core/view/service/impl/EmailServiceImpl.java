@@ -74,11 +74,13 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private ProductMapper productMapper;
 
     @Autowired
     private ImagesRepository imagesRepository;
+
     @Autowired
     private ImagesMapper imagesMapper;
 
@@ -89,6 +91,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private SizeRepository sizeRepository;
+
     @Autowired
     private SizeMapper sizeMapper;
 
@@ -99,113 +102,5 @@ public class EmailServiceImpl implements EmailService {
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
-    }
-
-
-    public void sendHtmlEmail(String to, String subject, String htmlBody) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
-        helper.setFrom("hunglqph20358@fpt.edu.vn");
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(htmlBody, true);
-        javaMailSender.send(message);
-    }
-
-    @Override
-    public ServiceResult<String> sendMessageUsingThymeleafTemplate(OrderDTO orderDTO) throws MessagingException {
-        Context thymeleafContext = new Context();
-        ServiceResult<String> result = new ServiceResult<>();
-//        Customer customer = customerRepository.findById(orderDTO.getIdCustomer()).get();
-        if(orderDTO.getId() == null || StringUtils.isBlank(orderDTO.getEmail())){
-            result.setMessage("Error");
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setData("Lỗi send Email");
-            return result;
-        }
-        String emailTo = orderDTO.getEmail();
-        String subject =  " Thông tin đơn hàng ";
-        Map<String, Object> map = orderDetailService.getAllByOrder(orderDTO.getId());
-
-        List<OrderDetailDTO> list = (List<OrderDetailDTO>) map.get("orderDetail");
-        thymeleafContext.setVariable("order", orderDTO);
-        thymeleafContext.setVariable("orderDetail", list);
-        String htmlBody = templateEngine.process("sendEmailOrder", thymeleafContext);
-        sendHtmlEmail(emailTo, subject, htmlBody);
-        result.setMessage("Success");
-        result.setStatus(HttpStatus.OK);
-        result.setData("Send Mail Thành công!");
-        return result;
-    }
-
-    @Override
-    public ServiceResult<String> sendEmailFromCustomer(OrderDTO orderDTO) throws MessagingException {
-        Context thymeleafContext = new Context();
-        ServiceResult<String> result = new ServiceResult<>();
-//        Customer customer = customerRepository.findById(orderDTO.getIdCustomer()).get();
-        if(orderDTO.getId() == null){
-            result.setMessage("Error");
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setData("Lỗi send Email");
-            return result;
-        }
-        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
-        String emailTo = order.getEmail();
-        String subject =  " Thông tin đơn hàng";
-        Map<String, Object> map = orderDetailService.getAllByOrder(order.getId());
-
-        List<OrderDetailDTO> list = (List<OrderDetailDTO>) map.get("orderDetail");
-        thymeleafContext.setVariable("order", orderDTO);
-        thymeleafContext.setVariable("orderDetail", list);
-        String htmlBody = templateEngine.process("sendEmailOrder", thymeleafContext);
-        sendHtmlEmail(emailTo, subject, htmlBody);
-        result.setMessage("Success");
-        result.setStatus(HttpStatus.OK);
-        result.setData("Send Mail Thành công!");
-        return result;
-    }
-
-    @Override
-    public ServiceResult<String> sendMailOrderNotLogin(OrderDTO orderDTO) throws MessagingException {
-        Context thymeleafContext = new Context();
-        ServiceResult<String> result = new ServiceResult<>();
-        if(orderDTO.getId() == null || StringUtils.isBlank(orderDTO.getEmail())){
-            result.setMessage("Error");
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setData("Lỗi send Email");
-            return result;
-        }
-        String emailTo = orderDTO.getEmail();
-        String subject =  " Thông tin đơn hàng";
-        List<OrderDetailDTO> list = getAllByOrder(orderDTO.getId());
-        thymeleafContext.setVariable("order", orderDTO);
-        thymeleafContext.setVariable("orderDetail", list);
-        String htmlBody = templateEngine.process("sendMailOrderNotLogin", thymeleafContext);
-        sendHtmlEmail(emailTo, subject, htmlBody);
-        result.setMessage("Success");
-        result.setStatus(HttpStatus.OK);
-        result.setData("Send Mail Thành công!");
-        return result;
-    }
-
-    private List<OrderDetailDTO> getAllByOrder(Long idOrder) {
-        if(idOrder == null){
-            return null;
-        }
-        List<OrderDetailDTO> lst = orderDetailMapper.toDto(orderDetailRepository.findByIdOrder(idOrder));
-        for (int i = 0; i < lst.size() ; i++) {
-            ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(lst.get(i).getIdProductDetail()).get());
-            ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
-            List<ImagesDTO> imagesDTOList = imagesMapper.toDto(imagesRepository.findByIdProduct(productDTO.getId()));
-            ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
-            productDetailDTO.setColorDTO(colorDTO);
-            SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
-            productDetailDTO.setSizeDTO(sizeDTO);
-            productDTO.setImagesDTOList(imagesDTOList);
-            productDetailDTO.setProductDTO(productDTO);
-            lst.get(i).setProductDetailDTO(productDetailDTO);
-            lst.set(i,lst.get(i));
-        }
-        return lst;
     }
 }

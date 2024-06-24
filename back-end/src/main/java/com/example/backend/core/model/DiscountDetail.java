@@ -37,6 +37,4 @@ public class DiscountDetail {
 
     @Column(name = "max_reduced")
     private BigDecimal maxReduced;
-
-
 }

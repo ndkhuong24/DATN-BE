@@ -54,10 +54,17 @@ public class Discount {
 
 //    @Column(name="reduced_value")
 //    private BigDecimal reducedValue; //giá trị giảm
+<<<<<<< HEAD
 //
 //    @Column(name = "max_reduced")
 //    private BigDecimal maxReduced; //giá trị giảm tối
 //
+=======
+
+//    @Column(name = "max_reduced")
+//    private BigDecimal maxReduced; //giá trị giảm tối
+
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //    @Column(name = "discount_type")
 //    private Integer discountType; //loại giảm giá
 }

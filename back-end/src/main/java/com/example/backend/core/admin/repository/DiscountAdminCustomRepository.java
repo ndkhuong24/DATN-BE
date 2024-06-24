@@ -1,7 +1,10 @@
 package com.example.backend.core.admin.repository;
 
 import com.example.backend.core.admin.dto.DiscountAdminDTO;
+<<<<<<< HEAD
 import com.example.backend.core.admin.dto.ProductAdminDTO;
+=======
+>>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 
 import java.util.List;
 
@@ -25,4 +28,10 @@ public interface DiscountAdminCustomRepository {
 //    List<ProductAdminDTO> getAllProduct();
 //    List<ProductAdminDTO> getAllProductKickHoat();
 //    List<DiscountDetailAdminDTO> discountExport();
+
+    List<DiscountAdminDTO> getAll();
+
+    List<DiscountAdminDTO> getAllKichHoat();
+
+    List<DiscountAdminDTO> getAllKhongKichHoat();
 }
