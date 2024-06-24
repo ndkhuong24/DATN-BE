@@ -1,45 +1,23 @@
 package com.example.backend.core.admin.controller;
 
-import com.example.backend.core.admin.dto.DiscountAdminDTO;
-import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
 import com.example.backend.core.admin.service.DiscountDetailAdminService;
-import com.example.backend.core.commons.ServiceResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin("*")
 public class DiscountDetailAdminController {
-    @Autowired
-    private DiscountDetailAdminService discountDetailAdminService;
+//    @Autowired
+//    private DiscountDetailAdminService discountDetailAdminService;
 
 //    @Autowired
 //    private DiscountAdminService discountAdminService;//moi
 
 //    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
 
-<<<<<<< HEAD
-    @GetMapping("/discount")
-    public ResponseEntity<?> getAllDiscount() {
-        try {
-            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAll();
-            return ResponseEntity.ok(discountAdminDTOList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-=======
 //    @GetMapping("/discount")
 //    public ResponseEntity<?> getAllDiscount() {
 //        try {
@@ -50,7 +28,18 @@ public class DiscountDetailAdminController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 //        }
 //    }
-//
+
+//    @GetMapping("/discount")
+//    public ResponseEntity<?> getAllDiscount() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAll();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+
 //    @GetMapping("/discount/KH")
 //    public ResponseEntity<?> getAllDiscountKH() {
 //        try {
@@ -61,7 +50,7 @@ public class DiscountDetailAdminController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 //        }
 //    }
-//
+
 //    @GetMapping("/discount/KKH")
 //    public ResponseEntity<?> getAllDiscountKhongKH() {
 //        try {
@@ -72,59 +61,58 @@ public class DiscountDetailAdminController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 //        }
 //    }
->>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 
-    @GetMapping("/discount/KH")
-    public ResponseEntity<?> getAllDiscountKH() {
-        try {
-            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKichHoat();
-            return ResponseEntity.ok(discountAdminDTOList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+//    @GetMapping("/discount/KH")
+//    public ResponseEntity<?> getAllDiscountKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
 
-    @GetMapping("/discount/KKH")
-    public ResponseEntity<?> getAllDiscountKhongKH() {
-        try {
-            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKhongKichHoat();
-            return ResponseEntity.ok(discountAdminDTOList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+//    @GetMapping("/discount/KKH")
+//    public ResponseEntity<?> getAllDiscountKhongKH() {
+//        try {
+//            List<DiscountAdminDTO> discountAdminDTOList = discountDetailAdminService.getAllKhongKichHoat();
+//            return ResponseEntity.ok(discountAdminDTOList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
 
-    @DeleteMapping("/discount/{idDiscount}")
-    public ResponseEntity<?> deleteDiscount(@PathVariable Long idDiscount) {
-        try {
-            ServiceResult<Void> result = discountDetailAdminService.deleteDiscountById(idDiscount);
-            if (result.isSuccess()) {
-                return ResponseEntity.ok(result);
-            } else {
-                // Thay đổi mã trạng thái HTTP và thông điệp lỗi cụ thể ở đây
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getMessage());
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the discount.");
-        }
-    }
+//    @DeleteMapping("/discount/{idDiscount}")
+//    public ResponseEntity<?> deleteDiscount(@PathVariable Long idDiscount) {
+//        try {
+//            ServiceResult<Void> result = discountDetailAdminService.deleteDiscountById(idDiscount);
+//            if (result.isSuccess()) {
+//                return ResponseEntity.ok(result);
+//            } else {
+//                // Thay đổi mã trạng thái HTTP và thông điệp lỗi cụ thể ở đây
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getMessage());
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the discount.");
+//        }
+//    }
 
-    @GetMapping("/discount/{idDiscount}")
-    public ResponseEntity<?> getDetailDiscount(@PathVariable Long idDiscount) {
-        return ResponseEntity.ok(discountDetailAdminService.getDetailDiscountById(idDiscount));
-    }
+//    @GetMapping("/discount/{idDiscount}")
+//    public ResponseEntity<?> getDetailDiscount(@PathVariable Long idDiscount) {
+//        return ResponseEntity.ok(discountDetailAdminService.getDetailDiscountById(idDiscount));
+//    }
 
-    @PutMapping("/discount/kichHoat/{id}")
-    public ResponseEntity<?> kichHoat(@PathVariable Long id) {
-        return ResponseEntity.ok(discountDetailAdminService.KichHoat(id));
-    }
+//    @PutMapping("/discount/kichHoat/{id}")
+//    public ResponseEntity<?> kichHoat(@PathVariable Long id) {
+//        return ResponseEntity.ok(discountDetailAdminService.KichHoat(id));
+//    }
 
-    @PutMapping("/discount/setIdel/{id}")
-    public ResponseEntity<?> setIdel(@PathVariable Long id) {
-        return ResponseEntity.ok(discountDetailAdminService.setIdel(id));
-    }
+//    @PutMapping("/discount/setIdel/{id}")
+//    public ResponseEntity<?> setIdel(@PathVariable Long id) {
+//        return ResponseEntity.ok(discountDetailAdminService.setIdel(id));
+//    }
 
 
 //    @GetMapping("discount")

@@ -37,11 +37,6 @@ public class DiscountAdminServiceImpl implements DiscountAdminService {
 //                .collect(Collectors.toList());
 //        return lstStr;
 //    }
-<<<<<<< HEAD
-
-=======
-//
->>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //    @Override
 //    public List<DiscountAdminDTO> getAll() {
 //        List<DiscountAdminDTO> discountAdminDTOList = discountAdminMapper.toDto(discountAdminRepository.findAll());

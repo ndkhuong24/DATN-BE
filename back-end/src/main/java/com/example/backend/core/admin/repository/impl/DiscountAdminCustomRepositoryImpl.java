@@ -1,22 +1,11 @@
 package com.example.backend.core.admin.repository.impl;
 
-import com.example.backend.core.admin.dto.DiscountAdminDTO;
-<<<<<<< HEAD
-import com.example.backend.core.admin.dto.ProductAdminDTO;
-=======
->>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 import com.example.backend.core.admin.repository.DiscountAdminCustomRepository;
 import com.example.backend.core.admin.repository.DiscountDetailAdminRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 @Transactional
@@ -27,294 +16,291 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
     @Autowired
     private DiscountDetailAdminRepository discountDetailRepository;
 
-    @Override
-    public List<DiscountAdminDTO> getAll() {
-        try {
-            StringBuilder sql = new StringBuilder("SELECT\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel,\n" +
-                    "    COUNT(od.quantity) AS used_count\n" +
-                    "FROM\n" +
-                    "    discount d\n" +
-                    "LEFT JOIN\n" +
-                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
-                    "LEFT JOIN\n" +
-                    "    order_detail AS od ON d.code = od.code_discount\n" +
-                    "WHERE\n" +
-                    "    d.dele = 0\n" +
-                    "GROUP BY\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel;\n");
-
-            String sqlString = sql.toString();
-            Query query = entityManager.createNativeQuery(sqlString);
-            List<Object[]> resultList = query.getResultList();
-
-            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
-
-            for (Object[] row : resultList) {
-                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
-
-                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
-                discountAdminDTO.setCode(row[1].toString());
-                discountAdminDTO.setName(row[2].toString());
-                discountAdminDTO.setDescription(row[5].toString());
-                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
-                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
-
-                try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
-
-                    discountAdminDTO.setStartDate(startDate);
-                    discountAdminDTO.setEndDate(endDate);
-
-                    if (LocalDate.now().isAfter(endDate)) {
-                        discountAdminDTO.setStatus(1);
-                    } else {
-                        discountAdminDTO.setStatus(0);
-                    }
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-                discountAdminDTOList.add(discountAdminDTO);
-            }
-            return discountAdminDTOList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public List<DiscountAdminDTO> getAllKichHoat() {
-        try {
-            StringBuilder sql = new StringBuilder("SELECT\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel,\n" +
-                    "    COUNT(od.quantity) AS used_count\n" +
-                    "FROM\n" +
-                    "    discount d\n" +
-                    "LEFT JOIN\n" +
-                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
-                    "LEFT JOIN\n" +
-                    "    order_detail AS od ON d.code = od.code_discount\n" +
-                    "WHERE\n" +
-                    "    d.idel = 1 AND d.dele = 0\n" +
-                    "GROUP BY\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel;\n");
-
-            String sqlString = sql.toString();
-            Query query = entityManager.createNativeQuery(sqlString);
-            List<Object[]> resultList = query.getResultList();
-
-            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
-
-            for (Object[] row : resultList) {
-                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
-
-                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
-                discountAdminDTO.setCode(row[1].toString());
-                discountAdminDTO.setName(row[2].toString());
-                discountAdminDTO.setDescription(row[5].toString());
-                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
-                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
-
-                try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
-
-                    discountAdminDTO.setStartDate(startDate);
-                    discountAdminDTO.setEndDate(endDate);
-
-                    if (LocalDate.now().isAfter(endDate)) {
-                        discountAdminDTO.setStatus(1);
-                    } else {
-                        discountAdminDTO.setStatus(0);
-                    }
-
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-
-                discountAdminDTOList.add(discountAdminDTO);
-            }
-            return discountAdminDTOList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public List<DiscountAdminDTO> getAllKhongKichHoat() {
-        try {
-            StringBuilder sql = new StringBuilder("SELECT\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel,\n" +
-                    "    COUNT(od.quantity) AS used_count\n" +
-                    "FROM\n" +
-                    "    discount d\n" +
-                    "LEFT JOIN\n" +
-                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
-                    "LEFT JOIN\n" +
-                    "    order_detail AS od ON d.code = od.code_discount\n" +
-                    "WHERE\n" +
-                    "    d.idel = 0 AND d.dele = 0\n" +
-                    "GROUP BY\n" +
-                    "    d.id,\n" +
-                    "    d.code,\n" +
-                    "    d.name,\n" +
-                    "    d.start_date,\n" +
-                    "    d.end_date,\n" +
-                    "    d.description,\n" +
-                    "    d.idel;\n");
-
-            String sqlString = sql.toString();
-            Query query = entityManager.createNativeQuery(sqlString);
-            List<Object[]> resultList = query.getResultList();
-
-            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
-
-            for (Object[] row : resultList) {
-                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
-
-                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
-                discountAdminDTO.setCode(row[1].toString());
-                discountAdminDTO.setName(row[2].toString());
-                discountAdminDTO.setDescription(row[5].toString());
-                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
-                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
-
-                try {
-                    LocalDate startDate = LocalDate.parse(row[3].toString());
-                    LocalDate endDate = LocalDate.parse(row[4].toString());
-
-                    discountAdminDTO.setStartDate(startDate);
-                    discountAdminDTO.setEndDate(endDate);
-
-                    if (LocalDate.now().isAfter(endDate)) {
-                        discountAdminDTO.setStatus(1);
-                    } else {
-                        discountAdminDTO.setStatus(0);
-                    }
-
-                } catch (DateTimeParseException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-
-                discountAdminDTOList.add(discountAdminDTO);
-            }
-            return discountAdminDTOList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-<<<<<<< HEAD
-    @Override
-    public List<ProductAdminDTO> getAllProductKickHoat() {
+//    @Override
+//    public List<DiscountAdminDTO> getAll() {
 //        try {
-//            String sql = "SELECT\n" +
-//                    "    p.id,\n" +
-//                    "    p.code,\n" +
-//                    "    p.name,\n" +
-//                    "    b.name AS brand_name,\n" +
-//                    "    c.name AS category_name,\n" +
-//                    "    IFNULL(SUM(od.quantity), 0) AS total_sold,\n" +
-//                    "    p.price\n" +
+//            StringBuilder sql = new StringBuilder("SELECT\n" +
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel,\n" +
+//                    "    COUNT(od.quantity) AS used_count\n" +
 //                    "FROM\n" +
-//                    "    product p\n" +
+//                    "    discount d\n" +
 //                    "LEFT JOIN\n" +
-//                    "    product_detail pd ON p.id = pd.id_product\n" +
+//                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
 //                    "LEFT JOIN\n" +
-//                    "    order_detail od ON od.id_product_detail = pd.id\n" +
-//                    "LEFT JOIN\n" +
-//                    "    brand b ON p.id_brand = b.id\n" +
-//                    "LEFT JOIN\n" +
-//                    "    category c ON p.id_category = c.id\n" +
+//                    "    order_detail AS od ON d.code = od.code_discount\n" +
 //                    "WHERE\n" +
-//                    "    EXISTS (\n" +
-//                    "        SELECT 1\n" +
-//                    "        FROM discount_detail dd\n" +
-//                    "        JOIN discount d ON dd.id_discount = d.id\n" +
-//                    "        WHERE p.id = dd.id_product AND ( d.idel = 1 and d.dele =0)  \n" +
-//                    "    )\n" +
+//                    "    d.dele = 0\n" +
 //                    "GROUP BY\n" +
-//                    "    p.id,\n" +
-//                    "    p.code,\n" +
-//                    "    p.name,\n" +
-//                    "    brand_name,\n" +
-//                    "    category_name\n" +
-//                    "ORDER BY\n" +
-//                    "    total_sold;\n";
-//            Query query = entityManager.createNativeQuery(sql);
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel;\n");
+//
+//            String sqlString = sql.toString();
+//            Query query = entityManager.createNativeQuery(sqlString);
 //            List<Object[]> resultList = query.getResultList();
-//            List<ProductAdminDTO> productDTOList = new ArrayList<>();
+//
+//            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
 //
 //            for (Object[] row : resultList) {
-//                ProductAdminDTO product = new ProductAdminDTO();
-//                product.setId(((Number) row[0]).longValue());
-//                product.setCode((String) row[1]);
-//                product.setName((String) row[2]);
-////                product.setPrice(new BigDecimal(row[6].toString()));
-//                BrandAdminDTO brand = new BrandAdminDTO();
-//                brand.setName((String) row[3]);
-//                product.setBrandAdminDTO(brand);
+//                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
 //
-//                CategoryAdminDTO category = new CategoryAdminDTO();
-//                category.setName((String) row[4]);
-//                product.setCategoryAdminDTO(category);
-////                product.setTotalQuantity((((Number) row[5]).intValue()));
+//                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
+//                discountAdminDTO.setCode(row[1].toString());
+//                discountAdminDTO.setName(row[2].toString());
+//                discountAdminDTO.setDescription(row[5].toString());
+//                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
+//                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
 //
-//                productDTOList.add(product);
+//                try {
+//                    LocalDate startDate = LocalDate.parse(row[3].toString());
+//                    LocalDate endDate = LocalDate.parse(row[4].toString());
+//
+//                    discountAdminDTO.setStartDate(startDate);
+//                    discountAdminDTO.setEndDate(endDate);
+//
+//                    if (LocalDate.now().isAfter(endDate)) {
+//                        discountAdminDTO.setStatus(1);
+//                    } else {
+//                        discountAdminDTO.setStatus(0);
+//                    }
+//                } catch (DateTimeParseException e) {
+//                    e.printStackTrace();
+//                    continue;
+//                }
+//                discountAdminDTOList.add(discountAdminDTO);
 //            }
-//
-//            return productDTOList;
-//        } catch (PersistenceException e) {
+//            return discountAdminDTOList;
+//        } catch (Exception e) {
 //            e.printStackTrace();
 //            return null;
 //        }
-        return null;
-    }
+//    }
+
+//    @Override
+//    public List<DiscountAdminDTO> getAllKichHoat() {
+//        try {
+//            StringBuilder sql = new StringBuilder("SELECT\n" +
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel,\n" +
+//                    "    COUNT(od.quantity) AS used_count\n" +
+//                    "FROM\n" +
+//                    "    discount d\n" +
+//                    "LEFT JOIN\n" +
+//                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
+//                    "LEFT JOIN\n" +
+//                    "    order_detail AS od ON d.code = od.code_discount\n" +
+//                    "WHERE\n" +
+//                    "    d.idel = 1 AND d.dele = 0\n" +
+//                    "GROUP BY\n" +
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel;\n");
+//
+//            String sqlString = sql.toString();
+//            Query query = entityManager.createNativeQuery(sqlString);
+//            List<Object[]> resultList = query.getResultList();
+//
+//            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
+//
+//            for (Object[] row : resultList) {
+//                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
+//
+//                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
+//                discountAdminDTO.setCode(row[1].toString());
+//                discountAdminDTO.setName(row[2].toString());
+//                discountAdminDTO.setDescription(row[5].toString());
+//                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
+//                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
+//
+//                try {
+//                    LocalDate startDate = LocalDate.parse(row[3].toString());
+//                    LocalDate endDate = LocalDate.parse(row[4].toString());
+//
+//                    discountAdminDTO.setStartDate(startDate);
+//                    discountAdminDTO.setEndDate(endDate);
+//
+//                    if (LocalDate.now().isAfter(endDate)) {
+//                        discountAdminDTO.setStatus(1);
+//                    } else {
+//                        discountAdminDTO.setStatus(0);
+//                    }
+//
+//                } catch (DateTimeParseException e) {
+//                    e.printStackTrace();
+//                    continue;
+//                }
+//
+//                discountAdminDTOList.add(discountAdminDTO);
+//            }
+//            return discountAdminDTOList;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+//    @Override
+//    public List<DiscountAdminDTO> getAllKhongKichHoat() {
+//        try {
+//            StringBuilder sql = new StringBuilder("SELECT\n" +
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel,\n" +
+//                    "    COUNT(od.quantity) AS used_count\n" +
+//                    "FROM\n" +
+//                    "    discount d\n" +
+//                    "LEFT JOIN\n" +
+//                    "    discount_detail AS dd ON d.id = dd.id_discount\n" +
+//                    "LEFT JOIN\n" +
+//                    "    order_detail AS od ON d.code = od.code_discount\n" +
+//                    "WHERE\n" +
+//                    "    d.idel = 0 AND d.dele = 0\n" +
+//                    "GROUP BY\n" +
+//                    "    d.id,\n" +
+//                    "    d.code,\n" +
+//                    "    d.name,\n" +
+//                    "    d.start_date,\n" +
+//                    "    d.end_date,\n" +
+//                    "    d.description,\n" +
+//                    "    d.idel;\n");
+//
+//            String sqlString = sql.toString();
+//            Query query = entityManager.createNativeQuery(sqlString);
+//            List<Object[]> resultList = query.getResultList();
+//
+//            List<DiscountAdminDTO> discountAdminDTOList = new ArrayList<>();
+//
+//            for (Object[] row : resultList) {
+//                DiscountAdminDTO discountAdminDTO = new DiscountAdminDTO();
+//
+//                discountAdminDTO.setId(Long.parseLong(row[0].toString()));
+//                discountAdminDTO.setCode(row[1].toString());
+//                discountAdminDTO.setName(row[2].toString());
+//                discountAdminDTO.setDescription(row[5].toString());
+//                discountAdminDTO.setIdel(Integer.valueOf(row[6].toString()));
+//                discountAdminDTO.setUsed_count(row[7] != null ? new Integer(row[7].toString()) : null);
+//
+//                try {
+//                    LocalDate startDate = LocalDate.parse(row[3].toString());
+//                    LocalDate endDate = LocalDate.parse(row[4].toString());
+//
+//                    discountAdminDTO.setStartDate(startDate);
+//                    discountAdminDTO.setEndDate(endDate);
+//
+//                    if (LocalDate.now().isAfter(endDate)) {
+//                        discountAdminDTO.setStatus(1);
+//                    } else {
+//                        discountAdminDTO.setStatus(0);
+//                    }
+//
+//                } catch (DateTimeParseException e) {
+//                    e.printStackTrace();
+//                    continue;
+//                }
+//
+//                discountAdminDTOList.add(discountAdminDTO);
+//            }
+//            return discountAdminDTOList;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+//    @Override
+//    public List<ProductAdminDTO> getAllProductKickHoat() {
+////        try {
+////            String sql = "SELECT\n" +
+////                    "    p.id,\n" +
+////                    "    p.code,\n" +
+////                    "    p.name,\n" +
+////                    "    b.name AS brand_name,\n" +
+////                    "    c.name AS category_name,\n" +
+////                    "    IFNULL(SUM(od.quantity), 0) AS total_sold,\n" +
+////                    "    p.price\n" +
+////                    "FROM\n" +
+////                    "    product p\n" +
+////                    "LEFT JOIN\n" +
+////                    "    product_detail pd ON p.id = pd.id_product\n" +
+////                    "LEFT JOIN\n" +
+////                    "    order_detail od ON od.id_product_detail = pd.id\n" +
+////                    "LEFT JOIN\n" +
+////                    "    brand b ON p.id_brand = b.id\n" +
+////                    "LEFT JOIN\n" +
+////                    "    category c ON p.id_category = c.id\n" +
+////                    "WHERE\n" +
+////                    "    EXISTS (\n" +
+////                    "        SELECT 1\n" +
+////                    "        FROM discount_detail dd\n" +
+////                    "        JOIN discount d ON dd.id_discount = d.id\n" +
+////                    "        WHERE p.id = dd.id_product AND ( d.idel = 1 and d.dele =0)  \n" +
+////                    "    )\n" +
+////                    "GROUP BY\n" +
+////                    "    p.id,\n" +
+////                    "    p.code,\n" +
+////                    "    p.name,\n" +
+////                    "    brand_name,\n" +
+////                    "    category_name\n" +
+////                    "ORDER BY\n" +
+////                    "    total_sold;\n";
+////            Query query = entityManager.createNativeQuery(sql);
+////            List<Object[]> resultList = query.getResultList();
+////            List<ProductAdminDTO> productDTOList = new ArrayList<>();
+////
+////            for (Object[] row : resultList) {
+////                ProductAdminDTO product = new ProductAdminDTO();
+////                product.setId(((Number) row[0]).longValue());
+////                product.setCode((String) row[1]);
+////                product.setName((String) row[2]);
+//////                product.setPrice(new BigDecimal(row[6].toString()));
+////                BrandAdminDTO brand = new BrandAdminDTO();
+////                brand.setName((String) row[3]);
+////                product.setBrandAdminDTO(brand);
+////
+////                CategoryAdminDTO category = new CategoryAdminDTO();
+////                category.setName((String) row[4]);
+////                product.setCategoryAdminDTO(category);
+//////                product.setTotalQuantity((((Number) row[5]).intValue()));
+////
+////                productDTOList.add(product);
+////            }
+////
+////            return productDTOList;
+////        } catch (PersistenceException e) {
+////            e.printStackTrace();
+////            return null;
+////        }
+//        return null;
+//    }
 
 //    @Override
 //    public List<ProductAdminDTO> getAllProductKickHoat() {
 //        return List.of();
 //    }
 
-=======
->>>>>>> 7655df1fef7905661c4070e435bd6011f90bbdef
 //    @Override
 //    public void deleteAllDiscountDetailByDiscount(Long id) {
 //        try {
@@ -325,7 +311,7 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
 //            e.printStackTrace();
 //        }
 //    }
-//
+
 //    @Override
 //    public List<DiscountDetailAdminDTO> discountExport() {
 //        try {
@@ -741,7 +727,7 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
 //        }
 //        return discounts;
 //    }
-//
+
 //    @Override
 //    public List<DiscountAdminDTO> getAllByProductNameOrCode(String productNameOrCode) {
 //        try {
@@ -871,6 +857,7 @@ public class DiscountAdminCustomRepositoryImpl implements DiscountAdminCustomRep
 //                return null;
 //            }
 //        }
+
 //    @Override
 //    public List<DiscountAdminDTO> getAllByDateRange(String fromDate, String toDate) {
 //        try {
