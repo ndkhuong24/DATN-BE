@@ -28,5 +28,5 @@ public class ProductDetailDTO {
     private ProductDTO productDTO;
     private ColorDTO colorDTO;
     private SizeDTO sizeDTO;
-
+    private BigDecimal price;
 }
