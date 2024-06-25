@@ -156,6 +156,7 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
     @Override
     public ServiceResult<ProductDetailAdminDTO> getById(Long id) {
         ServiceResult<ProductDetailAdminDTO> result = new ServiceResult<>();
+
         Optional<ProductDetail> optional = this.productDetailAdminRepository.findById(id);
 
         if (optional.isPresent()) {
@@ -183,6 +184,7 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
     @Override
     public ServiceResult<List<ProductDetailAdminDTO>> getProductDetailsByProductId(long idProduct) {
         ServiceResult<List<ProductDetailAdminDTO>> result = new ServiceResult<>();
+
         List<ProductDetail> productDetailList = productDetailAdminRepository.findByIdProduct(idProduct);
 
         // Kiểm tra danh sách sản phẩm có rỗng hay không
@@ -216,7 +218,6 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
                         );
                     }).collect(Collectors.toList());
 
-            // Thiết lập kết quả thành công
             result.setStatus(HttpStatus.OK);
             result.setMessage("Lấy thông tin sản phẩm thành công");
             result.setData(productDetailDTOList);

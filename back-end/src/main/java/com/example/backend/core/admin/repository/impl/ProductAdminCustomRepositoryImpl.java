@@ -135,7 +135,7 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                         }
                     }
                 }
-                dto.setImagesDTOList(imagesAdminDTOLis);
+//                dto.setImagesDTOList(imagesAdminDTOLis);
                 lstProduct.add(dto);
             }
         }catch (Exception e){

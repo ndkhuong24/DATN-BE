@@ -115,6 +115,7 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     public List<VoucherAdminDTO> getAllVouchers() {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
 
+        // Filter out null createDates
         list = list.stream()
                 .filter(voucher -> voucher.getCreateDate() != null)
                 .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())

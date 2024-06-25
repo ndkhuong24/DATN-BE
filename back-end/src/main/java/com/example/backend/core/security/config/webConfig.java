@@ -70,8 +70,10 @@ public class webConfig{
                                 .requestMatchers("/admin/api/sign-in").permitAll()
                                 .requestMatchers("/admin/api/sign-up").permitAll()
                                 .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
-                                .requestMatchers(AppConstant.API_ADMIN).permitAll()
+//                                .requestMatchers(AppConstant.API_ADMIN).hasAnyAuthority("ADMIN")
+//                                .requestMatchers(AppConstant.API_STAFF).hasAnyAuthority("STAFF")
                                 .requestMatchers(AppConstant.API_STAFF).permitAll()
+                                .requestMatchers(AppConstant.API_ADMIN).permitAll()
                                 .anyRequest().authenticated(); // Thay .permitAll() bằng .authenticated() cho các request còn lại
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -29,12 +29,12 @@ public class ProductAdminDTO extends ExportDTO {
     private Integer status;
 
     private List<ProductDetailAdminDTO> productDetailAdminDTOList;
-    private List<ImagesAdminDTO> imagesDTOList;
+//    private List<ImagesAdminDTO> imagesDTOList;
 
     private String imageURL;
 
-    private ProductDetailAdminDTO productDetailAdminDTO;
-    private ImagesAdminDTO imagesAdminDTO;
+//    private ProductDetailAdminDTO productDetailAdminDTO;
+//    private ImagesAdminDTO imagesAdminDTO;
 
     private BrandAdminDTO brandAdminDTO;
     private CategoryAdminDTO categoryAdminDTO;
@@ -64,13 +64,13 @@ public class ProductAdminDTO extends ExportDTO {
         this.productDetailAdminDTOList = productDetailAdminDTOList;
     }
 
-    public List<ImagesAdminDTO> getImagesDTOList() {
-        return imagesDTOList;
-    }
-
-    public void setImagesDTOList(List<ImagesAdminDTO> imagesDTOList) {
-        this.imagesDTOList = imagesDTOList;
-    }
+//    public List<ImagesAdminDTO> getImagesDTOList() {
+//        return imagesDTOList;
+//    }
+//
+//    public void setImagesDTOList(List<ImagesAdminDTO> imagesDTOList) {
+//        this.imagesDTOList = imagesDTOList;
+//    }
 
 //    public void setSoleAdminDTO(SoleAdminDTO soleAdminDTO) {
 //

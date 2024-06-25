@@ -48,29 +48,4 @@ public class ProductAdminController {
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ProductAdminDTO productAdminDTO) {
         return ResponseEntity.ok(productAdminService.update(productAdminDTO, id));
     }
-
-//    @GetMapping("product/hien-thii")
-//    public ResponseEntity<List<ProductAdminDTO>> hienthiall(@RequestParam(value = "search", required = false, defaultValue = "") String search) {
-//        if (search != null && !search.isEmpty()) {
-//            return ResponseEntity.ok(productAdminService.getAllProductsWithDetailsAndImages(search));
-//        } else {
-//            return ResponseEntity.ok(productAdminService.getAllProductsWithDetailsAndImages(null));
-//        }
-//    }
-
-//
-//    @DeleteMapping("product/delete/{id}")
-//    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-//        return ResponseEntity.ok(productAdminService.delete(id));
-//    }
-//
-
-//
-//    @GetMapping("product/search/{param}")
-//    public ResponseEntity<?> searchProduct(
-//            @PathVariable("param") String param
-//    ) {
-//        return ResponseEntity.ok(productAdminService.findByNameLikeOrCodeLike(param));
-//    }
-
 }

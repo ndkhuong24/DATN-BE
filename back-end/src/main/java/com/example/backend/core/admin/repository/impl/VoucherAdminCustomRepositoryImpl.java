@@ -31,27 +31,30 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
     @Override
     public List<VoucherAdminDTO> getAllVouchers() {
         try {
-            String sql = "SELECT " +
-                    "  v.id, " +
-                    "  v.code, " +
-                    "  v.name, " +
-                    "  v.start_date," +
-                    "  v.end_date, " +
-                    "  v.conditions, " +
-                    "  v.voucher_type, " +
-                    "  v.reduced_value, " +
-                    "  v.description, " +
-                    "  v.idel, " +
-                    "  v.quantity," +
-                    "v.max_reduced," +
-                    "v.allow ," +
-                    "v.create_name ," +
-                    "  COUNT(o.id) AS use_voucher " +
-                    "FROM voucher v " +
-                    "LEFT JOIN `order` o ON o.code_voucher = v.code " +
-                    "where v.dele=0 " +
-                    "GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
-                    "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ";
+            String sql = "SELECT \n" +
+                    "    v.id,\n" +
+                    "    v.code,\n" +
+                    "    v.name,\n" +
+                    "    v.start_date,\n" +
+                    "    v.end_date,\n" +
+                    "    v.conditions,\n" +
+                    "    v.voucher_type,\n" +
+                    "    v.reduced_value,\n" +
+                    "    v.description,\n" +
+                    "    v.idel,\n" +
+                    "    v.quantity,\n" +
+                    "    v.max_reduced,\n" +
+                    "    v.allow,\n" +
+                    "    v.create_name,\n" +
+                    "    COUNT(o.id) AS use_voucher,\n" +
+                    "    v.create_date\n" +
+                    "FROM\n" +
+                    "    voucher v\n" +
+                    "        LEFT JOIN\n" +
+                    "    `order` o ON o.code_voucher = v.code\n" +
+                    "WHERE\n" +
+                    "    v.dele = 0\n" +
+                    "GROUP BY v.id , v.code , v.name , v.start_date , v.end_date , v.conditions , v.voucher_type , v.reduced_value , v.description , v.idel , v.quantity , v.max_reduced , v.allow, v.create_date;\n";
 
             Query query = entityManager.createNativeQuery(sql);
             List<Object[]> resultList = query.getResultList();
@@ -77,14 +80,17 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[15];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 //                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
 //                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
