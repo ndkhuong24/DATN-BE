@@ -251,8 +251,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
                 productDetail.setQuantity(productAdminDTO.getProductDetailAdminDTOList().get(i).getQuantity());
 
-                System.out.println(productAdminDTO);
-
                 this.productDetailAdminRepository.save(productDetail);
             }
         }
@@ -280,7 +278,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
         productAdminRepository.save(product);
     }
 
-
     @Override
     public ServiceResult<ProductAdminDTO> update(ProductAdminDTO productAdminDTO, Long id) {
         ServiceResult<ProductAdminDTO> result = new ServiceResult<>();
@@ -291,7 +288,6 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             Product product = productOptional.get();
 
             product.setId(id);
-//            product.setCode(productAdminDTO.getCode());
             product.setName(productAdminDTO.getName());
             product.setUpdateDate(LocalDateTime.now());
 
@@ -304,6 +300,30 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product.setStatus(productAdminDTO.getStatus());
 
             product = this.productAdminRepository.save(product);
+
+            this.productDetailAdminRepository.deleteByIdProduct(id);
+
+            if (product != null) {
+                for (int i = 0; i < productAdminDTO.getProductDetailAdminDTOList().size(); i++) {
+                    ProductDetail productDetail = new ProductDetail();
+
+                    productDetail.setId(productAdminDTO.getProductDetailAdminDTOList().get(i).getId());
+
+                    productDetail.setIdProduct(product.getId());
+
+                    productDetail.setIdColor(productAdminDTO.getProductDetailAdminDTOList().get(i).getColorDTO().getId());
+
+                    productDetail.setIdSize(productAdminDTO.getProductDetailAdminDTOList().get(i).getSizeDTO().getId());
+
+                    productDetail.setPrice(productAdminDTO.getProductDetailAdminDTOList().get(i).getPrice());
+
+                    productDetail.setShoeCollar(productAdminDTO.getProductDetailAdminDTOList().get(i).getShoeCollar());
+
+                    productDetail.setQuantity(productAdminDTO.getProductDetailAdminDTOList().get(i).getQuantity());
+
+                    this.productDetailAdminRepository.save(productDetail);
+                }
+            }
 
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");

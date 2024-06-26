@@ -17,7 +17,7 @@ public class ProductAdminController {
     @Autowired
     private ProductAdminService productAdminService;
 
-    private static final Logger log = LoggerFactory.getLogger(ProductAdminDTO.class);
+//    private static final Logger log = LoggerFactory.getLogger(ProductAdminDTO.class);
 
     @GetMapping("product/hien-thi")
     public ResponseEntity<List<ProductAdminDTO>> hienthi() {
