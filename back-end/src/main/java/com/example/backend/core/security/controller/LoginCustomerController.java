@@ -95,7 +95,7 @@ public class LoginCustomerController {
                     UserDetails customerUserDetails = (UserDetails) authentication.getPrincipal();
                     String token = jwtUtils.generateToken(customerUserDetails);
                     CustomerLogin customer = customerService.findByUsername(signInRequet.getUsername());
-                    return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(customer.getId(), customer.getFullname(), userDetails.getUsername())));
+                    return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(customer.getId(), customer.getFullname(), userDetails.getUsername(),userDetails.getPassword())));
 
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

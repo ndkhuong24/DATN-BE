@@ -6,7 +6,6 @@ import com.example.backend.core.security.dto.request.SignInRequet;
 import com.example.backend.core.security.dto.request.SignUpRepquest;
 import com.example.backend.core.security.dto.response.JwtResponse;
 import com.example.backend.core.security.dto.response.MessageResponse;
-import com.example.backend.core.security.entity.ERole;
 import com.example.backend.core.security.entity.Users;
 import com.example.backend.core.security.jwt.JwtEntryPoint;
 import com.example.backend.core.security.jwt.JwtUtils;
@@ -93,18 +92,25 @@ public class SercurityController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<?> login(@Valid @RequestBody SignInRequet signInRequet, HttpServletRequest request) {
-        String uri = request.getRequestURI();
         UserDetails userDetails = customUserDetailService.loadUserByUsername(signInRequet.getUsername());
+
         if (userDetails != null) {
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-                    null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails customUserDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtUtils.generateToken(customUserDetails);
-            Users users = usersService.findByUsername(signInRequet.getUsername());
-            return ResponseEntity.ok(new JwtResponse(token,new UsersDTO(users.getId(), users.getFullname(),userDetails.getUsername())));
+            if (passwordEncoder.matches(signInRequet.getPassword(), userDetails.getPassword())) {
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                UserDetails authenticatedUser = (UserDetails) authentication.getPrincipal();
+                String token = jwtUtils.generateToken(authenticatedUser);
+
+                Users users = usersService.findByUsername(signInRequet.getUsername());
+                return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(users.getId(), users.getFullname(), userDetails.getUsername(),users.getRole())));
+            } else {
+                // Sai mật khẩu
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         } else {
+            // Không tìm thấy thông tin người dùng
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
