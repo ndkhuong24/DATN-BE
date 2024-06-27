@@ -31,7 +31,7 @@ public class Staff implements Serializable {
     private String fullname;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "gender")
     private String gender;

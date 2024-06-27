@@ -21,9 +21,6 @@ public class AppConstant {
         public static final Integer HUY_HISTORY = 6;
         public static final Integer HOAN_THANH_HISTORY = 7;
 
-
-
-
         public static final String ALIGN_LEFT = "LEFT";
         public static final String ALIGN_RIGHT = "RIGHT";
         public static final String STRING = "STRING";
@@ -47,8 +44,6 @@ public class AppConstant {
         public static final String ENCODING_UTF8 = "UTF-8";
         public static final Long IMPORT_INSERT = 0l;
         public static final Long IMPORT_UPDATE = 1l;
-
-
 
         public static final  String[] API_ADMIN = {
                 "/api/admin/discount",
@@ -134,7 +129,6 @@ public class AppConstant {
                 "/api/sc-voucher/get-all-voucher",
                 "/api/sc-voucher/get-voucher",
                 "/api/upload/**"
-
         };
 
         public static final String[] API_STAFF = {
@@ -142,6 +136,8 @@ public class AppConstant {
         };
 
         public static final String[] API_VIEW_PERMIT = {
+//                "/api/admin/staff-update/**",
+                "/api/admin/staff/update/**",
                 "/view/anh/**",
                 "/api/admin/images/upload",
                 "/api/admin/images/update",

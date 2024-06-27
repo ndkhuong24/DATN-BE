@@ -16,7 +16,7 @@ public class StaffAdminDTO {
     private Long id;
     private String code;
     private String fullname;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     private String gender;
     //    private String address;
     private String phone;

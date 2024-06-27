@@ -52,51 +52,114 @@ public class StaffAdminServiceImpl implements StaffAdminService {
     }
 
     @Override
-    public ServiceResult<StaffAdminDTO> updateStaff(StaffAdminDTO staffAdminDTO, Staff staff) {
-        if (staff.getPhone() != null && !staff.getPhone().equals(staffAdminDTO.getPhone())) {
+    public ServiceResult<StaffAdminDTO> updateStaff(Long id, StaffAdminDTO staffAdminDTO) {
+        Optional<Staff> staffOptional = staffAdminRepository.findById(id);
+        ServiceResult<StaffAdminDTO> result = new ServiceResult<>();
+
+        if (!staffOptional.isPresent()) {
+            result.setStatus(HttpStatus.NOT_FOUND);
+            result.setMessage("Staff not found");
+            result.setData(null);
+            return result;
+        }
+
+        Staff staff = staffOptional.get();
+
+        if (staffAdminDTO.getPhone() != null && !staffAdminDTO.getPhone().equals(staff.getPhone())) {
             if (staffAdminRepository.existsByPhone(staffAdminDTO.getPhone())) {
                 result.setStatus(HttpStatus.OK);
                 result.setMessage("Phone existed");
                 result.setData(staffMapper.toDto(staff));
                 return result;
+            } else {
+                staff.setPhone(staffAdminDTO.getPhone());
             }
-        } else {
-            staff.setPhone(staffAdminDTO.getPhone());
         }
-        if (staff.getEmail() != null && !staff.getEmail().equals(staffAdminDTO.getEmail())) {
+
+        if (staffAdminDTO.getEmail() != null && !staffAdminDTO.getEmail().equals(staff.getEmail())) {
             if (staffAdminRepository.existsByEmail(staffAdminDTO.getEmail())) {
                 result.setStatus(HttpStatus.OK);
                 result.setMessage("Email existed");
                 result.setData(staffMapper.toDto(staff));
                 return result;
+            } else {
+                staff.setEmail(staffAdminDTO.getEmail());
             }
-        } else {
-            staff.setEmail(staffAdminDTO.getEmail());
         }
 
-        if (!staff.equals("")) {
-            staff.setFullname(staffAdminDTO.getFullname());
-            staff.setPhone(staffAdminDTO.getPhone());
-            staff.setEmail(staffAdminDTO.getEmail());
-            staff.setBirthday(staffAdminDTO.getBirthday());
-            staff.setGender(staffAdminDTO.getGender());
-            if (staffAdminDTO.getPasswword() != null) {
-                staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
-            }
-//            staff.setIdel(staffAdminDTO.getIdel());
-            staff.setRole(staffAdminDTO.getRole());
-            staff.setDescription(staffAdminDTO.getDescription());
-            this.staffAdminRepository.save(staff);
-            result.setStatus(HttpStatus.OK);
-            result.setMessage("Sua thanh cong");
-            result.setData(staffMapper.toDto(staff));
-        } else {
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Sua  khong thanh cong");
-            result.setData(null);
+        staff.setFullname(staffAdminDTO.getFullname());
+        staff.setPhone(staffAdminDTO.getPhone());
+        staff.setEmail(staffAdminDTO.getEmail());
+        staff.setBirthday(staffAdminDTO.getBirthday());
+        staff.setGender(staffAdminDTO.getGender());
+
+        if (staffAdminDTO.getPasswword() != null) {
+            staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
         }
+
+        staff.setIdel(staffAdminDTO.getIdel());
+        staff.setRole(staffAdminDTO.getRole());
+        staff.setDescription(staffAdminDTO.getDescription());
+
+        staffAdminRepository.save(staff);
+
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Update successful");
+        result.setData(staffMapper.toDto(staff));
+
         return result;
     }
+
+
+//    @Override
+//    public ServiceResult<StaffAdminDTO> updateStaff(Long id,StaffAdminDTO staffAdminDTO) {
+//        Optional<Staff> staffOptional = staffAdminRepository.findById(id);
+//
+//        if (staff.getPhone() != null && !staff.getPhone().equals(staffAdminDTO.getPhone())) {
+//            if (staffAdminRepository.existsByPhone(staffAdminDTO.getPhone())) {
+//                result.setStatus(HttpStatus.OK);
+//                result.setMessage("Phone existed");
+//                result.setData(staffMapper.toDto(staff));
+//                return result;
+//            }
+//        } else {
+//            staff.setPhone(staffAdminDTO.getPhone());
+//        }
+//
+//        if (staff.getEmail() != null && !staff.getEmail().equals(staffAdminDTO.getEmail())) {
+//            if (staffAdminRepository.existsByEmail(staffAdminDTO.getEmail())) {
+//                result.setStatus(HttpStatus.OK);
+//                result.setMessage("Email existed");
+//                result.setData(staffMapper.toDto(staff));
+//                return result;
+//            }
+//        } else {
+//            staff.setEmail(staffAdminDTO.getEmail());
+//        }
+//
+//        if (!staff.equals("")) {
+//            staff.setFullname(staffAdminDTO.getFullname());
+//            staff.setPhone(staffAdminDTO.getPhone());
+//            staff.setEmail(staffAdminDTO.getEmail());
+//            staff.setBirthday(staffAdminDTO.getBirthday());
+//            staff.setGender(staffAdminDTO.getGender());
+//            if (staffAdminDTO.getPasswword() != null) {
+//                staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
+//            }
+//            staff.setIdel(staffAdminDTO.getIdel());
+//            staff.setRole(staffAdminDTO.getRole());
+//            staff.setDescription(staffAdminDTO.getDescription());
+//            this.staffAdminRepository.save(staff);
+//            result.setStatus(HttpStatus.OK);
+//            result.setMessage("Sua thanh cong");
+//            result.setData(staffMapper.toDto(staff));
+//        } else {
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Sua khong thanh cong");
+//            result.setData(null);
+//        }
+//        return result;
+//    }
 
     @Override
     public List<StaffAdminDTO> findByCodeOrPhone(String param) {

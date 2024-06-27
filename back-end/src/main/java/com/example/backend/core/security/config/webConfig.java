@@ -44,6 +44,7 @@ public class webConfig{
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager()throws Exception{
         return new ProviderManager(Arrays.asList(daoAuthenticationProvider()));
@@ -63,6 +64,8 @@ public class webConfig{
                     try {
                         author
                                 .requestMatchers("/view/anh/**").permitAll()
+                                .requestMatchers("/api/admin/staff/update/**").permitAll()
+//                                .requestMatchers("/api/admin/staff-update/**").permitAll()
                                 .requestMatchers("/api/admin/images/upload").permitAll()
                                 .requestMatchers("/api/admin/images/update").permitAll()
                                 .requestMatchers("/view/api/sign-in").permitAll()
