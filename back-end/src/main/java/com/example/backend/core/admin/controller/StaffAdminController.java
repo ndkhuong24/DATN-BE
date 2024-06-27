@@ -11,27 +11,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/view/api")
 public class StaffAdminController {
     @Autowired
-    private StaffAdminService service;
+    private StaffAdminService staffAdminService;
 
     @Autowired
-    private CustomerAdminService customerService;
+    private CustomerAdminService customerAdminService;
 
     @GetMapping("/staff")
     public ResponseEntity<?> getallStaff() {
-        return ResponseEntity.ok(service.getAllStaff());
+        return ResponseEntity.ok(staffAdminService.getAllStaff());
     }
 
     @GetMapping("/staff/finbyId/{id}")
     public ResponseEntity<?> findByIdStaff(
             @PathVariable("id") Long id
     ) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(staffAdminService.findById(id));
     }
 
     @GetMapping("/customer/finbyId/{id}")
     public ResponseEntity<?> findByIdCustomer(
             @PathVariable("id") String id
     ) {
-        return ResponseEntity.ok(customerService.findById(id));
+        return ResponseEntity.ok(customerAdminService.findById(id));
     }
 }

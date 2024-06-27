@@ -20,17 +20,12 @@ public class StaffAdminInfoController {
     }
 
     @PutMapping("/staff-update/{id}")
-    public ResponseEntity<?> updateInfoStaff(
-            @PathVariable("id") Staff staff,
-            @RequestBody StaffAdminDTO staffAdminDTO
-    ) {
+    public ResponseEntity<?> updateInfoStaff(@PathVariable("id") Staff staff, @RequestBody StaffAdminDTO staffAdminDTO) {
         return ResponseEntity.ok(service.updateStaff(staffAdminDTO, staff));
     }
 
     @GetMapping("/staff-search/{params}")
-    public ResponseEntity<?> finByCodeOrPhone(
-            @PathVariable("params") String params
-    ) {
-        return ResponseEntity.ok(service.findByCodeOrPhone(params));
+    public ResponseEntity<?> finByCodeOrPhone(@PathVariable("params") String params) {
+        return ResponseEntity.ok(service.findByFullnameOrPhoneLike(params));
     }
 }
