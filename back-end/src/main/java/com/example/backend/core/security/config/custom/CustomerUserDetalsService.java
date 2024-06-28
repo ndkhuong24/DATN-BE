@@ -27,10 +27,9 @@ public class CustomerUserDetalsService implements UserDetailsService {
             throw new UsernameNotFoundException("Khong Tim Thay User");
         }
         UserDetails userDetails;
-        // lấy quyền của người dùng
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(ERole.CUSTOMER.name()));
         userDetails = new User(customer.getUsername(), customer.getPassword(), authorities);
-        System.out.println(userDetails + "hehe");
+        System.out.println(userDetails);
         return userDetails;
     }
 }

@@ -29,7 +29,7 @@ public class CustomUserDetailService implements UserDetailsService {
         // lấy quyền của người dùng
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
         userDetails = new User(user.getUsername(), user.getPassword(), authorities);
-        System.out.println(userDetails + "hehe");
+        System.out.println(userDetails);
         return userDetails;
     }
 }

@@ -65,7 +65,6 @@ public class webConfig{
                         author
                                 .requestMatchers("/view/anh/**").permitAll()
                                 .requestMatchers("/api/admin/staff/update/**").permitAll()
-//                                .requestMatchers("/api/admin/staff-update/**").permitAll()
                                 .requestMatchers("/api/admin/images/upload").permitAll()
                                 .requestMatchers("/api/admin/images/update").permitAll()
                                 .requestMatchers("/view/api/sign-in").permitAll()
@@ -91,7 +90,6 @@ public class webConfig{
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

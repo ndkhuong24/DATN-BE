@@ -25,6 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFillter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
+
     @Autowired
     private CustomUserDetailService customUserDetailService;
 
@@ -33,14 +34,10 @@ public class JwtAuthenticationFillter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        //lấy thông tin từ request
-        //FilterChain giúp chuyển tiếp request đến các filter khác
-
         final String requestTokenHeader = request.getHeader("Authorization"); // lấy tiêu đề authorization từ request
-        //
         String username = null;
         String jwtToken = null;
-        //kiểm tra tiêu đề authotity có tồn tại và bắt đầu bằng bearer không
+
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -57,7 +54,9 @@ public class JwtAuthenticationFillter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             //tìm kiếm thông tin người dùng  từ csdl
             UserDetails userDetails = this.customUserDetailService.loadUserByUsername(username);
-            System.out.println(":)))))"+userDetails.getAuthorities());
+
+            System.out.println(userDetails.getAuthorities());
+
             //kiểm tra xem token có hợp lệ khoong
             if (jwtUtils.validateToken(jwtToken, userDetails)) {
                 //tạo đối tượng với userdetail và danh sách quyền truy cập của người dùng
