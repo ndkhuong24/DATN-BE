@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
         CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findByCode(orderDTO.getCustomerDTO().getCode()));
         if (customerDTO != null) {
             order.setCode("HD" + Instant.now().getEpochSecond());
-            order.setCreateDate(LocalDate.now());
+            order.setCreateDate(LocalDateTime.now());
             order.setReceiver(orderDTO.getReceiver());
             order.setIdCustomer(customerDTO.getId());
             order.setShipPrice(orderDTO.getShipPrice());
@@ -136,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
             if (orderDTO.getPaymentType() == 1) {
                 order.setPaymentType(orderDTO.getPaymentType());
                 order.setTotalPayment(orderDTO.getTotalPayment());
-                order.setPaymentDate(LocalDate.now());
+                order.setPaymentDate(LocalDateTime.now());
                 order.setStatusPayment(AppConstant.DA_THANH_TOAN);
             } else {
                 order.setPaymentType(orderDTO.getPaymentType());
@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
 
         order.setCode("HD" + Instant.now().getEpochSecond());
-        order.setCreateDate(LocalDate.now());
+        order.setCreateDate(LocalDateTime.now());
         order.setReceiver(orderDTO.getReceiver());
         order.setPaymentType(orderDTO.getPaymentType());
         order.setShipPrice(orderDTO.getShipPrice());
@@ -243,7 +243,7 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentType(orderDTO.getPaymentType());
             order.setTotalPayment(orderDTO.getTotalPayment());
             order.setStatusPayment(AppConstant.DA_THANH_TOAN);
-            order.setPaymentDate(LocalDate.now());
+            order.setPaymentDate(LocalDateTime.now());
         } else {
             order.setPaymentType(orderDTO.getPaymentType());
             order.setTotalPayment(orderDTO.getTotalPayment());

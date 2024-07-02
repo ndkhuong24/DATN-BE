@@ -28,17 +28,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderAdminServiceImpl implements OrderAdminService {
-
-
     @Autowired
     private OrderAdminMapper orderAdminMapper;
+
     @Autowired
     private OrderAdminRepository orderAdminRepository;
 
     @Autowired
     private CustomerAdminRepository customerAdminRepository;
+
     @Autowired
     private CustomerAdminMapper customerAdminMapper;
+
     @Autowired
     private OrderHistoryAdminRepository orderHistoryAdminRepository;
 
@@ -53,14 +54,15 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
     @Autowired
     private ProductDetailAdminRepository productDetailAdminRepository;
+
     @Autowired
     private OrderDetailAdminRepository orderDetailAdminRepository;
 
-
     @Override
     public List<OrderAdminDTO> getAllOrderAdmin(OrderAdminDTO orderAdminDTO) {
-        List<OrderAdminDTO> lst = orderAdminCustomerRepository.getAllOrderAdmin(orderAdminDTO);
-        return lst.stream().map(c -> {
+        List<OrderAdminDTO> orderAdminDTOSList = orderAdminCustomerRepository.getAllOrderAdmin(orderAdminDTO);
+
+        return orderAdminDTOSList.stream().map(c -> {
             if (c.getIdCustomer() != null) {
                 CustomerAdminDTO customerAdminDTO = customerAdminMapper.toDto(
                         customerAdminRepository.findById(c.getIdCustomer())
@@ -68,11 +70,13 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 );
                 c.setCustomerAdminDTO(customerAdminDTO);
             }
+
             if (c.getIdStaff() != null) {
                 StaffAdminDTO staffAdminDTO = staffMapper.toDto(staffAdminRepository.findById(c.getIdStaff()).orElse(null));
                 c.setStaffAdminDTO(staffAdminDTO);
             }
             return c;
+
         }).collect(Collectors.toList());
     }
 
@@ -80,7 +84,6 @@ public class OrderAdminServiceImpl implements OrderAdminService {
     public Map<String, Integer> totalStatusOrderAdmin(OrderAdminDTO orderAdminDTO) {
         return orderAdminCustomerRepository.totalStatusOrder(orderAdminDTO);
     }
-
 
     @Override
     public ServiceResult<OrderAdminDTO> updateStatusChoXuLy(OrderAdminDTO orderAdminDTO) {
@@ -193,7 +196,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return result;
         }else {
             order.setShipperPhone("0985218603");
-            order.setDeliveryDate(LocalDate.now());
+            order.setDeliveryDate(LocalDateTime.now());
             order.setMissedOrder(0);
             order.setStatus(AppConstant.DANG_GIAO_HANG);
 //        order.setIdStaff(orderAdminDTO.getIdStaff());
@@ -217,6 +220,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
     @Override
     public ServiceResult<OrderAdminDTO> hoanThanhDonHang(OrderAdminDTO orderAdminDTO) {
         ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+
         if (orderAdminDTO.getId() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
@@ -229,7 +233,9 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             result.setMessage("Error");
             return result;
         }
+
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
+
         if(order.getStatus() == AppConstant.HOAN_THANH){
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
@@ -237,11 +243,11 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return result;
         }else {
             if (order.getPaymentType() == 0) {
-                order.setPaymentDate(LocalDate.now());
+                order.setPaymentDate(LocalDateTime.now());
                 order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));
                 order.setStatusPayment(AppConstant.DA_THANH_TOAN);
             }
-            order.setReceivedDate(LocalDate.now());
+            order.setReceivedDate(LocalDateTime.now());
             order.setStatus(AppConstant.HOAN_THANH);
 //        order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);

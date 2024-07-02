@@ -19,4 +19,6 @@ public interface ProductDetailAdminService {
     List<ProductDetailAdminDTO> getProductDetails(int idColor, int idSize);
 
     ServiceResult<List<ProductDetailAdminDTO>> getProductDetailsByProductId(long idProduct);
+
+    List<ProductDetailAdminDTO> findByNameLikeOrCodeLike(String param);
 }

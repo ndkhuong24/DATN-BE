@@ -64,6 +64,7 @@ public class webConfig{
                     try {
                         author
                                 .requestMatchers("/view/anh/**").permitAll()
+                                .requestMatchers("/api/sales-couter/vnpay-payment/**").permitAll()
                                 .requestMatchers("/api/admin/staff/update/**").permitAll()
                                 .requestMatchers("/api/admin/images/upload").permitAll()
                                 .requestMatchers("/api/admin/images/update").permitAll()

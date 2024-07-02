@@ -8,15 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderAdminService {
-
     List<OrderAdminDTO> getAllOrderAdmin(OrderAdminDTO orderAdminDTO);
     Map<String, Integer> totalStatusOrderAdmin(OrderAdminDTO orderAdminDTO);
-
     ServiceResult<OrderAdminDTO> updateStatusChoXuLy(OrderAdminDTO orderAdminDTO);
-
     ServiceResult<OrderAdminDTO> huyDonHang(OrderAdminDTO orderAdminDTO);
     ServiceResult<OrderAdminDTO> giaoHangDonHang(OrderAdminDTO orderAdminDTO);
     ServiceResult<OrderAdminDTO> hoanThanhDonHang(OrderAdminDTO orderAdminDTO);
     ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO);
-
 }

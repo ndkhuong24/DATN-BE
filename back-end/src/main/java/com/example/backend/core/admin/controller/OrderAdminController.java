@@ -16,33 +16,37 @@ public class OrderAdminController {
     private OrderAdminService orderAdminService;
 
     @PostMapping("/get-all-order")
-    public ResponseEntity<?> getAllOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> getAllOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.getAllOrderAdmin(orderAdminDTO));
     }
+
     @PostMapping("/total-status-order")
-    public ResponseEntity<?> totalStatusOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> totalStatusOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.totalStatusOrderAdmin(orderAdminDTO));
     }
 
     @PostMapping("/cancel-order")
-    public ResponseEntity<?> cancelOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> cancelOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.huyDonHang(orderAdminDTO));
     }
 
     @PostMapping("/progressing-order")
-    public ResponseEntity<?> progressingOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> progressingOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.updateStatusChoXuLy(orderAdminDTO));
     }
+
     @PostMapping("/complete-order")
-    public ResponseEntity<?> completeOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> completeOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.hoanThanhDonHang(orderAdminDTO));
     }
+
     @PostMapping("/ship-order")
-    public ResponseEntity<?> shipOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> shipOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.giaoHangDonHang(orderAdminDTO));
     }
+
     @PostMapping("/missed-order")
-    public ResponseEntity<?> missedOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+    public ResponseEntity<?> missedOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
         return ResponseEntity.ok(orderAdminService.boLoDonHang(orderAdminDTO));
     }
 }

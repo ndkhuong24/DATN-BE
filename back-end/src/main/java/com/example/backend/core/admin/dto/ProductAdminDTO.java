@@ -29,12 +29,8 @@ public class ProductAdminDTO extends ExportDTO {
     private Integer status;
 
     private List<ProductDetailAdminDTO> productDetailAdminDTOList;
-//    private List<ImagesAdminDTO> imagesDTOList;
 
     private String imageURL;
-
-//    private ProductDetailAdminDTO productDetailAdminDTO;
-//    private ImagesAdminDTO imagesAdminDTO;
 
     private BrandAdminDTO brandAdminDTO;
     private CategoryAdminDTO categoryAdminDTO;

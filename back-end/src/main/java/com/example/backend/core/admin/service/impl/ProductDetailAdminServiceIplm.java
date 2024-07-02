@@ -62,7 +62,7 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
 
         List<ProductDetailAdminDTO> productDetailAdminDTOList = new ArrayList<>();
 
-        for(ProductDetail productDetail : productDetailList) {
+        for (ProductDetail productDetail : productDetailList) {
             ProductDetailAdminDTO productDetailAdminDTO = productDetailAdminMapper.toDto(productDetail);
 
             productDetailAdminDTO.setPrice(productDetail.getPrice());
@@ -227,6 +227,28 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
             result.setMessage("Không tìm thấy sản phẩm");
         }
         return result;
+    }
+
+    @Override
+    public List<ProductDetailAdminDTO> findByNameLikeOrCodeLike(String param) {
+        List<ProductDetail> productDetailList = productDetailAdminRepository.findByNameLikeOrCodeLike("%" + param + "%", "%" + param + "%");
+
+        List<ProductDetailAdminDTO> productDetailAdminDTOList = productDetailAdminMapper.toDto(productDetailList);
+
+        for (int i = 0; i < productDetailAdminDTOList.size(); i++) {
+            ProductAdminDTO productAdminDTO = productAdminMapper.toDto(productAdminRepository.findById(productDetailAdminDTOList.get(i).getIdProduct()).orElse(null));
+            String imageURL = "http://localhost:8081/view/anh/" + productDetailAdminDTOList.get(i).getIdProduct();
+            productAdminDTO.setImageURL(imageURL);
+            productDetailAdminDTOList.get(i).setProductDTO(productAdminDTO);
+
+            ColorAdminDTO colorAdminDTO = colorAdminMapper.toDto(colorAdminRepository.findById(productDetailAdminDTOList.get(i).getIdColor()).orElse(null));
+            productDetailAdminDTOList.get(i).setColorDTO(colorAdminDTO);
+
+            SizeAdminDTO sizeAdminDTO = sizeAdminMapper.toDto(sizeAdminRepository.findById(productDetailAdminDTOList.get(i).getIdSize()).orElse(null));
+            productDetailAdminDTOList.get(i).setSizeDTO(sizeAdminDTO);
+        }
+
+        return productDetailAdminDTOList;
     }
 
 }

@@ -9,9 +9,7 @@ import com.example.backend.core.admin.repository.CustomerAdminRepository;
 import com.example.backend.core.admin.repository.OrderAdminCustomerRepository;
 import com.example.backend.core.admin.repository.StaffAdminRepository;
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.constant.AppConstant;
 import com.example.backend.core.model.Order;
-import com.example.backend.core.model.Voucher;
 import com.example.backend.core.salesCounter.dto.CustomerSCDTO;
 import com.example.backend.core.salesCounter.dto.OrderSalesDTO;
 import com.example.backend.core.salesCounter.dto.StaffSCDTO;
@@ -20,17 +18,13 @@ import com.example.backend.core.salesCounter.mapper.OrderSalesCounterMapper;
 import com.example.backend.core.salesCounter.mapper.StaffSCMapper;
 import com.example.backend.core.salesCounter.repository.CustomerSCRepository;
 import com.example.backend.core.salesCounter.repository.OrderSalesCountRepository;
-import com.example.backend.core.salesCounter.repository.OrderSalesCounterDetailRepository;
-import com.example.backend.core.salesCounter.repository.OrderSalesCustomRepository;
 import com.example.backend.core.salesCounter.service.OrderSalesCounterService;
-import com.example.backend.core.view.mapper.CustomerMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,13 +58,15 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
     @Override
     public ServiceResult<OrderSalesDTO> createOrderSales(OrderSalesDTO orderSalesDTO) {
         ServiceResult<OrderSalesDTO> result = new ServiceResult<>();
+
         Order order = new Order();
+
         if (orderSalesDTO.getIdCustomer() == null) {
             order.setCode("HD" + Instant.now().getEpochSecond());
             order.setIdStaff(orderSalesDTO.getIdStaff());
             order.setIdCustomer(null);
-            order.setCreateDate(LocalDate.now());
-            order.setPaymentDate(LocalDate.now());
+            order.setCreateDate(LocalDateTime.now());
+            order.setPaymentDate(LocalDateTime.now());
             order.setAddressReceived(orderSalesDTO.getAddressReceived());
             order.setPaymentType(orderSalesDTO.getPaymentType());
             order.setStatusPayment(orderSalesDTO.getStatusPayment());
@@ -86,13 +82,15 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             order.setEmail(orderSalesDTO.getEmail());
             order = orderSalesCountRepository.save(order);
             orderSalesDTO = orderSalesCounterMapper.toDto(order);
+
+            result.setSuccess(true);
             result.setData(orderSalesDTO);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Success");
         } else {
             order.setCode("HD" + Instant.now().getEpochSecond());
-            order.setCreateDate(LocalDate.now());
-            order.setPaymentDate(LocalDate.now());
+            order.setCreateDate(LocalDateTime.now());
+            order.setPaymentDate(LocalDateTime.now());
             order.setAddressReceived(orderSalesDTO.getAddressReceived());
             order.setReceiver(orderSalesDTO.getReceiver());
             order.setIdCustomer(orderSalesDTO.getIdCustomer());
@@ -111,11 +109,12 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             order.setEmail(orderSalesDTO.getEmail());
             order = orderSalesCountRepository.save(order);
             orderSalesDTO = orderSalesCounterMapper.toDto(order);
+
+            result.setSuccess(true);
             result.setData(orderSalesDTO);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Success");
         }
-
         return result;
     }
 
@@ -141,7 +140,6 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             }
             return c;
         }).collect(Collectors.toList());
-//        return orderSalesCounterMapper.toDto(orderSalesCountRepository.findAll());
 
     }
 

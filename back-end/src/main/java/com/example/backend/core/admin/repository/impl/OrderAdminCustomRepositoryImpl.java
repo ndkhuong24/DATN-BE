@@ -23,15 +23,18 @@ import java.util.Map;
 @Repository
 @Transactional
 public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerRepository {
-
     @Autowired
     private EntityManager entityManager;
+
     @Override
     public List<OrderAdminDTO> getAllOrderAdmin(OrderAdminDTO orderAdminDTO) {
-        List<OrderAdminDTO> lstOrderAdminDTOS = new ArrayList<>();
+        List<OrderAdminDTO> orderAdminDTOList = new ArrayList<>();
+
         try {
             StringBuilder sql = new StringBuilder();
+
             sql.append("select * from `order` o where true and type = 0");
+
             if (orderAdminDTO.getStatus() != 6 && orderAdminDTO.getStatus() != null) {
                 sql.append("  and o.status = :status  ");
             }
@@ -45,7 +48,9 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y')) ");
             }
             sql.append("   order by o.create_date desc");
+
             Query query = entityManager.createNativeQuery(sql.toString());
+
             if (orderAdminDTO.getStatus() != 6 && orderAdminDTO.getStatus() != null) {
                 query.setParameter("status", orderAdminDTO.getStatus());
             }
@@ -58,42 +63,49 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
             if (StringUtils.isNotBlank(orderAdminDTO.getDateTo())) {
                 query.setParameter("dateTo", orderAdminDTO.getDateTo());
             }
+
             List<Object[]> lst = query.getResultList();
+
             for (Object[] obj: lst) {
-                OrderAdminDTO dto = new OrderAdminDTO();
-                dto.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
-                dto.setCode((String) obj[1]);
-                dto.setIdCustomer(obj[2] != null ? ((Number) obj[2]).longValue() : null);
-                dto.setIdStaff(obj[3] != null ? ((Number) obj[3]).longValue() : null);
-                dto.setCodeVoucher((String) obj[4]);
-                dto.setCodeVoucherShip((String) obj[5]);
-                Timestamp createTimestamp = (Timestamp) obj[6];
-                dto.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
-                Timestamp paymentTimestamp = (Timestamp) obj[7];
-                dto.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
-                dto.setDeliveryDate((LocalDateTime) obj[8]);
-                dto.setReceivedDate((LocalDateTime) obj[9]);
-                dto.setAddressReceived((String) obj[10]);
-                dto.setShipperPhone((String) obj[11]);
-                dto.setReceiverPhone((String) obj[12]);
-                dto.setReceiver((String) obj[13]);
-                dto.setShipPrice((BigDecimal) obj[14]);
-                dto.setTotalPrice((BigDecimal) obj[15]);
-                dto.setTotalPayment((BigDecimal) obj[16]);
-                dto.setType( obj[17] != null ? ((Number) obj[17]).intValue() : null);
-                dto.setPaymentType((Integer) obj[18]);
-                dto.setDescription((String) obj[19]);
-                dto.setMissedOrder((Integer) obj[20]);
-                dto.setStatus((Integer) obj[21]);
-                dto.setStatusPayment((Integer) obj[22]);
-                dto.setEmail((String) obj[23]);
-                lstOrderAdminDTOS.add(dto);
+
+                OrderAdminDTO orderAdminDTO1 = new OrderAdminDTO();
+
+                orderAdminDTO1.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
+                orderAdminDTO1.setCode((String) obj[2]);
+                orderAdminDTO1.setIdCustomer(obj[9] != null ? ((Number) obj[9]).longValue() : null);
+                orderAdminDTO1.setIdStaff(obj[10] != null ? ((Number) obj[10]).longValue() : null);
+                orderAdminDTO1.setCodeVoucher((String) obj[3]);
+                orderAdminDTO1.setCodeVoucherShip((String) obj[4]);
+
+                Timestamp createTimestamp = (Timestamp) obj[5];
+                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+
+                Timestamp paymentTimestamp = (Timestamp) obj[12];
+                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
+
+                orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
+                orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
+                orderAdminDTO1.setAddressReceived((String) obj[1]);
+                orderAdminDTO1.setShipperPhone((String) obj[18]);
+                orderAdminDTO1.setReceiverPhone((String) obj[16]);
+                orderAdminDTO1.setReceiver((String) obj[15]);
+                orderAdminDTO1.setShipPrice((BigDecimal) obj[17]);
+                orderAdminDTO1.setTotalPrice((BigDecimal) obj[21]);
+                orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
+                orderAdminDTO1.setType( obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                orderAdminDTO1.setPaymentType((Integer) obj[13]);
+                orderAdminDTO1.setDescription((String) obj[8]);
+                orderAdminDTO1.setMissedOrder((Integer) obj[11]);
+                orderAdminDTO1.setStatus((Integer) obj[19]);
+                orderAdminDTO1.setStatusPayment((Integer) obj[20]);
+                orderAdminDTO1.setEmail((String) obj[8]);
+                orderAdminDTOList.add(orderAdminDTO1);
             }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return lstOrderAdminDTOS;
+        return orderAdminDTOList;
     }
 
     @Override
@@ -138,7 +150,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
 
     @Override
     public List<OrderAdminDTO> getAllOrderSalesAdmin(OrderAdminDTO orderAdminDTO) {
-        List<OrderAdminDTO> lstOrderAdminDTOS = new ArrayList<>();
+        List<OrderAdminDTO> orderAdminDTOList = new ArrayList<>();
         try {
             StringBuilder sql = new StringBuilder();
             sql.append("select * from `order` o where true and type = 1");
@@ -170,39 +182,71 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
             }
             List<Object[]> lst = query.getResultList();
             for (Object[] obj: lst) {
-                OrderAdminDTO dto = new OrderAdminDTO();
-                dto.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
-                dto.setCode((String) obj[1]);
-                dto.setIdCustomer(obj[2] != null ? ((Number) obj[2]).longValue() : null);
-                dto.setIdStaff(obj[3] != null ? ((Number) obj[3]).longValue() : null);
-                dto.setCodeVoucher((String) obj[4]);
-                dto.setCodeVoucherShip((String) obj[5]);
-                Timestamp createTimestamp = (Timestamp) obj[6];
-                dto.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
-                Timestamp paymentTimestamp = (Timestamp) obj[7];
-                dto.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
-                dto.setDeliveryDate((LocalDateTime) obj[8]);
-                dto.setReceivedDate((LocalDateTime) obj[9]);
-                dto.setAddressReceived((String) obj[10]);
-                dto.setShipperPhone((String) obj[11]);
-                dto.setReceiverPhone((String) obj[12]);
-                dto.setReceiver((String) obj[13]);
-                dto.setShipPrice((BigDecimal) obj[14]);
-                dto.setTotalPrice((BigDecimal) obj[15]);
-                dto.setTotalPayment((BigDecimal) obj[16]);
-                dto.setType( obj[17] != null ? ((Number) obj[17]).intValue() : null);
-                dto.setPaymentType((Integer) obj[18]);
-                dto.setDescription((String) obj[19]);
-                dto.setMissedOrder((Integer) obj[20]);
-                dto.setStatus((Integer) obj[21]);
-                dto.setStatusPayment((Integer) obj[22]);
-                dto.setEmail((String) obj[23]);
-                lstOrderAdminDTOS.add(dto);
+                OrderAdminDTO orderAdminDTO1 = new OrderAdminDTO();
+
+                orderAdminDTO1.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
+                orderAdminDTO1.setCode((String) obj[2]);
+                orderAdminDTO1.setIdCustomer(obj[9] != null ? ((Number) obj[9]).longValue() : null);
+                orderAdminDTO1.setIdStaff(obj[10] != null ? ((Number) obj[10]).longValue() : null);
+                orderAdminDTO1.setCodeVoucher((String) obj[3]);
+                orderAdminDTO1.setCodeVoucherShip((String) obj[4]);
+
+                Timestamp createTimestamp = (Timestamp) obj[5];
+                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+
+                Timestamp paymentTimestamp = (Timestamp) obj[12];
+                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
+
+                orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
+                orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
+                orderAdminDTO1.setAddressReceived((String) obj[1]);
+                orderAdminDTO1.setShipperPhone((String) obj[18]);
+                orderAdminDTO1.setReceiverPhone((String) obj[16]);
+                orderAdminDTO1.setReceiver((String) obj[15]);
+                orderAdminDTO1.setShipPrice((BigDecimal) obj[17]);
+                orderAdminDTO1.setTotalPrice((BigDecimal) obj[21]);
+                orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
+                orderAdminDTO1.setType( obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                orderAdminDTO1.setPaymentType((Integer) obj[13]);
+                orderAdminDTO1.setDescription((String) obj[8]);
+                orderAdminDTO1.setMissedOrder((Integer) obj[11]);
+                orderAdminDTO1.setStatus((Integer) obj[19]);
+                orderAdminDTO1.setStatusPayment((Integer) obj[20]);
+                orderAdminDTO1.setEmail((String) obj[8]);
+                orderAdminDTOList.add(orderAdminDTO1);
+//                OrderAdminDTO dto = new OrderAdminDTO();
+//                dto.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
+//                dto.setCode((String) obj[1]);
+//                dto.setIdCustomer(obj[2] != null ? ((Number) obj[2]).longValue() : null);
+//                dto.setIdStaff(obj[3] != null ? ((Number) obj[3]).longValue() : null);
+//                dto.setCodeVoucher((String) obj[4]);
+//                dto.setCodeVoucherShip((String) obj[5]);
+//                Timestamp createTimestamp = (Timestamp) obj[6];
+//                dto.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+//                Timestamp paymentTimestamp = (Timestamp) obj[7];
+//                dto.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
+//                dto.setDeliveryDate((LocalDateTime) obj[8]);
+//                dto.setReceivedDate((LocalDateTime) obj[9]);
+//                dto.setAddressReceived((String) obj[10]);
+//                dto.setShipperPhone((String) obj[11]);
+//                dto.setReceiverPhone((String) obj[12]);
+//                dto.setReceiver((String) obj[13]);
+//                dto.setShipPrice((BigDecimal) obj[14]);
+//                dto.setTotalPrice((BigDecimal) obj[15]);
+//                dto.setTotalPayment((BigDecimal) obj[16]);
+//                dto.setType( obj[17] != null ? ((Number) obj[17]).intValue() : null);
+//                dto.setPaymentType((Integer) obj[18]);
+//                dto.setDescription((String) obj[19]);
+//                dto.setMissedOrder((Integer) obj[20]);
+//                dto.setStatus((Integer) obj[21]);
+//                dto.setStatusPayment((Integer) obj[22]);
+//                dto.setEmail((String) obj[23]);
+//                lstOrderAdminDTOS.add(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return lstOrderAdminDTOS;
+        return orderAdminDTOList;
     }
 }

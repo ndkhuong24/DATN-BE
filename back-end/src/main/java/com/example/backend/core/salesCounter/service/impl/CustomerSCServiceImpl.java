@@ -24,10 +24,11 @@ public class CustomerSCServiceImpl implements CustomerSCService {
     private PasswordEncoder encoder;
     @Autowired
     private CustomerService service;
+
     @Override
     public ServiceResult<CustomerDTO> addCustomer(CustomerDTO customerDTO) {
         ServiceResult<CustomerDTO> result = new ServiceResult<>();
-        if (repository.existsByPhone(customerDTO.getPhone())){
+        if (repository.existsByPhone(customerDTO.getPhone())) {
             result.setMessage("The phone is existed");
             result.setData(customerDTO);
             result.setStatus(HttpStatus.OK);
@@ -35,7 +36,7 @@ public class CustomerSCServiceImpl implements CustomerSCService {
         }
         Customer customer = mapper.toEntity(customerDTO);
         customer.setCode("KH" + Instant.now().getEpochSecond());
-        customer.setEmail("emailCustomer" + Instant.now().getEpochSecond() + "@gmail.com" );
+        customer.setEmail("emailCustomer" + Instant.now().getEpochSecond() + "@gmail.com");
         customer.setPassword(encoder.encode("123456"));
         customer.setStatus(0);
         customer.setIdel(0);

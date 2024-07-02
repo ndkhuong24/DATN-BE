@@ -2,10 +2,10 @@ package com.example.backend.core.admin.controller;
 
 import com.example.backend.core.admin.dto.ProductAdminDTO;
 import com.example.backend.core.admin.service.ProductAdminService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.backend.core.admin.service.ProductDetailAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +16,9 @@ import java.util.List;
 public class ProductAdminController {
     @Autowired
     private ProductAdminService productAdminService;
+
+    @Autowired
+    private ProductDetailAdminService productDetailAdminService;
 
 //    private static final Logger log = LoggerFactory.getLogger(ProductAdminDTO.class);
 
@@ -47,5 +50,11 @@ public class ProductAdminController {
     @PutMapping("product/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody ProductAdminDTO productAdminDTO) {
         return ResponseEntity.ok(productAdminService.update(productAdminDTO, id));
+    }
+
+    @GetMapping("product/search/{param}")
+    public ResponseEntity<?> searchProduct(@PathVariable("param") String param) {
+        return ResponseEntity.ok(productDetailAdminService.findByNameLikeOrCodeLike(param));
+//        return ResponseEntity.ok(productAdminService.findByNameLikeOrCodeLike(param));
     }
 }

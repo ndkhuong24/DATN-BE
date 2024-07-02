@@ -59,7 +59,6 @@ public class AppConstant {
                 "/api/admin/discount/KH",
                 "/api/admin/discount/KKH",
                 "/api/admin/discount/discount/export-data",
-//                "/api/admin/images/upload",
                 "/api/admin/voucher",
                 "/api/admin/voucher/*",
                 "/api/admin/voucher/searchByDate*",
@@ -136,7 +135,7 @@ public class AppConstant {
         };
 
         public static final String[] API_VIEW_PERMIT = {
-//                "/api/admin/staff-update/**",
+                "/vnpay-payment/**",
                 "/api/admin/staff/update/**",
                 "/view/anh/**",
                 "/api/admin/images/upload",

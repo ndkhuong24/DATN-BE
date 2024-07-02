@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -40,16 +41,16 @@ public class Order implements Serializable {
     private String codeVoucherShip;
 
     @Column(name = "create_date")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "payment_date")
-    private LocalDate paymentDate;
+    private LocalDateTime paymentDate;
 
     @Column(name = "delivery_date")
-    private LocalDate deliveryDate;
+    private LocalDateTime deliveryDate;
 
     @Column(name = "received_date")
-    private LocalDate receivedDate;
+    private LocalDateTime receivedDate;
 
     @Column(name = "address_received")
     private String addressReceived;
