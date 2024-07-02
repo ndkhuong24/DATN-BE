@@ -135,7 +135,7 @@ public class AppConstant {
         };
 
         public static final String[] API_VIEW_PERMIT = {
-                "/vnpay-payment/**",
+                "/api/sales-couter/vnpay-payment/**",
                 "/api/admin/staff/update/**",
                 "/view/anh/**",
                 "/api/admin/images/upload",
