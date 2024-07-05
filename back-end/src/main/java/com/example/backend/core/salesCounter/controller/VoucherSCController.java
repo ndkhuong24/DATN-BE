@@ -14,11 +14,12 @@ public class VoucherSCController {
     private VoucherSCService voucherSCService;
 
     @PostMapping("/get-all-voucher")
-    public ResponseEntity<?> getAllVoucher(@RequestBody VoucherSCDTO voucherDTO){
+    public ResponseEntity<?> getAllVoucher(@RequestBody VoucherSCDTO voucherDTO) {
         return ResponseEntity.ok(voucherSCService.getAllVoucherSC(voucherDTO));
     }
+
     @GetMapping("/get-voucher")
-    public ResponseEntity<?> getVoucher(@RequestParam(name = "code") String code){
+    public ResponseEntity<?> getVoucher(@RequestParam(name = "code") String code) {
         return ResponseEntity.ok(voucherSCService.findByCodeSC(code));
     }
 }

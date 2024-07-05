@@ -7,7 +7,6 @@ import com.example.backend.core.salesCounter.dto.VoucherSCDTO;
 import com.example.backend.core.salesCounter.mapper.VoucherSCMapper;
 import com.example.backend.core.salesCounter.repository.VoucherSCRepository;
 import com.example.backend.core.salesCounter.service.VoucherSCService;
-import com.example.backend.core.view.dto.VoucherDTO;
 import com.example.backend.core.view.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,24 +29,28 @@ public class VoucherSCServiceImpl implements VoucherSCService {
 
     @Override
     public List<VoucherSCDTO> getAllVoucherSC(VoucherSCDTO voucherDTO) {
-        if(null != voucherDTO.getIdCustomerLogin()){
-            List<Voucher> lst = voucherSCRepository.getAllVoucherByCustomerSC(voucherDTO.getCode(), voucherDTO.getIdCustomerLogin());
-            if(lst.isEmpty()){
+        if (null != voucherDTO.getIdCustomerLogin()) {
+            List<Voucher> voucherList = voucherSCRepository.getAllVoucherByCustomerSC(voucherDTO.getCode(), voucherDTO.getIdCustomerLogin());
+
+            if (voucherList.isEmpty()) {
                 return null;
             }
-            Iterator<Voucher> iterator = lst.iterator();
+
+            Iterator<Voucher> iterator = voucherList.iterator();
+
             while (iterator.hasNext()) {
                 Voucher listItem = iterator.next();
 
                 List<Order> orderList = orderRepository.findByIdCustomerAndCodeVoucher(voucherDTO.getIdCustomerLogin(), listItem.getCode());
-                if(listItem.getOptionCustomer() == 1){
+                if (listItem.getOptionCustomer() == 1) {
                     if (orderList.size() >= listItem.getLimitCustomer()) {
                         iterator.remove();
                     }
                 }
             }
-            return voucherSCMapper.toDto(lst);
+            return voucherSCMapper.toDto(voucherList);
         }
+
         return voucherSCMapper.toDto(voucherSCRepository.getAllVoucherSC(voucherDTO.getCode()));
     }
 
