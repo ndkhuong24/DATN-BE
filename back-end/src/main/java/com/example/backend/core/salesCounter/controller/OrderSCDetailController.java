@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderSCDetailController {
     @Autowired
     private OrderSalesCounterDetailService service;
+
     @PostMapping("/create-order-detail")
     public ResponseEntity<?> createOrderDetailSC(@RequestBody OrderSalesDetailDTO orderSalesDetailDTO) {
         return ResponseEntity.ok(service.createrOrderDetailSales(orderSalesDetailDTO));

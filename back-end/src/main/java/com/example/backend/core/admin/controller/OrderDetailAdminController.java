@@ -13,8 +13,8 @@ public class OrderDetailAdminController {
     @Autowired
     private OrderDetailAdminService orderDetailAdminService;
 
-//    @GetMapping("/get-order-detail/by-order/{idOrder}")
-//    public ResponseEntity<?> getAllOrderDetailAdminByOrder(@PathVariable(name = "idOrder")Long idOrder){
-//        return ResponseEntity.ok(orderDetailAdminService.getAllByOrder(idOrder));
-//    }
+    @GetMapping("/get-order-detail/by-order/{idOrder}")
+    public ResponseEntity<?> getAllOrderDetailAdminByOrder(@PathVariable(name = "idOrder") Long idOrder) {
+        return ResponseEntity.ok(orderDetailAdminService.getAllByOrder(idOrder));
+    }
 }

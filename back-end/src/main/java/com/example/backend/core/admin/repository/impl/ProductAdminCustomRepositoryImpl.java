@@ -1,11 +1,16 @@
 package com.example.backend.core.admin.repository.impl;
 
-import com.example.backend.core.admin.dto.ImagesAdminDTO;
+import com.example.backend.core.admin.dto.ColorAdminDTO;
 import com.example.backend.core.admin.dto.ProductAdminDTO;
+import com.example.backend.core.admin.dto.ProductDetailAdminDTO;
+import com.example.backend.core.admin.dto.SizeAdminDTO;
+import com.example.backend.core.admin.mapper.ColorAdminMapper;
+import com.example.backend.core.admin.mapper.ProductAdminMapper;
+import com.example.backend.core.admin.mapper.SizeAdminMapper;
+import com.example.backend.core.admin.repository.ColorAdminRepository;
 import com.example.backend.core.admin.repository.ProductAdminCustomRepository;
-import com.example.backend.core.view.dto.ImagesDTO;
-import com.example.backend.core.view.dto.ProductDTO;
-import com.mysql.cj.util.SaslPrep;
+import com.example.backend.core.admin.repository.ProductAdminRepository;
+import com.example.backend.core.admin.repository.SizeAdminRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +18,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,24 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private ColorAdminRepository colorAdminRepository;
+
+    @Autowired
+    private ColorAdminMapper colorAdminMapper;
+
+    @Autowired
+    private SizeAdminRepository sizeAdminRepository;
+
+    @Autowired
+    private SizeAdminMapper sizeAdminMapper;
+
+    @Autowired
+    private ProductAdminRepository productAdminRepository;
+
+    @Autowired
+    private ProductAdminMapper productAdminMapper;
 
     @Override
     public List<ProductAdminDTO> getAllProductExport() {
@@ -95,53 +116,77 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
     }
 
     @Override
-    public List<ProductAdminDTO> topProductBestSeller() {
-        List<ProductAdminDTO> lstProduct = new ArrayList<>();
+    public List<ProductDetailAdminDTO> topProductBestSeller() {
+        List<ProductDetailAdminDTO> productDetailAdminDTOList = new ArrayList<>();
+
         try {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT p.id, p.code, p.name, p.price, images.image_names, b.name, IFNULL(SUM(od.quantity), 0) AS total_sold\n" +
-                    "FROM product p\n" +
-                    "left JOIN product_detail pd ON p.id = pd.id_product\n" +
-                    "join brand b on b.id = p.id_brand\n" +
-                    "LEFT JOIN order_detail od ON od.id_product_detail = pd.id\n" +
-                    "LEFT JOIN (\n" +
-                    "    SELECT id_product, GROUP_CONCAT(image_name) AS image_names\n" +
-                    "    FROM images\n" +
-                    "    GROUP BY id_product\n" +
-                    ") images ON images.id_product = p.id\n" +
-                    "left join `order` o on o.id = od.id_order\n" +
-                    "where month(o.payment_date) = month(now()) and o.status = 3\n" +
-                    "GROUP BY p.id, p.code, p.name, p.price, images.image_names, b.name\n" +
+            sql.append("SELECT \n" +
+                    "    pd.id,\n" +
+                    "    pd.id_product,\n" +
+                    "    pd.id_color,\n" +
+                    "    pd.id_size,\n" +
+                    "    pd.shoe_collar,\n" +
+                    "    pd.price,\n" +
+                    "    IFNULL(SUM(od.quantity), 0) AS total_sold\n" +
+                    "FROM\n" +
+                    "    datn.product_detail pd\n" +
+                    "        JOIN\n" +
+                    "    datn.product p ON p.id = pd.id_product\n" +
+                    "        LEFT JOIN\n" +
+                    "    datn.order_detail od ON od.id_product_detail = pd.id\n" +
+                    "        LEFT JOIN\n" +
+                    "    datn.order o ON o.id = od.id_order\n" +
+                    "        AND MONTH(o.payment_date) = MONTH(NOW())\n" +
+                    "        AND o.status = 3\n" +
+                    "GROUP BY pd.id, pd.id_product, pd.id_color, pd.id_size, pd.shoe_collar, pd.price\n" +
                     "ORDER BY total_sold DESC\n" +
-                    "LIMIT 5;");
-            Query query  = entityManager.createNativeQuery(sql.toString());
-            List<Object[]> lst = query.getResultList();
-            for (Object[] obj: lst) {
-                ProductAdminDTO dto = new ProductAdminDTO();
-                List<ImagesAdminDTO> imagesAdminDTOLis = new ArrayList<>();
-                dto.setId(((Number) obj[0]).longValue());
-                dto.setCode((String) obj[1]);
-                dto.setName((String) obj[2]);
-//                dto.setPrice((BigDecimal) obj[3]);
-                dto.setBrandName((String) obj[5]);
-                dto.setTotalBestSeller(((Number) obj[6]).intValue());
-                String imagesString = (String) obj[4];
-                if (imagesString != null && !imagesString.isEmpty()) {
-                    for (String str : imagesString.split(",")) {
-                        if (!str.trim().isEmpty()) { // Kiểm tra và bỏ qua chuỗi trống
-                            ImagesAdminDTO imagesAdminDTO = new ImagesAdminDTO();
-                            imagesAdminDTO.setImageName(str.trim());
-                            imagesAdminDTOLis.add(imagesAdminDTO);
-                        }
-                    }
-                }
-//                dto.setImagesDTOList(imagesAdminDTOLis);
-                lstProduct.add(dto);
+                    "LIMIT 5;\n");
+            Query query = entityManager.createNativeQuery(sql.toString());
+
+            List<Object[]> queryResultList = query.getResultList();
+
+            for (Object[] obj : queryResultList) {
+                ProductDetailAdminDTO productDetailAdminDTO = new ProductDetailAdminDTO();
+
+                productDetailAdminDTO.setId(((Number) obj[0]).longValue());
+                productDetailAdminDTO.setIdProduct(((Number) obj[1]).longValue());
+                productDetailAdminDTO.setIdColor(((Number) obj[2]).longValue());
+                productDetailAdminDTO.setIdSize(((Number) obj[3]).longValue());
+                productDetailAdminDTO.setShoeCollar((Integer) obj[4]);
+                productDetailAdminDTO.setPrice((BigDecimal) obj[5]);
+                productDetailAdminDTO.setTotalBestSeller((BigDecimal) obj[6]);
+//                if (obj[6] instanceof BigDecimal) {
+//                    productDetailAdminDTO.setTotalBestSeller(((BigDecimal) obj[6]).intValue());
+//                } else if (obj[6] instanceof Integer) {
+//                    productDetailAdminDTO.setTotalBestSeller((Integer) obj[6]);
+//                } else if (obj[6] instanceof Long) {
+//                    productDetailAdminDTO.setTotalBestSeller(((Long) obj[6]).intValue());
+//                } else if (obj[6] instanceof Number) {
+//                    productDetailAdminDTO.setTotalBestSeller(((Number) obj[6]).intValue());
+//                } else {
+//                    throw new IllegalArgumentException("Unexpected data type for total_sold: " + obj[6].getClass().getName());
+//                }
+//                System.out.println("Type of obj[6]: " + obj[6].getClass().getName());
+
+                ColorAdminDTO colorAdminDTO = colorAdminMapper.toDto(colorAdminRepository.findById(((Number) obj[2]).longValue()).orElse(null));
+                productDetailAdminDTO.setColorDTO(colorAdminDTO);
+
+                SizeAdminDTO sizeAdminDTO = sizeAdminMapper.toDto(sizeAdminRepository.findById(((Number) obj[3]).longValue()).orElse(null));
+                productDetailAdminDTO.setSizeDTO(sizeAdminDTO);
+
+                ProductAdminDTO productAdminDTO = productAdminMapper.toDto(productAdminRepository.findById(((Number) obj[1]).longValue()).orElse(null));
+                String imageURL = "http://localhost:8081/view/anh/" + ((Number) obj[1]).longValue();
+                productAdminDTO.setImageURL(imageURL);
+                productDetailAdminDTO.setProductDTO(productAdminDTO);
+
+                productDetailAdminDTOList.add(productDetailAdminDTO);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return lstProduct;
+        return productDetailAdminDTOList;
     }
+
 }

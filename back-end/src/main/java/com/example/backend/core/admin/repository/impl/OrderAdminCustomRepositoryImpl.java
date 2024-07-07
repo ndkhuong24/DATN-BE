@@ -78,10 +78,16 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setCodeVoucherShip((String) obj[4]);
 
                 Timestamp createTimestamp = (Timestamp) obj[5];
-                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+                orderAdminDTO1.setCreateDate(createTimestamp != null ? createTimestamp.toLocalDateTime() : null);
 
                 Timestamp paymentTimestamp = (Timestamp) obj[12];
-                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
+                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
+
+
+//                Timestamp createTimestamp = (Timestamp) obj[5];
+//                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+//                Timestamp paymentTimestamp = (Timestamp) obj[12];
+//                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
 
                 orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
                 orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
@@ -192,10 +198,16 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setCodeVoucherShip((String) obj[4]);
 
                 Timestamp createTimestamp = (Timestamp) obj[5];
-                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+                orderAdminDTO1.setCreateDate(createTimestamp != null ? createTimestamp.toLocalDateTime() : null);
 
                 Timestamp paymentTimestamp = (Timestamp) obj[12];
-                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
+                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
+
+
+//                Timestamp createTimestamp = (Timestamp) obj[5];
+//                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
+//                Timestamp paymentTimestamp = (Timestamp) obj[12];
+//                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
 
                 orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
                 orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
@@ -214,34 +226,6 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setStatusPayment((Integer) obj[20]);
                 orderAdminDTO1.setEmail((String) obj[8]);
                 orderAdminDTOList.add(orderAdminDTO1);
-//                OrderAdminDTO dto = new OrderAdminDTO();
-//                dto.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
-//                dto.setCode((String) obj[1]);
-//                dto.setIdCustomer(obj[2] != null ? ((Number) obj[2]).longValue() : null);
-//                dto.setIdStaff(obj[3] != null ? ((Number) obj[3]).longValue() : null);
-//                dto.setCodeVoucher((String) obj[4]);
-//                dto.setCodeVoucherShip((String) obj[5]);
-//                Timestamp createTimestamp = (Timestamp) obj[6];
-//                dto.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
-//                Timestamp paymentTimestamp = (Timestamp) obj[7];
-//                dto.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
-//                dto.setDeliveryDate((LocalDateTime) obj[8]);
-//                dto.setReceivedDate((LocalDateTime) obj[9]);
-//                dto.setAddressReceived((String) obj[10]);
-//                dto.setShipperPhone((String) obj[11]);
-//                dto.setReceiverPhone((String) obj[12]);
-//                dto.setReceiver((String) obj[13]);
-//                dto.setShipPrice((BigDecimal) obj[14]);
-//                dto.setTotalPrice((BigDecimal) obj[15]);
-//                dto.setTotalPayment((BigDecimal) obj[16]);
-//                dto.setType( obj[17] != null ? ((Number) obj[17]).intValue() : null);
-//                dto.setPaymentType((Integer) obj[18]);
-//                dto.setDescription((String) obj[19]);
-//                dto.setMissedOrder((Integer) obj[20]);
-//                dto.setStatus((Integer) obj[21]);
-//                dto.setStatusPayment((Integer) obj[22]);
-//                dto.setEmail((String) obj[23]);
-//                lstOrderAdminDTOS.add(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();

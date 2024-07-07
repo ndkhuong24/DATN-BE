@@ -146,6 +146,7 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
     @Override
     public List<OrderAdminDTO> getAllOrderSalesAdmin(OrderAdminDTO orderAdminDTO) {
         List<OrderAdminDTO> lst = orderAdminCustomerRepository.getAllOrderSalesAdmin(orderAdminDTO);
+
         return lst.stream().map(c -> {
             if (c.getIdCustomer() != null) {
                 CustomerAdminDTO customerAdminDTO = customerAdminMapper.toDto(
@@ -161,6 +162,4 @@ public class OrderSalesCounterServiceimpl implements OrderSalesCounterService {
             return c;
         }).collect(Collectors.toList());
     }
-
-
 }

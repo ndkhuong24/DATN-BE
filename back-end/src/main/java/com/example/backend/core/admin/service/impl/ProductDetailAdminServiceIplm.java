@@ -201,7 +201,8 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
                         ColorAdminDTO colorAdminDTO = color != null ? colorAdminMapper.toDto(color) : null;
                         SizeAdminDTO sizeAdminDTO = size != null ? sizeAdminMapper.toDto(size) : null;
 
-                        BigDecimal listedPrice = productDetail.getPrice();
+//                        BigDecimal listedPrice = productDetail.getPrice();
+//                        BigDecimal totalBestSeller = productDetail.getPrice();
 
                         return new ProductDetailAdminDTO(
                                 productDetail.getId(),
@@ -211,7 +212,8 @@ public class ProductDetailAdminServiceIplm implements ProductDetailAdminService 
                                 productDetail.getQuantity(),
                                 productDetail.getPrice(),
                                 productDetail.getShoeCollar(),
-                                listedPrice,
+//                                listedPrice,
+//                                totalBestSeller,
                                 productAdminDTO,
                                 colorAdminDTO,
                                 sizeAdminDTO

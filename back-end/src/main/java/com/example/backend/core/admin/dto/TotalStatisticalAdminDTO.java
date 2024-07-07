@@ -21,5 +21,6 @@ public class TotalStatisticalAdminDTO implements Serializable {
     private BigDecimal totalRevenueToday;
     private List<StatisticalAdminDTO> statisticalAdminDTOList;
     private List<ProductAdminDTO> listProductBestSeller;
+    private List<ProductDetailAdminDTO> listProductDetailBestSeller;
 
 }

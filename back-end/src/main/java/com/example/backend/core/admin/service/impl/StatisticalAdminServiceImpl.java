@@ -1,5 +1,6 @@
 package com.example.backend.core.admin.service.impl;
 
+import com.example.backend.core.admin.dto.ProductDetailAdminDTO;
 import com.example.backend.core.admin.dto.StatisticalAdminDTO;
 import com.example.backend.core.admin.dto.TotalStatisticalAdminDTO;
 import com.example.backend.core.admin.repository.ProductAdminCustomRepository;
@@ -7,7 +8,7 @@ import com.example.backend.core.admin.repository.StatisticalAdminCustomRepositor
 import com.example.backend.core.admin.service.StatisticalAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.backend.core.admin.dto.ProductAdminDTO;
+
 import java.util.List;
 
 @Service
@@ -18,14 +19,19 @@ public class StatisticalAdminServiceImpl implements StatisticalAdminService {
 
     @Autowired
     private ProductAdminCustomRepository productAdminCustomRepository;
+
     @Override
     public TotalStatisticalAdminDTO getTotalStatisticalByYear(StatisticalAdminDTO statisticalAdminDTO) {
-        TotalStatisticalAdminDTO dto = new TotalStatisticalAdminDTO();
-        List<StatisticalAdminDTO> list = statisticalAdminCustomRepository.getStatisticalByDate(statisticalAdminDTO);
-        List<ProductAdminDTO> productAdminDTOList = productAdminCustomRepository.topProductBestSeller();
-        dto = statisticalAdminCustomRepository.totalStatistical();
-        dto.setListProductBestSeller(productAdminDTOList);
-        dto.setStatisticalAdminDTOList(list);
+        TotalStatisticalAdminDTO totalStatisticalAdminDTO = new TotalStatisticalAdminDTO();
+
+        List<StatisticalAdminDTO> statisticalAdminDTOList = statisticalAdminCustomRepository.getStatisticalByDate(statisticalAdminDTO);
+
+        List<ProductDetailAdminDTO> productDetailAdminDTOList = productAdminCustomRepository.topProductBestSeller();
+
+        totalStatisticalAdminDTO = statisticalAdminCustomRepository.totalStatistical();
+
+        totalStatisticalAdminDTO.setListProductDetailBestSeller(productDetailAdminDTOList);
+        totalStatisticalAdminDTO.setStatisticalAdminDTOList(statisticalAdminDTOList);
 //        TotalStatisticalAdminDTO totalDTO = new TotalStatisticalAdminDTO(0L, 0L, 0L, new BigDecimal(0), 0L);
 //        int year = Integer.parseInt(statisticalAdminDTO.getYear());
 //        list.forEach(s -> {
@@ -52,6 +58,6 @@ public class StatisticalAdminServiceImpl implements StatisticalAdminService {
 //            s.setMonthStr("Tháng " + s.getMonth());
 //            s.setYear(statisticalAdminDTO.getYear());
 //        });
-        return dto;
+        return totalStatisticalAdminDTO;
     }
 }
