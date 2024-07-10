@@ -86,4 +86,7 @@ public class Voucher {
     @Column(name = "dele")
     private Integer delete;
 
+    @Transient
+    private int orderCount;
+
 }

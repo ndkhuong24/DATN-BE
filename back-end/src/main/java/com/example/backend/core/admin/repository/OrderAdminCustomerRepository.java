@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderAdminCustomerRepository {
-
     List<OrderAdminDTO> getAllOrderAdmin(OrderAdminDTO orderAdminDTO);
 
     Map<String, Integer> totalStatusOrder(OrderAdminDTO orderAdminDTO);

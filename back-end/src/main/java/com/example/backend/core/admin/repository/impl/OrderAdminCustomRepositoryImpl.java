@@ -47,7 +47,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
             if (StringUtils.isNotBlank(orderAdminDTO.getDateTo())) {
                 sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y')) ");
             }
-            sql.append("   order by o.create_date desc");
+            sql.append("order by o.create_date desc");
 
             Query query = entityManager.createNativeQuery(sql.toString());
 
@@ -67,27 +67,20 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
             List<Object[]> lst = query.getResultList();
 
             for (Object[] obj: lst) {
-
                 OrderAdminDTO orderAdminDTO1 = new OrderAdminDTO();
 
                 orderAdminDTO1.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
                 orderAdminDTO1.setCode((String) obj[2]);
-                orderAdminDTO1.setIdCustomer(obj[9] != null ? ((Number) obj[9]).longValue() : null);
-                orderAdminDTO1.setIdStaff(obj[10] != null ? ((Number) obj[10]).longValue() : null);
                 orderAdminDTO1.setCodeVoucher((String) obj[3]);
                 orderAdminDTO1.setCodeVoucherShip((String) obj[4]);
+                orderAdminDTO1.setIdCustomer(obj[9] != null ? ((Number) obj[9]).longValue() : null);
+                orderAdminDTO1.setIdStaff(obj[10] != null ? ((Number) obj[10]).longValue() : null);
 
                 Timestamp createTimestamp = (Timestamp) obj[5];
                 orderAdminDTO1.setCreateDate(createTimestamp != null ? createTimestamp.toLocalDateTime() : null);
 
                 Timestamp paymentTimestamp = (Timestamp) obj[12];
                 orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
-
-
-//                Timestamp createTimestamp = (Timestamp) obj[5];
-//                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
-//                Timestamp paymentTimestamp = (Timestamp) obj[12];
-//                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
 
                 orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
                 orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
@@ -96,7 +89,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setReceiverPhone((String) obj[16]);
                 orderAdminDTO1.setReceiver((String) obj[15]);
                 orderAdminDTO1.setShipPrice((BigDecimal) obj[17]);
-                orderAdminDTO1.setTotalPrice((BigDecimal) obj[21]);
+                orderAdminDTO1.setTotalPrice((BigDecimal) obj[22]);
                 orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
                 orderAdminDTO1.setType( obj[23] != null ? ((Number) obj[23]).intValue() : null);
                 orderAdminDTO1.setPaymentType((Integer) obj[13]);
@@ -202,12 +195,6 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
 
                 Timestamp paymentTimestamp = (Timestamp) obj[12];
                 orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
-
-
-//                Timestamp createTimestamp = (Timestamp) obj[5];
-//                orderAdminDTO1.setCreateDate(createTimestamp != null ? LocalDateTime.now() : null);
-//                Timestamp paymentTimestamp = (Timestamp) obj[12];
-//                orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? LocalDateTime.now() : null);
 
                 orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
                 orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
