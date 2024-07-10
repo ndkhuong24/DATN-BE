@@ -1,8 +1,7 @@
 package com.example.backend.core.view.service.impl;
 
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.model.*;
-import com.example.backend.core.view.dto.*;
+import com.example.backend.core.view.dto.CartDTO;
 import com.example.backend.core.view.mapper.ColorMapper;
 import com.example.backend.core.view.mapper.ProductDetailMapper;
 import com.example.backend.core.view.mapper.ProductMapper;
@@ -10,17 +9,10 @@ import com.example.backend.core.view.mapper.SizeMapper;
 import com.example.backend.core.view.repository.*;
 import com.example.backend.core.view.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
-
     @Autowired
     private ProductRepository productRepository;
 
@@ -53,6 +45,11 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Override
+    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {
+        return null;
+    }
 
 //    @Override
 //    public ServiceResult<CartDTO> getCart(CartDTO cartDTO) {

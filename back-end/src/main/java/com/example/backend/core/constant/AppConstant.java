@@ -66,6 +66,7 @@ public class AppConstant {
                 "/api/admin/voucher/setIdel/*",
                 "/api/admin/voucher/searchByCustomer*",
                 "/api/admin/voucher/searchByVoucher*",
+                "/api/admin/voucher/searchByVoucherType*",
                 "/api/admin/voucher/KH",
                 "/api/admin/voucher/KKH",
                 "/api/admin/voucher/export-data",

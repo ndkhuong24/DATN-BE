@@ -38,5 +38,7 @@ public interface VoucherAdminService {
 
     void sendMessageUsingThymeleafTemplate(VoucherAdminDTO voucherAdminDTO) throws MessagingException;
 
+    List<VoucherAdminDTO> getVouchersByVoucherType(String search);
+
 //    byte[] exportExcelVoucher() throws IOException;
 }

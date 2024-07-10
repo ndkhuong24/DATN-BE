@@ -17,8 +17,6 @@ public interface ProductDetailAdminRepository extends JpaRepository<ProductDetai
     @Modifying
     void deleteByIdProduct(Long idProduct);
 
-//    List<ProductDetail> findByNameLikeOrCodeLike(String s, String s1);
-
     @Query("SELECT pd FROM ProductDetail pd WHERE pd.idProduct IN (SELECT p.id FROM Product p WHERE p.name LIKE %?1% OR p.code LIKE %?2%)")
     List<ProductDetail> findByNameLikeOrCodeLike(String nameParam, String codeParam);
 }

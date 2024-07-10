@@ -156,18 +156,6 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                 productDetailAdminDTO.setShoeCollar((Integer) obj[4]);
                 productDetailAdminDTO.setPrice((BigDecimal) obj[5]);
                 productDetailAdminDTO.setTotalBestSeller((BigDecimal) obj[6]);
-//                if (obj[6] instanceof BigDecimal) {
-//                    productDetailAdminDTO.setTotalBestSeller(((BigDecimal) obj[6]).intValue());
-//                } else if (obj[6] instanceof Integer) {
-//                    productDetailAdminDTO.setTotalBestSeller((Integer) obj[6]);
-//                } else if (obj[6] instanceof Long) {
-//                    productDetailAdminDTO.setTotalBestSeller(((Long) obj[6]).intValue());
-//                } else if (obj[6] instanceof Number) {
-//                    productDetailAdminDTO.setTotalBestSeller(((Number) obj[6]).intValue());
-//                } else {
-//                    throw new IllegalArgumentException("Unexpected data type for total_sold: " + obj[6].getClass().getName());
-//                }
-//                System.out.println("Type of obj[6]: " + obj[6].getClass().getName());
 
                 ColorAdminDTO colorAdminDTO = colorAdminMapper.toDto(colorAdminRepository.findById(((Number) obj[2]).longValue()).orElse(null));
                 productDetailAdminDTO.setColorDTO(colorAdminDTO);

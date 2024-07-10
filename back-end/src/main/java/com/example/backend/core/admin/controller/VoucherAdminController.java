@@ -1,13 +1,10 @@
 package com.example.backend.core.admin.controller;
 
-import com.example.backend.core.admin.dto.DiscountDetailAdminDTO;
 import com.example.backend.core.admin.dto.VoucherAdminDTO;
 import com.example.backend.core.admin.service.VoucherAdminService;
 import com.example.backend.core.commons.ServiceResult;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +17,6 @@ import java.util.List;
 public class VoucherAdminController {
     @Autowired
     private VoucherAdminService voucherAdminService;
-
-//    @Autowired
-//    private FileExportUtil fileExportUtil;
-
-    private static final Logger log = LoggerFactory.getLogger(DiscountDetailAdminDTO.class);
-
 
     @GetMapping()
     public ResponseEntity<?> getAllVoucher() {
@@ -72,7 +63,6 @@ public class VoucherAdminController {
     public List<VoucherAdminDTO> searchByDateRange(
             @RequestParam(name = "fromDate") String fromDate,
             @RequestParam(name = "toDate") String toDate) {
-
         return voucherAdminService.getVouchersByTimeRange(fromDate, toDate);
     }
 
@@ -85,15 +75,19 @@ public class VoucherAdminController {
     @GetMapping("/searchByVoucher")
     public List<VoucherAdminDTO> searchByVoucher(
             @RequestParam(name = "search") String search) {
-
         return voucherAdminService.getVouchersByKeyword(search);
     }
 
     @GetMapping("/searchByCustomer")
     public List<VoucherAdminDTO> searchByCustomer(
             @RequestParam(name = "search") String search) {
-
         return voucherAdminService.getVouchersByCustomer(search);
+    }
+
+    @GetMapping("/searchByVoucherType")
+    public List<VoucherAdminDTO> searchByVoucherType(
+            @RequestParam(name = "search") String search) {
+        return voucherAdminService.getVouchersByVoucherType(search);
     }
 
     @GetMapping("/KH")

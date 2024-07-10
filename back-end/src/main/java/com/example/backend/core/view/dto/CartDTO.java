@@ -1,7 +1,6 @@
 package com.example.backend.core.view.dto;
 
 
-
 public class CartDTO {
     private Long productId;
     private String productName;

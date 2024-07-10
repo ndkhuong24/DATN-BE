@@ -5,7 +5,6 @@ import com.example.backend.core.admin.service.ProductAdminService;
 import com.example.backend.core.admin.service.ProductDetailAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +18,6 @@ public class ProductAdminController {
 
     @Autowired
     private ProductDetailAdminService productDetailAdminService;
-
-//    private static final Logger log = LoggerFactory.getLogger(ProductAdminDTO.class);
 
     @GetMapping("product/hien-thi")
     public ResponseEntity<List<ProductAdminDTO>> hienthi() {
@@ -52,9 +49,13 @@ public class ProductAdminController {
         return ResponseEntity.ok(productAdminService.update(productAdminDTO, id));
     }
 
+    @GetMapping("product/hien-thii/{param}")
+    public ResponseEntity<?> timKiem(@PathVariable("param") String param) {
+        return ResponseEntity.ok(productAdminService.findByNameLikeOrCodeLike(param));
+    }
+
     @GetMapping("product/search/{param}")
     public ResponseEntity<?> searchProduct(@PathVariable("param") String param) {
         return ResponseEntity.ok(productDetailAdminService.findByNameLikeOrCodeLike(param));
-//        return ResponseEntity.ok(productAdminService.findByNameLikeOrCodeLike(param));
     }
 }

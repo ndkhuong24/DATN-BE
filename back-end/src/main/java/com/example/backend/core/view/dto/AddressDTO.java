@@ -1,9 +1,7 @@
 package com.example.backend.core.view.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @AllArgsConstructor

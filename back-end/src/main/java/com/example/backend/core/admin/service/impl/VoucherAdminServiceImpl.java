@@ -115,7 +115,6 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     public List<VoucherAdminDTO> getAllVouchers() {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
 
-        // Filter out null createDates
         list = list.stream()
                 .filter(voucher -> voucher.getCreateDate() != null)
                 .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
@@ -130,19 +129,6 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
             }
         }
         return list;
-
-
-//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
-//
-//        Iterator<VoucherAdminDTO> iterator = list.listIterator();
-//        while (iterator.hasNext()) {
-//            VoucherAdminDTO voucherAdminDTO = iterator.next();
-//            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode());
-//            if (orderList.size() > 0) {
-//                voucherAdminDTO.setIsUpdate(1);
-//            }
-//        }
-//        return list;
     }
 
     @Override
@@ -172,6 +158,12 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     @Override
     public List<VoucherAdminDTO> getVouchersByCustomer(String searchTerm) {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByCustomer(searchTerm);
+        return list;
+    }
+
+    @Override
+    public List<VoucherAdminDTO> getVouchersByVoucherType(String search) {
+        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByVoucherType(search);
         return list;
     }
 

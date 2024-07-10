@@ -85,8 +85,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
                     LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -226,8 +224,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -298,16 +294,12 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setCreateName(row[13].toString());
                 voucher.setUseVoucher(Integer.parseInt(row[14].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -392,11 +384,12 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
                 voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -425,28 +418,33 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
     @Override
     public List<VoucherAdminDTO> getVouchersByKeyword(String keyword) {
         try {
-            String sql = "SELECT " +
-                    "  v.id, " +
-                    "  v.code, " +
-                    "  v.name, " +
-                    "  v.start_date," +
-                    "  v.end_date, " +
-                    "  v.conditions, " +
-                    "  v.voucher_type, " +
-                    "  v.reduced_value, " +
-                    "  v.description, " +
-                    "  v.idel, " +
-                    "  v.quantity," +
-                    "v.max_reduced," +
-                    "v.allow ," +
-                    "  COUNT(o.id) AS use_voucher " +
-                    "FROM voucher v " +
-                    "LEFT JOIN `order` o ON o.code_voucher = v.code " +
-                    "WHERE v.name LIKE :keyword OR v.code LIKE :keyword and dele=0 " +
-                    "GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
-                    "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ";
+            String sql = "SELECT\n" +
+                    "    v.id,\n" +
+                    "    v.code,\n" +
+                    "    v.name,\n" +
+                    "    v.start_date,\n" +
+                    "    v.end_date,\n" +
+                    "    v.conditions,\n" +
+                    "    v.voucher_type,\n" +
+                    "    v.reduced_value,\n" +
+                    "    v.description,\n" +
+                    "    v.idel,\n" +
+                    "    v.quantity,\n" +
+                    "    v.max_reduced,\n" +
+                    "    v.allow,\n" +
+                    "    COUNT(o.id) AS use_voucher\n" +
+                    "FROM\n" +
+                    "    datn.voucher v\n" +
+                    "LEFT JOIN\n" +
+                    "    datn.`order` o ON o.code_voucher = v.code \n" +
+                    "WHERE\n" +
+                    "    (v.name LIKE :keyword OR v.code LIKE :keyword)\n" +
+                    "    AND v.dele = 0\n" +
+                    "GROUP BY\n" +
+                    "    v.id, v.code, v.name, v.start_date, v.end_date, v.conditions,\n" +
+                    "    v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity, v.max_reduced, v.allow;\n";
             Query query = entityManager.createNativeQuery(sql);
-            query.setParameter("keyword", "%" + keyword + "%"); // Sử dụng % để tìm kiếm mọi nơi trong chuỗi.
+            query.setParameter("keyword", "%" + keyword + "%");
 
             List<Object[]> resultList = query.getResultList();
 
@@ -467,11 +465,12 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
                 voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -497,7 +496,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
         }
     }
 
-
     @Override
     public List<VoucherAdminDTO> getVouchersByCustomer(String searchTerm) {
         try {
@@ -517,14 +515,16 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "v.allow ," +
                     "  COUNT(o.id) AS use_voucher " +
                     "FROM voucher v " +
-                    "LEFT JOIN `order` o ON o.code_voucher = v.code " +
-                    "LEFT JOIN customer c ON v.id_customer = c.id " +
-                    "WHERE dele=0 ");
+                    "LEFT JOIN datn.order o ON o.code_voucher = v.code " +
+                    "LEFT JOIN datn.customer c ON v.id_customer = c.id " +
+                    "WHERE v.dele = 0");
+
             if (searchTerm != null && !searchTerm.isEmpty()) {
                 sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
                         "   OR LOWER(c.fullname) LIKE LOWER(:searchTerm) " +
-                        "   OR c.phone LIKE  :searchTerm ");
+                        "   OR c.phone LIKE :searchTerm ");
             }
+
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ");
 
             Query query = entityManager.createNativeQuery(sql.toString());
@@ -551,11 +551,102 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
                 voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                try {
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+
+                    voucher.setStartDate(startDate);
+                    voucher.setEndDate(endDate);
+
+                    if (LocalDateTime.now().isAfter(endDate)) {
+                        voucher.setStatus(1);
+                    } else {
+                        voucher.setStatus(0);
+                    }
+
+                } catch (DateTimeParseException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+
+                vouchers.add(voucher);
+            }
+            return vouchers;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<VoucherAdminDTO> getVouchersByVoucherType(String search) {
+        try {
+            StringBuilder sql = new StringBuilder("SELECT\n" +
+                    "    v.id,\n" +
+                    "    v.code,\n" +
+                    "    v.name,\n" +
+                    "    v.start_date,\n" +
+                    "    v.end_date,\n" +
+                    "    v.conditions,\n" +
+                    "    v.voucher_type,\n" +
+                    "    v.reduced_value,\n" +
+                    "    v.description,\n" +
+                    "    v.idel,\n" +
+                    "    v.quantity,\n" +
+                    "    v.max_reduced,\n" +
+                    "    v.allow,\n" +
+                    "    COUNT(o.id) AS use_voucher\n" +
+                    "FROM\n" +
+                    "    datn.voucher v\n" +
+                    "LEFT JOIN\n" +
+                    "    datn.`order` o ON o.code_voucher = v.code\n" +
+                    "WHERE\n" +
+                    "    v.dele = 0");
+
+            // Thêm điều kiện cho voucher_type nếu search không phải là null hoặc rỗng
+            if (search != null && !search.isEmpty()) {
+                sql.append(" AND v.voucher_type = :search");
+            }
+
+            sql.append(" GROUP BY\n" +
+                    "    v.id, v.code, v.name, v.start_date, v.end_date, v.conditions,\n" +
+                    "    v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity, v.max_reduced, v.allow");
+
+            Query query = entityManager.createNativeQuery(sql.toString());
+
+            if (search != null && !search.isEmpty()) {
+                query.setParameter("search", search);
+            }
+
+            List<Object[]> resultList = query.getResultList();
+
+            List<VoucherAdminDTO> vouchers = new ArrayList<>();
+            for (Object[] row : resultList) {
+                VoucherAdminDTO voucher = new VoucherAdminDTO();
+
+                voucher.setId(Long.parseLong(row[0].toString()));
+                voucher.setCode(row[1].toString());
+                voucher.setName(row[2].toString());
+                voucher.setConditionApply(new BigDecimal(row[5].toString()));
+                voucher.setVoucherType(Integer.valueOf(row[6].toString()));
+                voucher.setReducedValue(new BigDecimal(row[7].toString()));
+                voucher.setDescription(row[8].toString());
+                voucher.setIdel(Integer.valueOf(row[9].toString()));
+                voucher.setQuantity(Integer.valueOf(row[10].toString()));
+                voucher.setMaxReduced(row[11] != null ? new BigDecimal(row[11].toString()) : null);
+                voucher.setAllow(row[12] != null ? Integer.valueOf((row[12].toString())) : null);
+                voucher.setUseVoucher(Integer.parseInt(row[13].toString()));
 
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -622,7 +713,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp birthdayTimestamp = (Timestamp) row[3];
                     LocalDateTime birthday = birthdayTimestamp.toLocalDateTime();
-//                    LocalDateTime birthday = LocalDateTime.parse(row[3].toString());
 
                     customer.setBirthday(birthday);
                 } catch (DateTimeParseException e) {
@@ -639,6 +729,5 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
             return null;
         }
     }
-
 
 }
