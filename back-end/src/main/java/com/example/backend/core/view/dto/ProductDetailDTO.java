@@ -23,6 +23,9 @@ public class ProductDetailDTO {
     private Integer shoeCollar;
 
     private BigDecimal listedPrice;//gia niem yet
+    private BigDecimal reducePrice;//giảm giá
+    private Integer percentageReduce;//phần trăm giảm
+    private String codeDiscount;//mã giảm gia
 
     private ProductDTO productDTO;
     private ColorDTO colorDTO;
