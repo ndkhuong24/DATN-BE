@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderDetailService {
-
-//    Map<String, Object> getAllByOrder(Long idOrder);
+    Map<String, Object> getAllByOrder(Long idOrder);
 //
 //    ServiceResult<OrderDetailDTO> createOrderDetail(OrderDetailDTO orderDetailDTO);
 }

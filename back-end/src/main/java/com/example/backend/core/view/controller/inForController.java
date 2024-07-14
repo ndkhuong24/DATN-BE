@@ -18,27 +18,30 @@ import java.util.Map;
 @RequestMapping("/view/api")
 public class inForController {
     @Autowired
-    private CustomerService  customerService;
+    private CustomerService customerService;
 
     @Autowired
     private ForgotPassService forgotPassService;
 
     @Autowired
     private CustomerInforSerivce customerInforSerivce;
+
     @PutMapping("/update-infor/{id}")
     public ResponseEntity<?> updateinFor(
-            @PathVariable("id") Customer  customer,
+            @PathVariable("id") Customer customer,
             @RequestBody CustomerDTO customerDTO
-            ){
+    ) {
         return ResponseEntity.ok(this.customerService.updateInforCustomer(customerDTO, customer));
     }
+
     @PutMapping("/changePass/{id}")
     public ResponseEntity<?> changePass(
             @PathVariable("id") Customer customer,
             @RequestBody CustomerDTO customerDTO
-    ){
+    ) {
         return ResponseEntity.ok(this.customerInforSerivce.updatePassword(customerDTO, customer));
     }
+
     @PostMapping("/send-mail-otp")
     public ResponseEntity<Map<String, String>> sendMailOtpl(@RequestBody CustomerDTO customerDTO) {
         Map<String, String> response = new HashMap<>();
@@ -53,6 +56,7 @@ public class inForController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
     @PostMapping("/verify-otp")
     public ResponseEntity<Map<String, String>> verifyOTP(
             @RequestBody CustomerDTO customerDTO
@@ -67,10 +71,11 @@ public class inForController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
     @PostMapping("/reset-pass")
     public ResponseEntity<?> resetPass(
-        @RequestBody CustomerDTO customerDTO
-    ){
+            @RequestBody CustomerDTO customerDTO
+    ) {
         return ResponseEntity.ok(this.customerInforSerivce.resetPassword(customerDTO));
     }
 }

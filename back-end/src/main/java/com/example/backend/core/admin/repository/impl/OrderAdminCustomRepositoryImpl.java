@@ -2,7 +2,6 @@ package com.example.backend.core.admin.repository.impl;
 
 import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.admin.repository.OrderAdminCustomerRepository;
-import com.example.backend.core.view.dto.OrderDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
@@ -12,10 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,16 +35,20 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
             if (orderAdminDTO.getStatus() != 6 && orderAdminDTO.getStatus() != null) {
                 sql.append("  and o.status = :status  ");
             }
+
             if (StringUtils.isNotBlank(orderAdminDTO.getCode())) {
                 sql.append("  and (UPPER(o.code) like concat('%', UPPER(:codeSearch), '%'))");
             }
+
             if (StringUtils.isNotBlank(orderAdminDTO.getDateFrom())) {
                 sql.append("  and (:dateFrom is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom , '%d/%m/%Y'))  ");
             }
+
             if (StringUtils.isNotBlank(orderAdminDTO.getDateTo())) {
                 sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y')) ");
             }
-            sql.append("order by o.create_date desc");
+
+            sql.append(" order by o.create_date desc");
 
             Query query = entityManager.createNativeQuery(sql.toString());
 
@@ -66,7 +67,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
 
             List<Object[]> lst = query.getResultList();
 
-            for (Object[] obj: lst) {
+            for (Object[] obj : lst) {
                 OrderAdminDTO orderAdminDTO1 = new OrderAdminDTO();
 
                 orderAdminDTO1.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
@@ -82,8 +83,14 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 Timestamp paymentTimestamp = (Timestamp) obj[12];
                 orderAdminDTO1.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
 
-                orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
-                orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
+                Timestamp deliveryTimestamp = (Timestamp) obj[6];
+                orderAdminDTO1.setDeliveryDate(deliveryTimestamp != null ? deliveryTimestamp.toLocalDateTime() : null);
+
+                Timestamp receivedTimestamp = (Timestamp) obj[14];
+                orderAdminDTO1.setReceivedDate(receivedTimestamp != null ? receivedTimestamp.toLocalDateTime() : null);
+//                orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
+//                orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
+
                 orderAdminDTO1.setAddressReceived((String) obj[1]);
                 orderAdminDTO1.setShipperPhone((String) obj[18]);
                 orderAdminDTO1.setReceiverPhone((String) obj[16]);
@@ -91,7 +98,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setShipPrice((BigDecimal) obj[17]);
                 orderAdminDTO1.setTotalPrice((BigDecimal) obj[22]);
                 orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
-                orderAdminDTO1.setType( obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                orderAdminDTO1.setType(obj[23] != null ? ((Number) obj[23]).intValue() : null);
                 orderAdminDTO1.setPaymentType((Integer) obj[13]);
                 orderAdminDTO1.setDescription((String) obj[8]);
                 orderAdminDTO1.setMissedOrder((Integer) obj[11]);
@@ -134,7 +141,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 query.setParameter("dateTo", orderAdminDTO.getDateTo());
             }
             List<Object[]> list = query.getResultList();
-            for (Object[] obj: list) {
+            for (Object[] obj : list) {
                 map.put("xacNhan", ((BigDecimal) obj[0]).intValue());
                 map.put("xuLy", ((BigDecimal) obj[1]).intValue());
                 map.put("giaoHang", ((BigDecimal) obj[2]).intValue());
@@ -142,7 +149,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 map.put("huy", ((BigDecimal) obj[4]).intValue());
             }
             return map;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -180,7 +187,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 query.setParameter("dateTo", orderAdminDTO.getDateTo());
             }
             List<Object[]> lst = query.getResultList();
-            for (Object[] obj: lst) {
+            for (Object[] obj : lst) {
                 OrderAdminDTO orderAdminDTO1 = new OrderAdminDTO();
 
                 orderAdminDTO1.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
@@ -205,7 +212,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setShipPrice((BigDecimal) obj[17]);
                 orderAdminDTO1.setTotalPrice((BigDecimal) obj[21]);
                 orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
-                orderAdminDTO1.setType( obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                orderAdminDTO1.setType(obj[23] != null ? ((Number) obj[23]).intValue() : null);
                 orderAdminDTO1.setPaymentType((Integer) obj[13]);
                 orderAdminDTO1.setDescription((String) obj[8]);
                 orderAdminDTO1.setMissedOrder((Integer) obj[11]);

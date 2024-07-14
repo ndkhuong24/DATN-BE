@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -87,25 +84,29 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
     @Override
     public ServiceResult<OrderAdminDTO> updateStatusChoXuLy(OrderAdminDTO orderAdminDTO) {
-        ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+        ServiceResult<OrderAdminDTO> orderAdminDTOServiceResult = new ServiceResult<>();
+
         if (orderAdminDTO.getId() == null) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
-            return result;
+            orderAdminDTOServiceResult.setData(null);
+            orderAdminDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderAdminDTOServiceResult.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
+            return orderAdminDTOServiceResult;
         }
+
         if (orderAdminDTO.getIdStaff() == null) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
-            return result;
+            orderAdminDTOServiceResult.setData(null);
+            orderAdminDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderAdminDTOServiceResult.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
+            return orderAdminDTOServiceResult;
         }
+
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
+
         if (order.getStatus() == AppConstant.CHO_XU_LY) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
-            return result;
+            orderAdminDTOServiceResult.setData(null);
+            orderAdminDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderAdminDTOServiceResult.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
+            return orderAdminDTOServiceResult;
         } else {
             order.setStatus(AppConstant.CHO_XU_LY);
             order.setIdStaff(orderAdminDTO.getIdStaff());
@@ -119,45 +120,52 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 orderHistory.setNote(orderAdminDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
             }
-            result.setData(orderAdminMapper.toDto(order));
-            result.setStatus(HttpStatus.OK);
-            result.setMessage("Success");
-            return result;
+            orderAdminDTOServiceResult.setData(orderAdminMapper.toDto(order));
+            orderAdminDTOServiceResult.setStatus(HttpStatus.OK);
+            orderAdminDTOServiceResult.setMessage("Success");
+            return orderAdminDTOServiceResult;
         }
     }
 
     @Override
     public ServiceResult<OrderAdminDTO> huyDonHang(OrderAdminDTO orderAdminDTO) {
         ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+
         if (orderAdminDTO.getId() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
             return result;
         }
+
         if (orderAdminDTO.getIdStaff() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
             return result;
         }
+
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
-        if(order.getStatus() == AppConstant.HUY_DON_HANG){
+
+        if (order.getStatus() == AppConstant.HUY_DON_HANG) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
             return result;
-        }else {
+        } else {
             order.setStatus(AppConstant.HUY_DON_HANG);
             order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
+
             if (order != null) {
                 List<OrderDetail> orderDetailList = orderDetailAdminRepository.findByIdOrder(order.getId());
+
                 for (int i = 0; i < orderDetailList.size(); i++) {
                     ProductDetail productDetail = productDetailAdminRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
                     productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
                     productDetailAdminRepository.save(productDetail);
                 }
+
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HUY_HISTORY);
                 orderHistory.setCreateDate(LocalDateTime.now());
@@ -166,6 +174,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 orderHistory.setNote(orderAdminDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
             }
+
             result.setData(orderAdminMapper.toDto(order));
             result.setStatus(HttpStatus.OK);
             result.setMessage("Success");
@@ -189,13 +198,14 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return result;
         }
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
-        if(order.getStatus() == AppConstant.DANG_GIAO_HANG){
+
+        if (order.getStatus() == AppConstant.DANG_GIAO_HANG) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
             return result;
-        }else {
-            order.setShipperPhone("0985218603");
+        } else {
+            order.setShipperPhone("0962917587");
             order.setDeliveryDate(LocalDateTime.now());
             order.setMissedOrder(0);
             order.setStatus(AppConstant.DANG_GIAO_HANG);
@@ -236,12 +246,12 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
 
-        if(order.getStatus() == AppConstant.HOAN_THANH){
+        if (order.getStatus() == AppConstant.HOAN_THANH) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
             return result;
-        }else {
+        } else {
             if (order.getPaymentType() == 0) {
                 order.setPaymentDate(LocalDateTime.now());
                 order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));

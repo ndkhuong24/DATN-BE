@@ -1,61 +1,22 @@
 package com.example.backend.core.view.service.impl;
 
-import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.constant.AppConstant;
-import com.example.backend.core.model.Address;
-import com.example.backend.core.model.Customer;
-import com.example.backend.core.model.Order;
-import com.example.backend.core.model.OrderDetail;
-import com.example.backend.core.model.OrderHistory;
-import com.example.backend.core.model.ProductDetail;
-import com.example.backend.core.model.Voucher;
-import com.example.backend.core.model.VoucherFreeShip;
-import com.example.backend.core.security.dto.UsersDTO;
-import com.example.backend.core.view.dto.AddressDTO;
-import com.example.backend.core.view.dto.ColorDTO;
-import com.example.backend.core.view.dto.CustomerDTO;
-import com.example.backend.core.view.dto.ImagesDTO;
-import com.example.backend.core.view.dto.OrderDTO;
-import com.example.backend.core.view.dto.OrderDetailDTO;
-import com.example.backend.core.view.dto.ProductDTO;
-import com.example.backend.core.view.dto.ProductDetailDTO;
-import com.example.backend.core.view.dto.SizeDTO;
-import com.example.backend.core.view.mapper.ColorMapper;
-import com.example.backend.core.view.mapper.CustomerMapper;
-import com.example.backend.core.view.mapper.ImagesMapper;
-import com.example.backend.core.view.mapper.OrderDetailMapper;
-import com.example.backend.core.view.mapper.OrderMapper;
-import com.example.backend.core.view.mapper.ProductDetailMapper;
-import com.example.backend.core.view.mapper.ProductMapper;
-import com.example.backend.core.view.mapper.SizeMapper;
-import com.example.backend.core.view.repository.ColorRepository;
-import com.example.backend.core.view.repository.CustomerRepository;
-import com.example.backend.core.view.repository.ImagesRepository;
-import com.example.backend.core.view.repository.OrderCustomRepository;
-import com.example.backend.core.view.repository.OrderDetailRepository;
-import com.example.backend.core.view.repository.OrderHistoryRepository;
-import com.example.backend.core.view.repository.OrderRepository;
-import com.example.backend.core.view.repository.ProductDetailRepository;
-import com.example.backend.core.view.repository.ProductRepository;
-import com.example.backend.core.view.repository.SizeRepository;
-import com.example.backend.core.view.repository.VoucherFreeShipRepository;
-import com.example.backend.core.view.repository.VoucherRepository;
+import com.example.backend.core.model.*;
+import com.example.backend.core.view.dto.*;
+import com.example.backend.core.view.mapper.*;
+import com.example.backend.core.view.repository.*;
 import com.example.backend.core.view.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -234,7 +195,6 @@ public class OrderServiceImpl implements OrderService {
         order.setPaymentType(orderDTO.getPaymentType());
         order.setShipPrice(orderDTO.getShipPrice());
         order.setTotalPrice(orderDTO.getTotalPrice());
-//        order.setTotalPayment(orderDTO.getTotalPayment());
         order.setReceiverPhone(orderDTO.getReceiverPhone());
         order.setAddressReceived(orderDTO.getAddressReceived());
         order.setEmail(orderDTO.getEmail());
@@ -282,41 +242,67 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServiceResult<OrderDTO> traCuuDonHang(OrderDTO orderDTO) {
-        ServiceResult<OrderDTO> result = new ServiceResult<>();
-        if(StringUtils.isBlank(orderDTO.getCode())){
-            result.setData(null);
-            result.setMessage("Vui lòng nhập mã đơn hàng");
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            return result;
+        ServiceResult<OrderDTO> orderDTOServiceResult = new ServiceResult<>();
+
+        // Kiểm tra nếu mã đơn hàng trống
+        if (StringUtils.isBlank(orderDTO.getCode())) {
+            orderDTOServiceResult.setData(null);
+            orderDTOServiceResult.setMessage("Vui lòng nhập mã đơn hàng");
+            orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            return orderDTOServiceResult;
         }
-        OrderDTO dto = new OrderDTO();
+
+        // Tìm đơn hàng theo mã
         Order order = orderRepository.findByCode(orderDTO.getCode());
-        if(null != order){
-            dto = orderMapper.toDto(order);
+
+        // Nếu đơn hàng tồn tại
+        if (order != null) {
+            OrderDTO dto = orderMapper.toDto(order);
             List<OrderDetailDTO> orderDetailDTOList = orderDetailMapper.toDto(orderDetailRepository.findByIdOrder(dto.getId()));
-            for (int i = 0; i < orderDetailDTOList.size() ; i++) {
-                ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(orderDetailDTOList.get(i).getIdProductDetail()).get());
-                ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
-                List<ImagesDTO> imagesDTOList = imagesMapper.toDto(imagesRepository.findByIdProduct(productDTO.getId()));
-                ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
-                productDetailDTO.setColorDTO(colorDTO);
-                SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
-                productDetailDTO.setSizeDTO(sizeDTO);
-                productDTO.setImagesDTOList(imagesDTOList);
-                productDetailDTO.setProductDTO(productDTO);
-                orderDetailDTOList.get(i).setProductDetailDTO(productDetailDTO);
-                orderDetailDTOList.set(i,orderDetailDTOList.get(i));
+
+            for (OrderDetailDTO orderDetailDTO : orderDetailDTOList) {
+                // Lấy chi tiết sản phẩm
+                Optional<ProductDetail> optionalProductDetail = productDetailRepository.findById(orderDetailDTO.getIdProductDetail());
+
+                if (optionalProductDetail.isPresent()) {
+                    ProductDetailDTO productDetailDTO = productDetailMapper.toDto(optionalProductDetail.get());
+
+                    Optional<Product> productOptional = productRepository.findById(productDetailDTO.getIdProduct());
+
+                    if (productOptional.isPresent()) {
+                        ProductDTO productDTO = productMapper.toDto(productOptional.get());
+                        String imageURL = "http://localhost:8081/view/anh/" + productDTO.getId();
+
+                        Optional<Color> optionalColor = colorRepository.findById(productDetailDTO.getIdColor());
+
+                        if (optionalColor.isPresent()) {
+                            ColorDTO colorDTO = colorMapper.toDto(optionalColor.get());
+                            productDetailDTO.setColorDTO(colorDTO);
+                        }
+
+                        Optional<Size> optionalSize = sizeRepository.findById(productDetailDTO.getIdSize());
+
+                        if (optionalSize.isPresent()) {
+                            SizeDTO sizeDTO = sizeMapper.toDto(optionalSize.get());
+                            productDetailDTO.setSizeDTO(sizeDTO);
+                        }
+
+                        productDTO.setImageURL(imageURL);
+                        productDetailDTO.setProductDTO(productDTO);
+                        orderDetailDTO.setProductDetailDTO(productDetailDTO);
+                    }
+                }
             }
+
             dto.setOrderDetailDTOList(orderDetailDTOList);
-            result.setData(dto);
-            result.setMessage("Success");
-            result.setStatus(HttpStatus.OK);
-        }else {
-            result.setData(null);
-            result.setMessage("Mã đơn hàng không tồn tại!");
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            return result;
+            orderDTOServiceResult.setData(dto);
+            orderDTOServiceResult.setMessage("Success");
+            orderDTOServiceResult.setStatus(HttpStatus.OK);
+        } else {
+            orderDTOServiceResult.setData(null);
+            orderDTOServiceResult.setMessage("Mã đơn hàng không tồn tại!");
+            orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
         }
-        return result;
+        return orderDTOServiceResult;
     }
 }

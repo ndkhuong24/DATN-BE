@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 @Transactional
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
-
     List<OrderDetail> findByIdOrder(Long idOrder);
 }

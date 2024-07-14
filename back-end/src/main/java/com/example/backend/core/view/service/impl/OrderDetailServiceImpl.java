@@ -1,33 +1,24 @@
 package com.example.backend.core.view.service.impl;
 
 
-import com.example.backend.core.admin.dto.OrderHistoryAdminDTO;
 import com.example.backend.core.admin.dto.StaffAdminDTO;
 import com.example.backend.core.admin.mapper.StaffAdminMapper;
 import com.example.backend.core.admin.repository.StaffAdminRepository;
-import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.model.Discount;
-import com.example.backend.core.model.DiscountDetail;
-import com.example.backend.core.model.OrderDetail;
 import com.example.backend.core.model.OrderHistory;
-import com.example.backend.core.model.ProductDetail;
 import com.example.backend.core.view.dto.*;
 import com.example.backend.core.view.mapper.*;
 import com.example.backend.core.view.repository.*;
 import com.example.backend.core.view.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {
-
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
@@ -84,55 +75,63 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     private CustomerRepository customerRepository;
 
-//    @Override
-//    public Map<String, Object> getAllByOrder(Long idOrder) {
-//        Map<String, Object> map = new HashMap<>();
-//        if (idOrder == null) {
-//            return null;
-//        }
-//        List<OrderHistoryDTO> orderHistoryAdminDTOList = new ArrayList<>();
-//        List<OrderHistoryDTO> orderHistoryViewList = new ArrayList<>();
-//        List<OrderHistory> orderHistoryList = orderHistoryRepository.getAllOrderHistoryByOrder(idOrder);
-//        for (int i = 0; i < orderHistoryList.size(); i++) {
-//            if(null != orderHistoryList.get(i).getIdStaff()){
-//                if(staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).isPresent()){
-//                    StaffAdminDTO staffAdminDTO = staffAdminMapper.toDto(staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).orElse(null));
-//                    OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
-//                    orderHistoryAdminDTO.setStaffAdminDTO(staffAdminDTO);
-//                    orderHistoryAdminDTOList.add(orderHistoryAdminDTO);
-//                }
-//            }
-//
-//        }
-//        for (int i = 0; i < orderHistoryList.size(); i++) {
-//            if(null != orderHistoryList.get(i).getIdCustomer()){
-//                if(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).isPresent()){
-//                    CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).orElse(null));
-//                    OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
-//                    orderHistoryAdminDTO.setCustomerDTO(customerDTO);
-//                    orderHistoryViewList.add(orderHistoryAdminDTO);
-//                }
-//            }
-//        }
-//        List<OrderDetailDTO> lst = orderDetailMapper.toDto(orderDetailRepository.findByIdOrder(idOrder));
-//        for (int i = 0; i < lst.size(); i++) {
-//            ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(lst.get(i).getIdProductDetail()).get());
-//            ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
-//            List<ImagesDTO> imagesDTOList = imagesMapper.toDto(imagesRepository.findByIdProduct(productDTO.getId()));
-//            ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
-//            productDetailDTO.setColorDTO(colorDTO);
-//            SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
-//            productDetailDTO.setSizeDTO(sizeDTO);
-//            productDTO.setImagesDTOList(imagesDTOList);
-//            productDetailDTO.setProductDTO(productDTO);
-//            lst.get(i).setProductDetailDTO(productDetailDTO);
-//            lst.set(i, lst.get(i));
-//        }
-//        map.put("orderDetail", lst);
-//        map.put("orderHistoryAdmin", orderHistoryAdminDTOList);
-//        map.put("orderHistoryView", orderHistoryViewList);
-//        return map;
-//    }
+    @Override
+    public Map<String, Object> getAllByOrder(Long idOrder) {
+        Map<String, Object> map = new HashMap<>();
+
+        if (idOrder == null) {
+            return null;
+        }
+
+        List<OrderHistoryDTO> orderHistoryAdminDTOList = new ArrayList<>();
+        List<OrderHistoryDTO> orderHistoryViewList = new ArrayList<>();
+        List<OrderHistory> orderHistoryList = orderHistoryRepository.getAllOrderHistoryByOrder(idOrder);
+
+        for (int i = 0; i < orderHistoryList.size(); i++) {
+            if (null != orderHistoryList.get(i).getIdStaff()) {
+                if (staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).isPresent()) {
+                    StaffAdminDTO staffAdminDTO = staffAdminMapper.toDto(staffAdminRepository.findById(orderHistoryList.get(i).getIdStaff()).orElse(null));
+                    OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
+                    orderHistoryAdminDTO.setStaffAdminDTO(staffAdminDTO);
+                    orderHistoryAdminDTOList.add(orderHistoryAdminDTO);
+                }
+            }
+
+        }
+
+        for (int i = 0; i < orderHistoryList.size(); i++) {
+            if (null != orderHistoryList.get(i).getIdCustomer()) {
+                if (customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).isPresent()) {
+                    CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).orElse(null));
+                    OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
+                    orderHistoryAdminDTO.setCustomerDTO(customerDTO);
+                    orderHistoryViewList.add(orderHistoryAdminDTO);
+                }
+            }
+        }
+
+        List<OrderDetailDTO> orderDetailDTOList = orderDetailMapper.toDto(orderDetailRepository.findByIdOrder(idOrder));
+
+        for (int i = 0; i < orderDetailDTOList.size(); i++) {
+            ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(orderDetailDTOList.get(i).getIdProductDetail()).get());
+            ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
+            String imageURL = "http://localhost:8081/view/anh/" + productDTO.getId();
+            productDTO.setImageURL(imageURL);
+            ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
+            productDetailDTO.setColorDTO(colorDTO);
+            SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
+            productDetailDTO.setSizeDTO(sizeDTO);
+            productDetailDTO.setProductDTO(productDTO);
+
+            orderDetailDTOList.get(i).setProductDetailDTO(productDetailDTO);
+//            orderDetailDTOList.set(i, orderDetailDTOList.get(i));
+        }
+
+        map.put("orderDetail", orderDetailDTOList);
+        map.put("orderHistoryAdmin", orderHistoryAdminDTOList);
+        map.put("orderHistoryView", orderHistoryViewList);
+        return map;
+    }
 
 //    @Override
 //    public ServiceResult<OrderDetailDTO> createOrderDetail(OrderDetailDTO orderDetailDTO) {

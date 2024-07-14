@@ -16,24 +16,27 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/create-order")
-    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.createOrder(orderDTO));
     }
+
     @PostMapping("/create-order/not-login")
-    public ResponseEntity<?> createOrderBuyNow(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> createOrderBuyNow(@RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.createOrderNotLogin(orderDTO));
     }
+
     @PostMapping("/cancel-order-view")
-    public ResponseEntity<?> cancelOrderView(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> cancelOrderView(@RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.cancelOrderView(orderDTO));
     }
 
     @PostMapping("/get-all-order")
-    public ResponseEntity<?> getAllOrder(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> getAllOrder(@RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.getAll(orderDTO));
     }
+
     @PostMapping("/tra-cuu-order")
-    public ResponseEntity<?> traCuuDonHang(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<?> traCuuDonHang(@RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.traCuuDonHang(orderDTO));
     }
 }

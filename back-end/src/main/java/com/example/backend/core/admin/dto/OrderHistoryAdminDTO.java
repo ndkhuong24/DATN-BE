@@ -3,6 +3,7 @@ package com.example.backend.core.admin.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +16,7 @@ public class OrderHistoryAdminDTO {
     private Long idStaff;
     private Long idCustomer;
     private Integer status;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     private String note;
     private StaffAdminDTO staffDTO;
     private CustomerAdminDTO customerAdminDTO;

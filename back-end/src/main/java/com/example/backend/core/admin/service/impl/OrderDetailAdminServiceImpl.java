@@ -93,6 +93,7 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
         }
 
         List<OrderHistoryAdminDTO> orderHistoryAdminDTOList = new ArrayList<>();
+
         List<OrderHistoryDTO> orderHistoryViewList = new ArrayList<>();
 
         List<OrderHistory> orderHistoryList = orderHistoryAdminRepository.getAllOrderHistoryByOrder(idOrder);
