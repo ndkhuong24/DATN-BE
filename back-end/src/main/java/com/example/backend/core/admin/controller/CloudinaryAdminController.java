@@ -32,6 +32,7 @@ public class CloudinaryAdminController {
 
     @Autowired
     private ImagesAdminRepository imagesAdminRepository;
+
     @Autowired
     private FileUpload fileUpload;
 
@@ -60,7 +61,6 @@ public class CloudinaryAdminController {
             images.setCreateDate(LocalDate.now());
             images.setIdProduct(idProduct);
             imagesAdminRepository.save(images);
-
         return "Success";
     }
 }

@@ -124,7 +124,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             productDetailDTO.setProductDTO(productDTO);
 
             orderDetailDTOList.get(i).setProductDetailDTO(productDetailDTO);
-//            orderDetailDTOList.set(i, orderDetailDTOList.get(i));
         }
 
         map.put("orderDetail", orderDetailDTOList);

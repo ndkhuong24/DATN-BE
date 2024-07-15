@@ -12,8 +12,10 @@ import java.util.Map;
 public class CloudinaryConfig {
     @Value("dpljv1efr")
     private String cloudName;
+
     @Value("543118549338185")
     private String apiKey;
+
     @Value("3oOsn-ZHEkwio8SHMxF2e_vXLKc")
     private String apiSecret;
 

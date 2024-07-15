@@ -1,5 +1,6 @@
 package com.example.backend.core.view.service.impl;
 
+import com.example.backend.core.admin.repository.OrderHistoryAdminRepository;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.constant.AppConstant;
 import com.example.backend.core.model.*;
@@ -20,15 +21,21 @@ import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderHistoryAdminRepository orderHistoryAdminRepository;
+
     @Autowired
     private OrderMapper orderMapper;
+
     @Autowired
     private CustomerRepository customerRepository;
+
     @Autowired
     private CustomerMapper customerMapper;
+
     @Autowired
     private VoucherRepository voucherRepository;
 
@@ -57,24 +64,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private ProductMapper productMapper;
 
     @Autowired
     private ImagesRepository imagesRepository;
+
     @Autowired
     private ImagesMapper imagesMapper;
 
     @Autowired
     private ColorRepository colorRepository;
+
     @Autowired
     private ColorMapper colorMapper;
 
     @Autowired
     private SizeRepository sizeRepository;
+
     @Autowired
     private SizeMapper sizeMapper;
-
 
     @Override
     public ServiceResult<OrderDTO> createOrder(OrderDTO orderDTO) {
@@ -304,5 +314,56 @@ public class OrderServiceImpl implements OrderService {
             orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
         }
         return orderDTOServiceResult;
+    }
+
+    @Override
+    public ServiceResult<OrderDTO> hoanThanhDonHang(OrderDTO orderDTO) {
+        ServiceResult<OrderDTO> orderDTOServiceResult = new ServiceResult<>();
+
+        if (orderDTO.getId() == null) {
+            orderDTOServiceResult.setData(null);
+            orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderDTOServiceResult.setMessage("Error");
+            return orderDTOServiceResult;
+        }
+
+        if (orderDTO.getIdStaff() == null) {
+            orderDTOServiceResult.setData(null);
+            orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderDTOServiceResult.setMessage("Error");
+            return orderDTOServiceResult;
+        }
+
+        Order order = orderRepository.findById(orderDTO.getId()).get();
+
+        if (order.getStatus() == AppConstant.HOAN_THANH) {
+            orderDTOServiceResult.setData(null);
+            orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
+            orderDTOServiceResult.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
+            return orderDTOServiceResult;
+        } else {
+            if (order.getPaymentType() == 0) {
+                order.setPaymentDate(LocalDateTime.now());
+                order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));
+                order.setStatusPayment(AppConstant.DA_THANH_TOAN);
+            }
+
+            order.setReceivedDate(LocalDateTime.now());
+            order.setStatus(AppConstant.HOAN_THANH);
+            order = orderRepository.save(order);
+            if (order != null) {
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.setStatus(AppConstant.HOAN_THANH_HISTORY);
+                orderHistory.setCreateDate(LocalDateTime.now());
+                orderHistory.setIdOrder(order.getId());
+                orderHistory.setIdStaff(orderDTO.getIdStaff());
+                orderHistory.setNote(orderDTO.getNote());
+                orderHistoryAdminRepository.save(orderHistory);
+            }
+            orderDTOServiceResult.setData(orderMapper.toDto(order));
+            orderDTOServiceResult.setStatus(HttpStatus.OK);
+            orderDTOServiceResult.setMessage("Success");
+            return orderDTOServiceResult;
+        }
     }
 }

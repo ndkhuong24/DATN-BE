@@ -31,6 +31,7 @@ public class StatisticalAdminServiceImpl implements StatisticalAdminService {
         totalStatisticalAdminDTO = statisticalAdminCustomRepository.totalStatistical();
 
         totalStatisticalAdminDTO.setListProductDetailBestSeller(productDetailAdminDTOList);
+
         totalStatisticalAdminDTO.setStatisticalAdminDTOList(statisticalAdminDTOList);
 //        TotalStatisticalAdminDTO totalDTO = new TotalStatisticalAdminDTO(0L, 0L, 0L, new BigDecimal(0), 0L);
 //        int year = Integer.parseInt(statisticalAdminDTO.getYear());

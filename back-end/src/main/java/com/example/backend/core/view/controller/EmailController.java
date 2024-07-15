@@ -25,10 +25,9 @@ public class EmailController {
 //    }
 //
     @PostMapping("/send-email-from-customer")
-    public ResponseEntity<String> sendEmailFromCustomer(@RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> sendEmailFromCustomer(@RequestBody OrderDTO orderDTO) {
         try {
-            emailService.sendEmailFromCustomer(orderDTO);
-            return ResponseEntity.ok("Purchase completed successfully!");
+            return ResponseEntity.ok(emailService.sendEmailFromCustomer(orderDTO));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Internal Server Error");

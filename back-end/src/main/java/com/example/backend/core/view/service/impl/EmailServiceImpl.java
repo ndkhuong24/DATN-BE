@@ -1,6 +1,7 @@
 package com.example.backend.core.view.service.impl;
 
 import com.example.backend.core.commons.ServiceResult;
+import com.example.backend.core.constant.AppConstant;
 import com.example.backend.core.model.Order;
 import com.example.backend.core.view.dto.*;
 import com.example.backend.core.view.mapper.*;
@@ -87,9 +88,7 @@ public class EmailServiceImpl implements EmailService {
 
         ServiceResult<String> result = new ServiceResult<>();
 
-//        Customer customer = customerRepository.findById(orderDTO.getIdCustomer()).get();
-
-        if(orderDTO.getId() == null){
+        if (orderDTO.getId() == null) {
             result.setMessage("Error");
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setData("Lỗi send Email");
@@ -97,18 +96,33 @@ public class EmailServiceImpl implements EmailService {
         }
 
         Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
-        String emailTo = order.getEmail();
-        String subject =  " Thông tin đơn hàng";
-        Map<String, Object> map = orderDetailService.getAllByOrder(order.getId());
 
-        List<OrderDetailDTO> list = (List<OrderDetailDTO>) map.get("orderDetail");
-        thymeleafContext.setVariable("order", orderDTO);
-        thymeleafContext.setVariable("orderDetail", list);
-        String htmlBody = templateEngine.process("sendEmailOrder", thymeleafContext);
-        sendHtmlEmail(emailTo, subject, htmlBody);
+        if (order.getStatus() == AppConstant.DANG_GIAO_HANG) {
+            String emailTo = order.getEmail();
+            String subject = "Thông tin đơn hàng";
+
+            // Đoạn thông báo yêu cầu người dùng xác nhận khi nhận hàng
+            String confirmationLink = "http://localhost:4000/tra-cuu-don-hang?code=" + order.getCode();
+            String messageBody = "Đơn hàng của bạn đã  được giao cho shipper. Khi bạn nhận được hàng vui lòng truy cập vào link sau và xác nhận là đã nhận được hàng: "
+                    + confirmationLink + "\n\nCảm ơn bạn đã mua hàng ở cửa hàng chúng tôi.\nTrân trọng!\\n*PULSE WAVE*";
+
+            sendHtmlEmail(emailTo, subject, messageBody);
+        } else {
+            String emailTo = order.getEmail();
+            String subject = " Thông tin đơn hàng";
+            Map<String, Object> map = orderDetailService.getAllByOrder(order.getId());
+
+            List<OrderDetailDTO> list = (List<OrderDetailDTO>) map.get("orderDetail");
+            thymeleafContext.setVariable("order", orderDTO);
+            thymeleafContext.setVariable("orderDetail", list);
+            String htmlBody = templateEngine.process("sendEmailOrder", thymeleafContext);
+            sendHtmlEmail(emailTo, subject, htmlBody);
+        }
+
         result.setMessage("Success");
         result.setStatus(HttpStatus.OK);
         result.setData("Send Mail Thành công!");
+        result.setSuccess(true);
         return result;
     }
 

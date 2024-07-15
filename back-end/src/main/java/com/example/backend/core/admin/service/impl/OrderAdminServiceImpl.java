@@ -178,6 +178,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             result.setData(orderAdminMapper.toDto(order));
             result.setStatus(HttpStatus.OK);
             result.setMessage("Success");
+            result.setSuccess(true);
             return result;
         }
     }

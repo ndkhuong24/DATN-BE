@@ -104,7 +104,6 @@
                 </tbody>
             </table>
 
-            <!--      <p>Phí ship: [[${#numbers.formatDecimal(order.shipPrice, 0, 'COMMA', 2, 'POINT')}]] đ</p>-->
             <p>Tổng số tiền sản phẩm: [[${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}]] đ</p>
             <p>Tiền ship: [[${#numbers.formatDecimal(order.shipPrice, 0, 'COMMA', 0, 'POINT')}]] đ</p>
             <p>Tiền khuyến mãi: [[${#numbers.formatDecimal(order.shipPrice + order.totalPrice - order.totalPayment, 0,
@@ -119,11 +118,6 @@
                 </th:block>
             </p>
             <p>Trạng thái đơn hàng: [[${order.statusSendEmail}]]</p>
-
-            <!-- Thêm thông tin khác nếu cần -->
-<!--            <p>-->
-<!--                Chúng tôi sẽ thông báo cho bạn khi đơn hàng của bạn đã được gửi đi.-->
-<!--            </p>-->
 
             <p>Trân trọng,</p>
             <p style="font-weight: 600">PULSE WAVE</p>

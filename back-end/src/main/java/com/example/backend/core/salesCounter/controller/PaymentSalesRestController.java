@@ -19,7 +19,6 @@ public class PaymentSalesRestController {
     @Autowired
     private VNPayService vnPayService;
 
-
     @GetMapping("/create-payment")
     public ResponseEntity<?> createPayment(@RequestParam(name = "amount") String amount, HttpServletRequest request) throws UnsupportedEncodingException {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();

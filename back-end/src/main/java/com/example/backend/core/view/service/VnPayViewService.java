@@ -1,4 +1,4 @@
-package com.example.backend.core.salesCounter.service;
+package com.example.backend.core.view.service;
 
 import com.example.backend.core.config.VnPayConfig;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class VNPayService {
+public class VnPayViewService {
     public String createPayment(String amount, String urlReturn) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -35,7 +35,7 @@ public class VNPayService {
         String locate = "vn";
         vnp_Params.put("vnp_Locale", locate);
 
-        vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_ReturnurlSales);
+        vnp_Params.put("vnp_ReturnUrl", VnPayConfig.vnp_Returnurl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
