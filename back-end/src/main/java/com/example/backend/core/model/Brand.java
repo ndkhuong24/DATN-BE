@@ -36,6 +36,6 @@ public class Brand implements Serializable {
     @Column(name = "status")
     private int status;
 
-    @Column(name = "idel")
-    private int isDel;
+//    @Column(name = "idel")
+//    private int isDel;
 }
