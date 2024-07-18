@@ -13,17 +13,16 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    //    @PostMapping("/send-email-completeOrder")
-//    public ResponseEntity<String> completePurchase(@RequestBody OrderDTO orderDTO) {
-//        try {
-//            emailService.sendMessageUsingThymeleafTemplate(orderDTO);
-//            return ResponseEntity.ok("Purchase completed successfully!");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).body("Internal Server Error");
-//        }
-//    }
-//
+    @PostMapping("/send-email-completeOrder")
+    public ResponseEntity<?> completePurchase(@RequestBody OrderDTO orderDTO) {
+        try {
+            return ResponseEntity.ok(emailService.sendMessageUsingThymeleafTemplate(orderDTO));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
     @PostMapping("/send-email-from-customer")
     public ResponseEntity<?> sendEmailFromCustomer(@RequestBody OrderDTO orderDTO) {
         try {

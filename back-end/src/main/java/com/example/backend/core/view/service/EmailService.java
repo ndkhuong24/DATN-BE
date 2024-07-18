@@ -7,7 +7,8 @@ import jakarta.mail.MessagingException;
 
 public interface EmailService {
     //    void sendHtmlEmail(String to, String subject, String htmlBody) throws MessagingException;
-//    ServiceResult<String> sendMessageUsingThymeleafTemplate(OrderDTO orderDTO) throws MessagingException;
+    ServiceResult<String> sendMessageUsingThymeleafTemplate(OrderDTO orderDTO) throws MessagingException;
+
     ServiceResult<String> sendEmailFromCustomer(OrderDTO orderDTO) throws MessagingException;
 
     ServiceResult<?> sendMailOrderNotLogin(OrderDTO orderDTO) throws MessagingException;

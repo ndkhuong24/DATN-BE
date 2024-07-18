@@ -83,6 +83,34 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    public ServiceResult<String> sendMessageUsingThymeleafTemplate(OrderDTO orderDTO) throws MessagingException {
+        Context thymeleafContext = new Context();
+
+        ServiceResult<String> result = new ServiceResult<>();
+
+        if (orderDTO.getId() == null || StringUtils.isBlank(orderDTO.getEmail())) {
+            result.setMessage("Error");
+            result.setStatus(HttpStatus.BAD_REQUEST);
+            result.setData("Lỗi send Email");
+            return result;
+        }
+
+        String emailTo = orderDTO.getEmail();
+        String subject = " Thông tin đơn hàng ";
+        Map<String, Object> map = orderDetailService.getAllByOrder(orderDTO.getId());
+
+        List<OrderDetailDTO> list = (List<OrderDetailDTO>) map.get("orderDetail");
+        thymeleafContext.setVariable("order", orderDTO);
+        thymeleafContext.setVariable("orderDetail", list);
+        String htmlBody = templateEngine.process("sendEmailOrder", thymeleafContext);
+        sendHtmlEmail(emailTo, subject, htmlBody);
+        result.setMessage("Success");
+        result.setStatus(HttpStatus.OK);
+        result.setData("Send Mail thành công");
+        return result;
+    }
+
+    @Override
     public ServiceResult<String> sendEmailFromCustomer(OrderDTO orderDTO) throws MessagingException {
         Context thymeleafContext = new Context();
 
@@ -104,7 +132,7 @@ public class EmailServiceImpl implements EmailService {
             // Đoạn thông báo yêu cầu người dùng xác nhận khi nhận hàng
             String confirmationLink = "http://localhost:4000/tra-cuu-don-hang?code=" + order.getCode();
             String messageBody = "Đơn hàng của bạn đã  được giao cho shipper. Khi bạn nhận được hàng vui lòng truy cập vào link sau và xác nhận là đã nhận được hàng: "
-                    + confirmationLink + "\n\nCảm ơn bạn đã mua hàng ở cửa hàng chúng tôi.\nTrân trọng!\\n*PULSE WAVE*";
+                    + confirmationLink + ". Cảm ơn bạn đã mua hàng ở cửa hàng chúng tôi. Trân trọng !";
 
             sendHtmlEmail(emailTo, subject, messageBody);
         } else {
@@ -121,7 +149,7 @@ public class EmailServiceImpl implements EmailService {
 
         result.setMessage("Success");
         result.setStatus(HttpStatus.OK);
-        result.setData("Send Mail Thành công!");
+        result.setData("Send Mail thành công");
         result.setSuccess(true);
         return result;
     }
@@ -148,7 +176,7 @@ public class EmailServiceImpl implements EmailService {
         sendHtmlEmail(emailTo, subject, htmlBody);
         result.setMessage("Success");
         result.setStatus(HttpStatus.OK);
-        result.setData("Send Mail Thành công!");
+        result.setData("Send Mail thành công");
         return result;
     }
 

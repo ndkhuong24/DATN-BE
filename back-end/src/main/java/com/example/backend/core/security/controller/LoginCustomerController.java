@@ -25,6 +25,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @RestController
@@ -60,20 +63,31 @@ public class LoginCustomerController {
         if (customerSPService.existsByUsername(signUpFormRequest.getUsername())) {
             return new ResponseEntity<>(new MessageResponse("The Username is existed"), HttpStatus.OK);
         }
+
         if (customerSPService.existsByEmail(signUpFormRequest.getEmail())) {
             return new ResponseEntity<>(new MessageResponse("The Email is existed"), HttpStatus.OK);
         }
+
         if (customerSPService.existsByPhone(signUpFormRequest.getPhone())) {
             return new ResponseEntity<>(new MessageResponse("The Phone is existed"), HttpStatus.OK);
         }
+
+        Date date = signUpFormRequest.getBirthday();
+
+        LocalDate dateConvert = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
         CustomerLogin customer = CustomerLogin.builder()
                 .code("KH" + Instant.now().getEpochSecond())
                 .fullname(signUpFormRequest.getFullname())
                 .gender(signUpFormRequest.getGender())
                 .phone(signUpFormRequest.getPhone())
                 .email(signUpFormRequest.getEmail())
-                .birthday(signUpFormRequest.getBirthday())
-                .createDate(new Date())
+                .birthday(dateConvert)
+//                .birthday(signUpFormRequest.getBirthday())
+//                .createDate(new Date())
+                .createDate(LocalDateTime.now())
                 .username(signUpFormRequest.getUsername())
                 .status(0)
                 .idel(0)
@@ -95,7 +109,7 @@ public class LoginCustomerController {
                     UserDetails customerUserDetails = (UserDetails) authentication.getPrincipal();
                     String token = jwtUtils.generateToken(customerUserDetails);
                     CustomerLogin customer = customerService.findByUsername(signInRequet.getUsername());
-                    return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(customer.getId(), customer.getFullname(), userDetails.getUsername(),userDetails.getPassword())));
+                    return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(customer.getId(), customer.getFullname(), userDetails.getUsername(), userDetails.getPassword(), customer.getPhone(), customer.getEmail())));
 
                 } else {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -105,6 +119,5 @@ public class LoginCustomerController {
         } else {
             return ResponseEntity.ok(new MessageResponse("Bạn không có quyền truy cập"));
         }
-
     }
 }
