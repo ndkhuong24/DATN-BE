@@ -26,6 +26,11 @@ public class inForController {
     @Autowired
     private CustomerInforSerivce customerInforSerivce;
 
+    @GetMapping("/infor/{id}")
+    public ResponseEntity<?> getInfo(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(customerService.getInfo(id));
+    }
+
     @PutMapping("/update-infor/{id}")
     public ResponseEntity<?> updateinFor(
             @PathVariable("id") Customer customer,

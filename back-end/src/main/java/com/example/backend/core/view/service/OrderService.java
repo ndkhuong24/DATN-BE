@@ -1,13 +1,10 @@
 package com.example.backend.core.view.service;
 
-import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.commons.ServiceResult;
-import com.example.backend.core.security.dto.UsersDTO;
 import com.example.backend.core.view.dto.OrderDTO;
-import com.example.backend.core.view.dto.OrderDetailDTO;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
     ServiceResult<OrderDTO> createOrder(OrderDTO orderDTO);
@@ -21,4 +18,6 @@ public interface OrderService {
     ServiceResult<OrderDTO> traCuuDonHang(OrderDTO orderDTO);
 
     ServiceResult<OrderDTO> hoanThanhDonHang(OrderDTO orderDTO);
+
+//    Map<String, Object> getAllByOrder(Long idOrder);
 }

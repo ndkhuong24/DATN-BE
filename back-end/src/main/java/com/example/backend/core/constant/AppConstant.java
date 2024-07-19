@@ -170,6 +170,7 @@ public class AppConstant {
             "view/api/get-all-voucher-ship",
             "view/api/get-voucher-ship",
             "/view/api/update-infor/*",
+            "/view/api/infor/*",
             "/view/api/changePass/*",
             "/view/api/send-mail-otp",
             "/view/api/verify-otp",

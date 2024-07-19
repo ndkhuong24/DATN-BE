@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequestMapping("/api/admin")
 public class OrderDetailAdminController {
-
     @Autowired
     private OrderDetailAdminService orderDetailAdminService;
 

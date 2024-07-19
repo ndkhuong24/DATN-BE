@@ -88,8 +88,6 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
 
                 Timestamp receivedTimestamp = (Timestamp) obj[14];
                 orderAdminDTO1.setReceivedDate(receivedTimestamp != null ? receivedTimestamp.toLocalDateTime() : null);
-//                orderAdminDTO1.setDeliveryDate((LocalDateTime) obj[6]);
-//                orderAdminDTO1.setReceivedDate((LocalDateTime) obj[14]);
 
                 orderAdminDTO1.setAddressReceived((String) obj[1]);
                 orderAdminDTO1.setShipperPhone((String) obj[18]);

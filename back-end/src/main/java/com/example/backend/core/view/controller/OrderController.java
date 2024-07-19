@@ -1,6 +1,5 @@
 package com.example.backend.core.view.controller;
 
-
 import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.view.dto.OrderDTO;
 import com.example.backend.core.view.service.OrderService;
@@ -15,6 +14,11 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+//    @GetMapping("/get-order-detail/by-order/{idOrder}")
+//    public ResponseEntity<?> getAllOrderDetailByOrder(@PathVariable(name = "idOrder") Long idOrder) {
+//        return ResponseEntity.ok(orderService.getAllByOrder(idOrder));
+//    }
 
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {

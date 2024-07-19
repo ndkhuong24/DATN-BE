@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,8 +20,10 @@ public class CustomerInforServiceImpl implements CustomerInforSerivce {
     private CustomerInforRepository repository;
 
     private ServiceResult<CustomerDTO> result = new ServiceResult<>();
+
     @Autowired
     private CustomerMapper customerMapper;
+
     @Autowired
     private PasswordEncoder encoder;
 
@@ -47,7 +47,7 @@ public class CustomerInforServiceImpl implements CustomerInforSerivce {
     @Override
     public ServiceResult<CustomerDTO> resetPassword(CustomerDTO customerDTO) {
         Customer customer = repository.findByEmail(customerDTO.getEmail());
-        if (customer != null){
+        if (customer != null) {
             customer.setPassword(encoder.encode(customerDTO.getNewPass()));
             customer.setUpdateDate(LocalDateTime.now());
             this.repository.save(customer);

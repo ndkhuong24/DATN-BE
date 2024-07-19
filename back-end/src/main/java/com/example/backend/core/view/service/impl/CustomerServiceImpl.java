@@ -20,9 +20,12 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository repository;
+
     private ServiceResult<CustomerDTO> result = new ServiceResult<>();
+
     @Autowired
     private CustomerMapper customerMapper;
+
     @Override
     public ServiceResult<CustomerDTO> updateInforCustomer(CustomerDTO customerDTO, Customer customer) {
         if (!customer.getPhone().equals(customerDTO.getPhone())){
@@ -64,5 +67,10 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> findByPhoneLike(String phone) {
         List<CustomerDTO> listCustomer = customerMapper.toDto(repository.findByPhoneLike("%" + phone +"%"));
         return listCustomer;
+    }
+
+    @Override
+    public CustomerDTO getInfo(Integer id) {
+        return customerMapper.toDto(repository.getReferenceById(Long.valueOf(id)));
     }
 }

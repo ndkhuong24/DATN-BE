@@ -8,5 +8,8 @@ import java.util.List;
 
 public interface CustomerService {
     ServiceResult<CustomerDTO> updateInforCustomer(CustomerDTO customerDTO, Customer customer);
+
     List<CustomerDTO> findByPhoneLike(String phone);
+
+    CustomerDTO getInfo(Integer id);
 }

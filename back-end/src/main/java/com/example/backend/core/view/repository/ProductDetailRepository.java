@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ProductDetailRepository extends JpaRepository<ProductDetail, Long> {
-
     List<ProductDetail> findByIdProduct(Long idProduct);
 
     ProductDetail findByIdSizeAndIdColorAndIdProduct(Long idColor,Long idSize, Long idProduct);

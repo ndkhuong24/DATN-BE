@@ -21,7 +21,6 @@ import java.util.List;
 @Repository
 @Transactional
 public class OrderCustomRepositoryImpl implements OrderCustomRepository {
-
     @Autowired
     private EntityManager entityManager;
 
@@ -30,21 +29,27 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
         List<OrderDTO> lstOrderDTOS = new ArrayList<>();
         try {
             StringBuilder sql = new StringBuilder();
-            sql.append("select * from `order` o  ");
-            sql.append("where o.id_customer = :idCustomer and type = 0  ");
-            if (orderDTO.getStatus() != 6 && orderDTO.getStatus() != null) {
-                sql.append("  and o.status = :status  ");
+            sql.append("SELECT * FROM `order` o ");
+            sql.append("WHERE o.id_customer = :idCustomer AND o.type = 0 ");
+
+            if (orderDTO.getStatus() != null && orderDTO.getStatus() != 6) {
+                sql.append(" AND o.status = :status ");
             }
+
             if (StringUtils.isNotBlank(orderDTO.getCode())) {
-                sql.append("  and (UPPER(o.code) like concat('%', UPPER(:codeSearch), '%'))");
+                sql.append(" AND UPPER(o.code) LIKE CONCAT('%', UPPER(:codeSearch), '%') ");
             }
+
             if (StringUtils.isNotBlank(orderDTO.getDateFrom())) {
-                sql.append("  and (:dateFrom is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom , '%d/%m/%Y'))  ");
+                sql.append(" AND (:dateFrom IS NULL OR STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom, '%d/%m/%Y')) ");
             }
+
             if (StringUtils.isNotBlank(orderDTO.getDateTo())) {
-                sql.append("  and (:dateTo is null or STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo , '%d/%m/%Y')) ");
+                sql.append(" AND (:dateTo IS NULL OR STR_TO_DATE(DATE_FORMAT(o.create_date, '%Y/%m/%d'), '%Y/%m/%d') <= STR_TO_DATE(:dateTo, '%d/%m/%Y')) ");
             }
-            sql.append("   order by o.create_date desc");
+
+            sql.append(" ORDER BY o.create_date DESC ");
+
             Query query = entityManager.createNativeQuery(sql.toString());
             query.setParameter("idCustomer", orderDTO.getIdCustomer());
             if (orderDTO.getStatus() != 6 && orderDTO.getStatus() != null) {
@@ -63,31 +68,38 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
             for (Object[] obj: lst) {
                 OrderDTO dto = new OrderDTO();
                 dto.setId(obj[0] != null ? ((Number) obj[0]).longValue() : null);
-                dto.setCode((String) obj[1]);
-                dto.setIdCustomer(obj[2] != null ? ((Number) obj[2]).longValue() : null);
-                dto.setIdStaff(obj[3] != null ? ((Number) obj[3]).longValue() : null);
-                dto.setCodeVoucher((String) obj[4]);
-                dto.setCodeVoucherShip((String) obj[5]);
-                Timestamp createTimestamp = (Timestamp) obj[6];
+                dto.setCode((String) obj[2]);
+                dto.setCodeVoucher((String) obj[3]);
+                dto.setCodeVoucherShip((String) obj[4]);
+                dto.setIdCustomer(obj[9] != null ? ((Number) obj[9]).longValue() : null);
+                dto.setIdStaff(obj[10] != null ? ((Number) obj[10]).longValue() : null);
+
+                Timestamp createTimestamp = (Timestamp) obj[5];
                 dto.setCreateDate(createTimestamp != null ? createTimestamp.toLocalDateTime() : null);
-                Timestamp paymentTimestamp = (Timestamp) obj[7];
+
+                Timestamp paymentTimestamp = (Timestamp) obj[12];
                 dto.setPaymentDate(paymentTimestamp != null ? paymentTimestamp.toLocalDateTime() : null);
-                dto.setDeliveryDate((LocalDateTime) obj[8]);
-                dto.setReceivedDate((LocalDateTime) obj[9]);
-                dto.setAddressReceived((String) obj[10]);
-                dto.setShipperPhone((String) obj[11]);
-                dto.setReceiverPhone((String) obj[12]);
-                dto.setReceiver((String) obj[13]);
-                dto.setShipPrice((BigDecimal) obj[14]);
-                dto.setTotalPrice((BigDecimal) obj[15]);
-                dto.setTotalPayment((BigDecimal) obj[16]);
-                dto.setType( obj[17] != null ? ((Number) obj[17]).intValue() : null);
-                dto.setPaymentType((Integer) obj[18]);
-                dto.setDescription((String) obj[19]);
-                dto.setMissedOrder((Integer) obj[20]);
-                dto.setStatus((Integer) obj[21]);
-                dto.setStatusPayment((Integer) obj[22]);
-                dto.setEmail((String) obj[23]);
+
+                Timestamp deliveryTimestamp = (Timestamp) obj[6];
+                dto.setDeliveryDate(deliveryTimestamp != null ? deliveryTimestamp.toLocalDateTime() : null);
+
+                Timestamp receivedTimestamp = (Timestamp) obj[14];
+                dto.setReceivedDate(receivedTimestamp != null ? receivedTimestamp.toLocalDateTime() : null);
+
+                dto.setAddressReceived((String) obj[1]);
+                dto.setShipperPhone((String) obj[18]);
+                dto.setReceiverPhone((String) obj[16]);
+                dto.setReceiver((String) obj[15]);
+                dto.setShipPrice((BigDecimal) obj[17]);
+                dto.setTotalPrice((BigDecimal) obj[22]);
+                dto.setTotalPayment((BigDecimal) obj[21]);
+                dto.setType(obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                dto.setPaymentType((Integer) obj[13]);
+                dto.setDescription((String) obj[8]);
+                dto.setMissedOrder((Integer) obj[11]);
+                dto.setStatus((Integer) obj[19]);
+                dto.setStatusPayment((Integer) obj[20]);
+                dto.setEmail((String) obj[8]);
                 lstOrderDTOS.add(dto);
             }
         } catch (Exception e) {

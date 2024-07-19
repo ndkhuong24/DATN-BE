@@ -114,14 +114,17 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
         for (int i = 0; i < orderDetailDTOList.size(); i++) {
             ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(orderDetailDTOList.get(i).getIdProductDetail()).get());
+
             ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
             String imageURL = "http://localhost:8081/view/anh/" + productDTO.getId();
             productDTO.setImageURL(imageURL);
+            productDetailDTO.setProductDTO(productDTO);
+
             ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
             productDetailDTO.setColorDTO(colorDTO);
+
             SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
             productDetailDTO.setSizeDTO(sizeDTO);
-            productDetailDTO.setProductDTO(productDTO);
 
             orderDetailDTOList.get(i).setProductDetailDTO(productDetailDTO);
         }

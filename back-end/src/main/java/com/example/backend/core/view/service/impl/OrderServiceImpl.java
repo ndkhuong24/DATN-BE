@@ -1,5 +1,7 @@
 package com.example.backend.core.view.service.impl;
 
+import com.example.backend.core.admin.dto.ColorAdminDTO;
+import com.example.backend.core.admin.dto.SizeAdminDTO;
 import com.example.backend.core.admin.repository.OrderHistoryAdminRepository;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.constant.AppConstant;
@@ -16,8 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -26,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderHistoryAdminRepository orderHistoryAdminRepository;
+
+    @Autowired
+    private OrderHistoryMapper orderHistoryMapper;
 
     @Autowired
     private OrderMapper orderMapper;
@@ -53,6 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
@@ -159,19 +164,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ServiceResult<OrderDTO> cancelOrderView(OrderDTO orderDTO) {
         ServiceResult<OrderDTO> result = new ServiceResult<>();
+
         if (orderDTO.getId() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
             return result;
         }
+
         if (orderDTO.getIdCustomer() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
             return result;
         }
+
         Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+
         if (order != null) {
             order.setStatus(AppConstant.HUY_DON_HANG);
             order = orderRepository.save(order);
@@ -354,7 +363,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             if (order.getPaymentType() == 0) {
                 order.setPaymentDate(LocalDateTime.now());
-                order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));
+//                order.setTotalPayment(order.getTotalPrice().add(order.getShipPrice()));
                 order.setStatusPayment(AppConstant.DA_THANH_TOAN);
             }
 
@@ -366,7 +375,8 @@ public class OrderServiceImpl implements OrderService {
                 orderHistory.setStatus(AppConstant.HOAN_THANH_HISTORY);
                 orderHistory.setCreateDate(LocalDateTime.now());
                 orderHistory.setIdOrder(order.getId());
-                orderHistory.setIdStaff(orderDTO.getIdStaff());
+                orderHistory.setIdCustomer(orderDTO.getIdCustomer());
+//                orderHistory.setIdStaff(orderDTO.getIdStaff());
                 orderHistory.setNote(orderDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
             }
@@ -376,4 +386,51 @@ public class OrderServiceImpl implements OrderService {
             return orderDTOServiceResult;
         }
     }
+
+//    @Override
+//    public Map<String, Object> getAllByOrder(Long idOrder) {
+//        Map<String, Object> map = new HashMap<>();
+//
+//        if (idOrder == null) {
+//            return null;
+//        }
+//
+//        List<OrderHistoryDTO> orderHistoryViewList = new ArrayList<>();
+//
+//        List<OrderHistory> orderHistoryList = orderHistoryAdminRepository.getAllOrderHistoryByOrder(idOrder);
+//
+//        for (int i = 0; i < orderHistoryList.size(); i++) {
+//            if (null != orderHistoryList.get(i).getIdCustomer()) {
+//                if (customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).isPresent()) {
+//                    CustomerDTO customerDTO = customerMapper.toDto(customerRepository.findById(orderHistoryList.get(i).getIdCustomer()).orElse(null));
+//                    OrderHistoryDTO orderHistoryAdminDTO = orderHistoryMapper.toDto(orderHistoryList.get(i));
+//                    orderHistoryAdminDTO.setCustomerDTO(customerDTO);
+//                    orderHistoryViewList.add(orderHistoryAdminDTO);
+//                }
+//            }
+//        }
+//
+//        List<OrderDetailDTO> orderDetailDTOList = orderDetailMapper.toDto(orderDetailRepository.findByIdOrder(idOrder));
+//
+//        for (int i = 0; i < orderDetailDTOList.size(); i++) {
+//            ProductDetailDTO productDetailDTO = productDetailMapper.toDto(productDetailRepository.findById(orderDetailDTOList.get(i).getIdProductDetail()).get());
+//
+//            ProductDTO productDTO = productMapper.toDto(productRepository.findById(productDetailDTO.getIdProduct()).get());
+//            String imageURL = "http://localhost:8081/view/anh/" + productDetailDTO.getIdProduct();
+//            productDTO.setImageURL(imageURL);
+//            productDetailDTO.setProductDTO(productDTO);
+//
+//            ColorDTO colorDTO = colorMapper.toDto(colorRepository.findById(productDetailDTO.getIdColor()).get());
+//            productDetailDTO.setColorDTO(colorDTO);
+//
+//            SizeDTO sizeDTO = sizeMapper.toDto(sizeRepository.findById(productDetailDTO.getIdSize()).get());
+//            productDetailDTO.setSizeDTO(sizeDTO);
+//
+//            orderDetailDTOList.get(i).setProductDetailDTO(productDetailDTO);
+//        }
+//
+//        map.put("orderDetail", orderDetailDTOList);
+//        map.put("orderHistoryView", orderHistoryViewList);
+//        return map;
+//    }
 }

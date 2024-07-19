@@ -33,7 +33,7 @@ public class Customer implements Serializable {
     private String email;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = "phone")
     private String phone;
