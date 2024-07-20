@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -708,12 +710,9 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 customer.setIdel(Integer.valueOf(row[8].toString()));
                 customer.setOrderCount(Integer.valueOf(row[9].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
-                    Timestamp birthdayTimestamp = (Timestamp) row[3];
-                    LocalDateTime birthday = birthdayTimestamp.toLocalDateTime();
-
+                    java.sql.Date birthdayDate = (java.sql.Date) row[3];
+                    LocalDate birthday = birthdayDate.toLocalDate();
                     customer.setBirthday(birthday);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();

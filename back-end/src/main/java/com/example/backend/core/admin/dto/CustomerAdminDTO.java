@@ -19,7 +19,7 @@ public class CustomerAdminDTO {
     private Long id;
     private String code;
     private String fullname;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     private String phone;
     private String email;
     private String gender;
