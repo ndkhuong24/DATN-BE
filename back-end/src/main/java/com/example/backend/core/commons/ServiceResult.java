@@ -17,4 +17,10 @@ public class ServiceResult<T> implements Serializable {
     private String message;
     private T data;
     private boolean success;
+
+    public ServiceResult(boolean success, T data, String message) {
+        this.success = success;
+        this.data = data;
+        this.message = message;
+    }
 }

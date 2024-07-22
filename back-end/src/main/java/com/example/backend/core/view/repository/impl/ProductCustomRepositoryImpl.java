@@ -122,7 +122,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 productDTO.setMinPrice((BigDecimal) obj[3]);
                 productDTO.setMaxPrice((BigDecimal) obj[4]);
 
-                String imageURL = "http://localhost:8081/view/anh/" + idProduct;
+                String imageURL = "http://localhost:8081/view/anh/" + ((Number) obj[0]).longValue();
                 productDTO.setImageURL(imageURL);
 
                 lstProduct.add(productDTO);
