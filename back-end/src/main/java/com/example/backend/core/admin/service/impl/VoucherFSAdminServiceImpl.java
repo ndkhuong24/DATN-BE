@@ -29,10 +29,8 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
@@ -69,18 +67,15 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
         this.templateEngine = templateEngine;
     }
 
-
     public void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
-
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            helper.setFrom("xuanntph21397@fpt.edu.vn");
+            helper.setFrom("kn134646@gmail.com");
             helper.setTo(toEmail);
             helper.setSubject(subject);
             helper.setText(htmlBody, true);
         };
         javaMailSender.send(preparator);
-
     }
 
     @Override
@@ -114,45 +109,169 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
 
     @Override
     public List<VoucherFreeShipDTO> getAllVouchers() {
+        // Lấy danh sách voucher từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllVouchers();
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
         Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
         while (iterator.hasNext()) {
-            VoucherFreeShipDTO voucherAdminDTO = iterator.next();
-            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherAdminDTO.getCode());
-            if (orderList.size() > 0) {
-                voucherAdminDTO.setIsUpdate(1);
-            }
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
         }
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getAllKichHoat() {
+        // Lấy danh sách voucher kích hoạt từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllKichHoat();
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getAllKhongKH() {
+        // Lấy danh sách voucher không có khách hàng từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getAllKhongKH();
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getVouchersByTimeRange(String fromDate, String toDate) {
+        // Lấy danh sách voucher theo khoảng thời gian từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByTimeRange(fromDate, toDate);
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getVouchersByKeyword(String keyword) {
+        // Lấy danh sách voucher theo từ khóa từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByKeyword(keyword);
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherFreeShipDTO> getVouchersByCustomer(String searchTerm) {
+        // Lấy danh sách voucher theo khách hàng từ repository tùy chỉnh
         List<VoucherFreeShipDTO> list = voucherFSCustomerRepository.getVouchersByCustomer(searchTerm);
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null) // Lọc các voucher có ngày tạo không null (nếu có trường này)
+                .sorted(Comparator.comparing(VoucherFreeShipDTO::getCreateDate).reversed()) // Sắp xếp giảm dần theo ngày tạo
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherFreeShipDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherFreeShipDTO voucherFreeShipDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucherShip(voucherFreeShipDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherFreeShipDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 

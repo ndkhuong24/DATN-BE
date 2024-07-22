@@ -79,8 +79,6 @@ public class VoucherSCServiceImpl implements VoucherSCService {
         voucherSCDTO.setId(Long.parseLong(row[0].toString()));
         voucherSCDTO.setCode(row[1].toString());
         voucherSCDTO.setName(row[2].toString());
-//        voucherSCDTO.setStartDate((LocalDateTime) row[3]);
-//        voucherSCDTO.setEndDate((LocalDateTime) row[4]);
         voucherSCDTO.setConditionApply(new BigDecimal(row[5].toString()));
         voucherSCDTO.setVoucherType(Integer.valueOf(row[6].toString()));
         voucherSCDTO.setReducedValue(new BigDecimal(row[7].toString()));
@@ -91,7 +89,6 @@ public class VoucherSCServiceImpl implements VoucherSCService {
         voucherSCDTO.setAllow(row[12] != null ? Integer.valueOf(row[12].toString()) : null);
         voucherSCDTO.setCreateName(row[13].toString());
         voucherSCDTO.setUseVoucher(Integer.parseInt(row[14].toString()));
-//        voucherSCDTO.setCreateDate((LocalDateTime) row[15]);
 
         Timestamp startTimestamp = (Timestamp) row[3];
         Timestamp endTimestamp = (Timestamp) row[4];
@@ -110,13 +107,6 @@ public class VoucherSCServiceImpl implements VoucherSCService {
         } else {
             voucherSCDTO.setStatus(0);
         }
-
-//        LocalDateTime endDate = voucherSCDTO.getEndDate();
-//        if (LocalDateTime.now().isAfter(endDate)) {
-//            voucherSCDTO.setStatus(1);
-//        } else {
-//            voucherSCDTO.setStatus(0);
-//        }
 
         return voucherSCDTO;
     }

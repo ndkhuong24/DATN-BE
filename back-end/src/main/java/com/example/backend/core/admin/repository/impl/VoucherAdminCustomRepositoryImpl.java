@@ -13,12 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -48,7 +46,8 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "    v.max_reduced,\n" +
                     "    v.allow,\n" +
                     "    v.create_name,\n" +
-                    "    COUNT(o.id) AS use_voucher,\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher,\n" +
+//                    "    COUNT(o.id) AS use_voucher,\n" +
                     "    v.create_date\n" +
                     "FROM\n" +
                     "    voucher v\n" +
@@ -192,7 +191,9 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "v.max_reduced," +
                     "v.allow ," +
                     "v.create_name ," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher v " +
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
                     "where v.idel = 1 and v.dele=0 " +
@@ -223,12 +224,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[15];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -269,12 +273,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "v.max_reduced," +
                     "v.allow ," +
                     "v.create_name ," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher v " +
                     "LEFT JOIN `order` o ON o.code_voucher = v.code " +
                     "where idel=0 and dele=0 " +
                     "GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ";
+
             Query query = entityManager.createNativeQuery(sql);
             List<Object[]> resultList = query.getResultList();
 
@@ -299,12 +306,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[15];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -345,10 +355,12 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                             "  v.quantity," +
                             "v.max_reduced," +
                             "v.allow ," +
-                            "  COUNT(o.id) AS use_voucher " +
+                            "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                            "  COUNT(o.id) AS use_voucher " +
+                            "    v.create_date\n" +
                             "FROM voucher v " +
                             "LEFT JOIN `order` o ON o.code_voucher = v.code " +
-                            "where  dele=0 "
+                            "where v.dele = 0 "
             );
 
             if (StringUtils.isNotBlank(fromDate)) {
@@ -359,7 +371,9 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
             }
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ");
+
             Query query = entityManager.createNativeQuery(sql.toString());
+
             if (StringUtils.isNotBlank(fromDate)) {
                 query.setParameter("dateFrom", fromDate);
             }
@@ -389,9 +403,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[14];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
+
+                    voucher.setStartDate(startDate);
+                    voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -434,7 +454,9 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "    v.quantity,\n" +
                     "    v.max_reduced,\n" +
                     "    v.allow,\n" +
-                    "    COUNT(o.id) AS use_voucher\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher," +
+//                    "    COUNT(o.id) AS use_voucher\n" +
+                    "    v.create_date\n" +
                     "FROM\n" +
                     "    datn.voucher v\n" +
                     "LEFT JOIN\n" +
@@ -470,12 +492,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[14];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -515,16 +540,22 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "  v.quantity," +
                     "v.max_reduced," +
                     "v.allow ," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher v " +
                     "LEFT JOIN datn.order o ON o.code_voucher = v.code " +
                     "LEFT JOIN datn.customer c ON v.id_customer = c.id " +
                     "WHERE v.dele = 0");
 
             if (searchTerm != null && !searchTerm.isEmpty()) {
-                sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
-                        "   OR LOWER(c.fullname) LIKE LOWER(:searchTerm) " +
-                        "   OR c.phone LIKE :searchTerm ");
+//                sql.append(" and LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) ");
+//                sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
+//                        "   OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) \") " +
+//                        "   OR c.phone LIKE :searchTerm ");
+                sql.append(" AND (LOWER(c.code) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+                        " OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+                        " OR c.phone LIKE CONCAT('%', :searchTerm, '%'))");
             }
 
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, v.voucher_type, v.reduced_value, v.description, v.idel, v.quantity,v.max_reduced,v.allow ");
@@ -556,12 +587,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[14];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -601,7 +635,9 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "    v.quantity,\n" +
                     "    v.max_reduced,\n" +
                     "    v.allow,\n" +
-                    "    COUNT(o.id) AS use_voucher\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher," +
+//                    "    COUNT(o.id) AS use_voucher\n" +
+                    "    v.create_date\n" +
                     "FROM\n" +
                     "    datn.voucher v\n" +
                     "LEFT JOIN\n" +
@@ -646,12 +682,15 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[14];
 
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);

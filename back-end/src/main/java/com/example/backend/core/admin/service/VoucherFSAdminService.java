@@ -14,7 +14,6 @@ public interface VoucherFSAdminService {
 
     ServiceResult<Void> deleteVoucher(Long voucherId);
 
-    //    List<VoucherFreeShipDTO> detailById(Long voucherId);
     List<VoucherFreeShipDTO> getAllVouchers();
 
     List<CustomerAdminDTO> getAllCustomer();
@@ -36,5 +35,6 @@ public interface VoucherFSAdminService {
     List<VoucherFreeShipDTO> getAllKichHoat();
 
     void sendMessageUsingThymeleafTemplate(VoucherFreeShipDTO voucherAdminDTO) throws MessagingException;
+
 //    byte[] exportExcelVoucher() throws IOException;
 }

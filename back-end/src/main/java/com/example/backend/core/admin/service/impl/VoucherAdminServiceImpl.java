@@ -68,10 +68,9 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     }
 
     public void sendHtmlEmail(String toEmail, String subject, String htmlBody) throws MessagingException {
-
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            helper.setFrom("xuanntph21397@fpt.edu.vn");
+            helper.setFrom("kn134646@gmail.com");
             helper.setTo(toEmail);
             helper.setSubject(subject);
             helper.setText(htmlBody, true);
@@ -83,7 +82,6 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
     @Override
     @Async
     public void sendMessageUsingThymeleafTemplate(VoucherAdminDTO voucherAdminDTO) throws MessagingException {
-
         String id = voucherAdminDTO.getIdCustomer();
         if (StringUtils.isNotBlank(id)) {
             String[] idArray = id.split(",");
@@ -96,7 +94,7 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
                     if (optionalCustomer.isPresent()) {
                         Customer customer = optionalCustomer.get();
                         thymeleafContext.setVariable("voucher", voucherAdminDTO);
-                        String subject = "Voucher xịn 2T Store tặng bạn";
+                        String subject = "Voucher xịn tặng bạn";
                         String htmlBody = templateEngine.process("sendEmailVoucher", thymeleafContext);
                         sendHtmlEmail(customer.getEmail(), subject, htmlBody);
                     } else {
@@ -111,9 +109,132 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         }
     }
 
+//    @Override
+//    public List<VoucherAdminDTO> getAllVouchers() {
+//        // Lấy danh sách voucher từ repository tùy chỉnh
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
+//
+//        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+//        list = list.stream()
+//                .filter(voucher -> voucher.getCreateDate() != null)
+//                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+//                .collect(Collectors.toList());
+//
+//        // Lặp qua từng voucher trong danh sách
+//        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+//        while (iterator.hasNext()) {
+//            VoucherAdminDTO voucherAdminDTO = iterator.next();
+//
+//            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+//            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+//                    .stream()
+//                    .filter(order -> order.getStatus() == 3)
+//                    .collect(Collectors.toList());
+//
+//            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1
+//            if (!orderList.isEmpty()) {
+//                voucherAdminDTO.setIsUpdate(1);
+//            }else{
+//                voucherAdminDTO.setIsUpdate(0);
+//            }
+//        }
+//        return list;
+//    }
+//
+//    @Override
+//    public List<VoucherAdminDTO> getAllKichHoat() {
+//        // Lấy danh sách voucher từ repository tùy chỉnh
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllKichHoat();
+//
+//        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+//        list = list.stream()
+//                .filter(voucher -> voucher.getCreateDate() != null)
+//                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+//                .collect(Collectors.toList());
+//
+//        // Lặp qua từng voucher trong danh sách
+//        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+//        while (iterator.hasNext()) {
+//            VoucherAdminDTO voucherAdminDTO = iterator.next();
+//
+//            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+//            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+//                    .stream()
+//                    .filter(order -> order.getStatus() == 3)
+//                    .collect(Collectors.toList());
+//
+//            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1
+//            if (!orderList.isEmpty()) {
+//                voucherAdminDTO.setIsUpdate(1);
+//            }else{
+//                voucherAdminDTO.setIsUpdate(0);
+//            }
+//        }
+//        return list;
+//    }
+//
+//
+//    @Override
+//    public List<VoucherAdminDTO> getAllKhongKH() {
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllKhongKH();
+//        return list;
+//    }
+//
+//    @Override
+//    public List<VoucherAdminDTO> getVouchersByTimeRange(String fromDate, String toDate) {
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByTimeRange(fromDate, toDate);
+//        return list;
+//    }
+//
+//    @Override
+//    public List<VoucherAdminDTO> getVouchersByKeyword(String keyword) {
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByKeyword(keyword);
+//        return list;
+//    }
+//
+//    @Override
+//    public List<VoucherAdminDTO> getVouchersByCustomer(String searchTerm) {
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByCustomer(searchTerm);
+//        return list;
+//    }
+//
+//    @Override
+//    public List<VoucherAdminDTO> getVouchersByVoucherType(String search) {
+//        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByVoucherType(search);
+//        return list;
+//    }
+
     @Override
     public List<VoucherAdminDTO> getAllVouchers() {
+        // Lấy danh sách voucher từ repository tùy chỉnh
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllVouchers();
+
+        // Lọc và sắp xếp danh sách voucher theo ngày tạo (giảm dần)
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        // Lặp qua từng voucher trong danh sách
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            // Lấy danh sách đơn hàng có mã voucher tương ứng và trạng thái bằng 3
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            // Nếu danh sách đơn hàng không rỗng, đặt isUpdate là 1, ngược lại là 0
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
+        return list;
+    }
+
+    @Override
+    public List<VoucherAdminDTO> getAllKichHoat() {
+        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllKichHoat();
 
         list = list.stream()
                 .filter(voucher -> voucher.getCreateDate() != null)
@@ -123,47 +244,129 @@ public class VoucherAdminServiceImpl implements VoucherAdminService {
         Iterator<VoucherAdminDTO> iterator = list.listIterator();
         while (iterator.hasNext()) {
             VoucherAdminDTO voucherAdminDTO = iterator.next();
-            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode());
-            if (!orderList.isEmpty()) {
-                voucherAdminDTO.setIsUpdate(1);
-            }
-        }
-        return list;
-    }
 
-    @Override
-    public List<VoucherAdminDTO> getAllKichHoat() {
-        List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllKichHoat();
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherAdminDTO> getAllKhongKH() {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getAllKhongKH();
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherAdminDTO> getVouchersByTimeRange(String fromDate, String toDate) {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByTimeRange(fromDate, toDate);
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherAdminDTO> getVouchersByKeyword(String keyword) {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByKeyword(keyword);
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherAdminDTO> getVouchersByCustomer(String searchTerm) {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByCustomer(searchTerm);
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 
     @Override
     public List<VoucherAdminDTO> getVouchersByVoucherType(String search) {
         List<VoucherAdminDTO> list = voucherAdminCustomRepository.getVouchersByVoucherType(search);
+
+        list = list.stream()
+                .filter(voucher -> voucher.getCreateDate() != null)
+                .sorted(Comparator.comparing(VoucherAdminDTO::getCreateDate).reversed())
+                .collect(Collectors.toList());
+
+        Iterator<VoucherAdminDTO> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            VoucherAdminDTO voucherAdminDTO = iterator.next();
+
+            List<Order> orderList = orderAdminRepository.findByCodeVoucher(voucherAdminDTO.getCode())
+                    .stream()
+                    .filter(order -> order.getStatus() == 3)
+                    .collect(Collectors.toList());
+
+            voucherAdminDTO.setIsUpdate(!orderList.isEmpty() ? 1 : 0);
+        }
         return list;
     }
 

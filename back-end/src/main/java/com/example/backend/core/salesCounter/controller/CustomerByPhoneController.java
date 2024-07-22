@@ -11,22 +11,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sales-customer")
 @CrossOrigin("*")
 public class CustomerByPhoneController {
-
     @Autowired
     private CustomerService customerService;
+
     @Autowired
     private CustomerSCService customerSCService;
 
     @GetMapping("/findByPhone/{phone}")
-    public ResponseEntity<?> findCustomerByPhone(
-        @PathVariable("phone") String phone
-    ){
+    public ResponseEntity<?> findCustomerByPhone(@PathVariable("phone") String phone) {
         return ResponseEntity.ok(customerService.findByPhoneLike(phone));
     }
+
     @PostMapping("/add-customer")
-    public ResponseEntity<?> addCustomer(
-            @RequestBody CustomerDTO customerDTO
-            ){
+    public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerSCService.addCustomer(customerDTO));
     }
 }

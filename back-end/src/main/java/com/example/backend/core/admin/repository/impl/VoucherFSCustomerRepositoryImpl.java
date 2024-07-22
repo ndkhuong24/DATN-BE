@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -43,7 +42,8 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "    v.description,\n" +
                     "    v.idel,\n" +
                     "    v.quantity,\n" +
-                    "    COUNT(o.id) AS use_voucher,\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher," +
+//                    "    COUNT(o.id) AS use_voucher,\n" +
                     "    v.create_date\n" +
                     "FROM\n" +
                     "    voucher_free_ship v\n" +
@@ -78,10 +78,6 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
                     LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -184,7 +180,8 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "    v.description,\n" +
                     "    v.idel,\n" +
                     "    v.quantity,\n" +
-                    "    COUNT(o.id) AS use_voucher,\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher,\n" +
+//                    "    COUNT(o.id) AS use_voucher,\n" +
                     "    v.create_date\n" +
                     "FROM\n" +
                     "    voucher_free_ship v\n" +
@@ -211,8 +208,6 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 voucher.setQuantity(Integer.valueOf(row[9].toString()));
                 voucher.setUseVoucher(Integer.parseInt(row[10].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
@@ -221,10 +216,6 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
                     LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -265,7 +256,8 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "    v.description,\n" +
                     "    v.idel,\n" +
                     "    v.quantity,\n" +
-                    "    COUNT(o.id) AS use_voucher,\n" +
+                    "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher,\n" +
+//                    "    COUNT(o.id) AS use_voucher,\n" +
                     "    v.create_date\n" +
                     "FROM\n" +
                     "    voucher_free_ship v\n" +
@@ -292,8 +284,6 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 voucher.setQuantity(Integer.valueOf(row[9].toString()));
                 voucher.setUseVoucher(Integer.parseInt(row[10].toString()));
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
                 try {
                     Timestamp startTimestamp = (Timestamp) row[3];
                     Timestamp endTimestamp = (Timestamp) row[4];
@@ -302,10 +292,6 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     LocalDateTime startDate = startTimestamp.toLocalDateTime();
                     LocalDateTime endDate = endTimestamp.toLocalDateTime();
                     LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
-//                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-//                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
@@ -346,10 +332,12 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "  v.description, " +
                     "  v.idel, " +
                     "  v.quantity," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher_free_ship v " +
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code " +
-                    "WHERE dele=0 ");
+                    "WHERE v.dele = 0 ");
 
             if (StringUtils.isNotBlank(fromDate)) {
                 sql.append("and  (:dateFrom is null or STR_TO_DATE(DATE_FORMAT(v.start_date, '%Y/%m/%d'), '%Y/%m/%d') >= STR_TO_DATE(:dateFrom , '%d/%m/%Y')) ");
@@ -359,7 +347,9 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
             }
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions, " +
                     "v.reduced_value, v.description, v.idel, v.quantity");
+
             Query query = entityManager.createNativeQuery(sql.toString());
+
             if (StringUtils.isNotBlank(fromDate)) {
                 query.setParameter("dateFrom", fromDate);
             }
@@ -383,14 +373,20 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 voucher.setIdel(Integer.valueOf(row[8].toString()));
                 voucher.setQuantity(Integer.valueOf(row[9].toString()));
                 voucher.setUseVoucher(Integer.parseInt(row[10].toString()));
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[11];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
+
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -427,7 +423,9 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "  v.description, " +
                     "  v.idel, " +
                     "  v.quantity," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher_free_ship v " +
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code " +
                     "WHERE v.name LIKE :keyword OR v.code LIKE :keyword and dele=0 " +
@@ -452,14 +450,19 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 voucher.setIdel(Integer.valueOf(row[8].toString()));
                 voucher.setQuantity(Integer.valueOf(row[9].toString()));
                 voucher.setUseVoucher(Integer.parseInt(row[10].toString()));
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[11];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);
@@ -496,17 +499,22 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                     "  v.description, " +
                     "  v.idel, " +
                     "  v.quantity," +
-                    "  COUNT(o.id) AS use_voucher " +
+                    "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
+//                    "  COUNT(o.id) AS use_voucher " +
+                    "    v.create_date\n" +
                     "FROM voucher_free_ship v " +
                     "LEFT JOIN `order` o ON o.code_voucher_ship = v.code " +
                     "LEFT JOIN customer c ON v.id_customer = c.id " +
-                    "WHERE  dele=0 ");
-
+                    "WHERE  v.dele = 0");
 
             if (searchTerm != null && !searchTerm.isEmpty()) {
-                sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
-                        "   OR LOWER(c.fullname) LIKE LOWER(:searchTerm) " +
-                        "   OR c.phone LIKE  :searchTerm ");
+//                sql.append(" and LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) ");
+//                sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
+//                        "   OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) \") " +
+//                        "   OR c.phone LIKE  :searchTerm ");
+                sql.append(" AND (LOWER(c.code) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+                        " OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+                        " OR c.phone LIKE CONCAT('%', :searchTerm, '%'))");
             }
             sql.append(" GROUP BY v.id, v.code, v.name, v.start_date, v.end_date, v.conditions,v.reduced_value, v.description, v.idel, v.quantity");
 
@@ -530,14 +538,19 @@ public class VoucherFSCustomerRepositoryImpl implements VoucherFSCustomerReposit
                 voucher.setIdel(Integer.valueOf(row[8].toString()));
                 voucher.setQuantity(Integer.valueOf(row[9].toString()));
                 voucher.setUseVoucher(Integer.parseInt(row[10].toString()));
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
                 try {
-                    LocalDateTime startDate = LocalDateTime.parse(row[3].toString());
-                    LocalDateTime endDate = LocalDateTime.parse(row[4].toString());
+                    Timestamp startTimestamp = (Timestamp) row[3];
+                    Timestamp endTimestamp = (Timestamp) row[4];
+                    Timestamp createDateTimestamp = (Timestamp) row[11];
+
+                    LocalDateTime startDate = startTimestamp.toLocalDateTime();
+                    LocalDateTime endDate = endTimestamp.toLocalDateTime();
+                    LocalDateTime createDate = createDateTimestamp.toLocalDateTime();
 
                     voucher.setStartDate(startDate);
                     voucher.setEndDate(endDate);
+                    voucher.setCreateDate(createDate);
 
                     if (LocalDateTime.now().isAfter(endDate)) {
                         voucher.setStatus(1);

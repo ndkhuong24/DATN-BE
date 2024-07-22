@@ -42,7 +42,8 @@ public interface VoucherSCRepository extends JpaRepository<Voucher, Long> {
             "    v.max_reduced, " +
             "    v.allow, " +
             "    v.create_name, " +
-            "    COUNT(o.id) AS use_voucher, " +
+            "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher, " +
+//            "    COUNT(o.id) AS use_voucher, " +
             "    v.create_date " +
             "FROM " +
             "    voucher v " +
@@ -79,7 +80,8 @@ public interface VoucherSCRepository extends JpaRepository<Voucher, Long> {
             "    v.max_reduced, " +
             "    v.allow, " +
             "    v.create_name, " +
-            "    COUNT(o.id) AS use_voucher, " +
+            "    COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher, " +
+//            "    COUNT(o.id) AS use_voucher, " +
             "    v.create_date " +
             "FROM " +
             "    voucher v " +
@@ -99,7 +101,6 @@ public interface VoucherSCRepository extends JpaRepository<Voucher, Long> {
             "ORDER BY " +
             "    v.end_date ASC", nativeQuery = true)
     List<Object[]> getAllVouchersByCustomerWithUseCount(@Param("codeSearch") String codeSearch, @Param("idCustomer") Long idCustomer);
-
 
     Voucher findByCode(String code);
 }
