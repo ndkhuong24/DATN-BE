@@ -1,7 +1,7 @@
 package com.example.backend.core.view.controller;
 
-import com.example.backend.core.model.Brand;
-import com.example.backend.core.view.service.BrandService;
+import com.example.backend.core.model.Category;
+import com.example.backend.core.view.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,17 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/view/api")
 @CrossOrigin("*")
-public class BrandController {
-
+public class CategoryController {
     @Autowired
-    private BrandService brandService;
+    private CategoryService service;
 
-    @GetMapping("/get-brand-top")
-    public ResponseEntity<?> brandTop(){
-        return ResponseEntity.ok(brandService.getAllBrandTop());
-    }
-    @GetMapping("/get-all-brand")
-    public ResponseEntity<List<Brand>> getAll(){
-        return ResponseEntity.ok(brandService.getAll());
+    @GetMapping("/get-all-category")
+    public ResponseEntity<List<Category>> getAll(){
+        return ResponseEntity.ok(service.getAll());
     }
 }

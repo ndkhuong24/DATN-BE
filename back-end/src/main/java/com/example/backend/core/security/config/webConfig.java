@@ -72,6 +72,7 @@ public class webConfig{
                                 .requestMatchers("/view/api/sign-up").permitAll()
                                 .requestMatchers("/admin/api/sign-in").permitAll()
                                 .requestMatchers("/admin/api/sign-up").permitAll()
+                                .requestMatchers("/view/api/**").permitAll()
                                 .requestMatchers(AppConstant.API_VIEW_PERMIT).permitAll()
 //                                .requestMatchers(AppConstant.API_ADMIN).hasAnyAuthority("ADMIN")
 //                                .requestMatchers(AppConstant.API_STAFF).hasAnyAuthority("STAFF")

@@ -1,7 +1,7 @@
 package com.example.backend.core.view.controller;
 
-import com.example.backend.core.model.Brand;
-import com.example.backend.core.view.service.BrandService;
+import com.example.backend.core.model.Sole;
+import com.example.backend.core.view.service.SoleSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,17 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/view/api")
 @CrossOrigin("*")
-public class BrandController {
-
+public class SoleController {
     @Autowired
-    private BrandService brandService;
-
-    @GetMapping("/get-brand-top")
-    public ResponseEntity<?> brandTop(){
-        return ResponseEntity.ok(brandService.getAllBrandTop());
-    }
-    @GetMapping("/get-all-brand")
-    public ResponseEntity<List<Brand>> getAll(){
-        return ResponseEntity.ok(brandService.getAll());
+    private SoleSevice sevice;
+    @GetMapping("/get-all-sole")
+    public ResponseEntity<List<Sole>> getAll(){
+        return ResponseEntity.ok(sevice.getAll());
     }
 }
