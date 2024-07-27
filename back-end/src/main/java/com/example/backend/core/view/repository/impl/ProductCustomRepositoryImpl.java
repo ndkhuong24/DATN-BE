@@ -41,8 +41,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                     "    LEFT JOIN\n" +
                     "    brand b ON b.id = p.id_brand\n" +
                     "{1}\n" +
-                    "WHERE\n" +
-                    "    p.status = 0\n" +
+//                    " WHERE\n" +
+//                    "    p.status = 0\n" +
                     "GROUP BY \n" +
                     "    p.id, \n" +
                     "    p.code, \n" +
@@ -53,9 +53,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
 
             String sqlStr = sql.toString();
             if (null != thuongHieu && thuongHieu > 0) {
-                sqlStr = sqlStr.replace("{1}", "  where b.id = :idBrand");
+                sqlStr = sqlStr.replace("{1}", "  where b.id = :idBrand and p.status = 0");
             } else {
-                sqlStr = sqlStr.replace("{1}", " ");
+                sqlStr = sqlStr.replace("{1}", " where p.status = 0");
             }
             Query query = entityManager.createNativeQuery(sqlStr);
 
