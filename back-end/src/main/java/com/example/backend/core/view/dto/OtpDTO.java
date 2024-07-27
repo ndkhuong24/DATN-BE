@@ -1,7 +1,5 @@
 package com.example.backend.core.view.dto;
 
-import java.time.LocalDate;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class OtpDTO {
@@ -22,6 +20,7 @@ public class OtpDTO {
     }
 
     public boolean isValid() {
-        return LocalDateTime.now().isBefore(creationTime.plusDays(360));
+        // Kiểm tra thời gian hiệu lực 15 phút
+        return LocalDateTime.now().isBefore(creationTime.plusMinutes(5));
     }
 }

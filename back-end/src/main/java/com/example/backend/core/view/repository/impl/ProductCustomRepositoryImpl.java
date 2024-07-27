@@ -16,7 +16,6 @@ import java.util.List;
 @Component
 @Transactional
 public class ProductCustomRepositoryImpl implements ProductCustomRepository {
-
     @Autowired
     EntityManager entityManager;
 
@@ -42,6 +41,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                     "    LEFT JOIN\n" +
                     "    brand b ON b.id = p.id_brand\n" +
                     "{1}\n" +
+                    "WHERE\n" +
+                    "    p.status = 0\n" +
                     "GROUP BY \n" +
                     "    p.id, \n" +
                     "    p.code, \n" +
@@ -95,15 +96,20 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             sql.append("FROM product p ");
             sql.append("JOIN category c ON c.id = p.id_category ");
             sql.append("JOIN product_detail pd ON pd.id_product = p.id ");
+            sql.append(" WHERE p.status = 0 ");
 
+//            if (idProduct != null && idCategory != null) {
+//                sql.append("WHERE (p.id != :idProduct AND c.id = :idCategory) ");
+//                sql.append("OR (:idProduct IS NULL OR :idCategory IS NULL) ");
+//            }
             if (idProduct != null && idCategory != null) {
-                sql.append("WHERE (p.id != :idProduct AND c.id = :idCategory) ");
-                sql.append("OR (:idProduct IS NULL OR :idCategory IS NULL) ");
+                sql.append("AND (p.id != :idProduct AND c.id = :idCategory) ");
+            } else {
+                sql.append("AND (:idProduct IS NULL OR :idCategory IS NULL) ");
             }
 
             sql.append("GROUP BY p.id, p.code, p.name ");
             sql.append("LIMIT 4;");
-
 
             Query query = entityManager.createNativeQuery(sql.toString());
 

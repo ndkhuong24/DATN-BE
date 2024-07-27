@@ -15,7 +15,6 @@ import java.util.Set;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
-
     @Autowired
     private UserRepository repository;
 
@@ -26,10 +25,8 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("Khong Tim Thay User");
         }
         UserDetails userDetails;
-        // lấy quyền của người dùng
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
         userDetails = new User(user.getUsername(), user.getPassword(), authorities);
-        System.out.println(userDetails);
         return userDetails;
     }
 }

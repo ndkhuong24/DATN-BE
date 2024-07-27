@@ -24,7 +24,7 @@ public class StaffAdminDTO {
     private LocalDateTime createDate;
     private String description;
     private String username;
-    private String passwword;
+    private String password;
     private String role;
     private Integer idel;
 }

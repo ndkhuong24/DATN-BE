@@ -88,13 +88,11 @@ public class StaffAdminServiceImpl implements StaffAdminService {
         }
 
         staff.setFullname(staffAdminDTO.getFullname());
-        staff.setPhone(staffAdminDTO.getPhone());
-        staff.setEmail(staffAdminDTO.getEmail());
         staff.setBirthday(staffAdminDTO.getBirthday());
         staff.setGender(staffAdminDTO.getGender());
 
-        if (staffAdminDTO.getPasswword() != null) {
-            staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
+        if (staffAdminDTO.getPassword() != null) {
+            staff.setPassword(encoder.encode(staffAdminDTO.getPassword()));
         }
 
         staff.setIdel(staffAdminDTO.getIdel());
@@ -110,9 +108,68 @@ public class StaffAdminServiceImpl implements StaffAdminService {
         return result;
     }
 
+//    @Override
+//    public ServiceResult<StaffAdminDTO> updateStaff(Long id, StaffAdminDTO staffAdminDTO) {
+//        Optional<Staff> staffOptional = staffAdminRepository.findById(id);
+//        ServiceResult<StaffAdminDTO> result = new ServiceResult<>();
+//
+//        if (!staffOptional.isPresent()) {
+//            result.setStatus(HttpStatus.NOT_FOUND);
+//            result.setMessage("Staff not found");
+//            result.setData(null);
+//            return result;
+//        }
+//
+//        Staff staff = staffOptional.get();
+//
+//        if (staffAdminDTO.getPhone() != null && !staffAdminDTO.getPhone().equals(staff.getPhone())) {
+//            if (staffAdminRepository.existsByPhone(staffAdminDTO.getPhone())) {
+//                result.setStatus(HttpStatus.OK);
+//                result.setMessage("Phone existed");
+//                result.setData(staffMapper.toDto(staff));
+//                return result;
+//            } else {
+//                staff.setPhone(staffAdminDTO.getPhone());
+//            }
+//        }
+//
+//        if (staffAdminDTO.getEmail() != null && !staffAdminDTO.getEmail().equals(staff.getEmail())) {
+//            if (staffAdminRepository.existsByEmail(staffAdminDTO.getEmail())) {
+//                result.setStatus(HttpStatus.OK);
+//                result.setMessage("Email existed");
+//                result.setData(staffMapper.toDto(staff));
+//                return result;
+//            } else {
+//                staff.setEmail(staffAdminDTO.getEmail());
+//            }
+//        }
+//
+//        staff.setFullname(staffAdminDTO.getFullname());
+//        staff.setPhone(staffAdminDTO.getPhone());
+//        staff.setEmail(staffAdminDTO.getEmail());
+//        staff.setBirthday(staffAdminDTO.getBirthday());
+//        staff.setGender(staffAdminDTO.getGender());
+//
+//        if (staffAdminDTO.getPasswword() != null) {
+//            staff.setPassword(encoder.encode(staffAdminDTO.getPasswword()));
+//        }
+//
+//        staff.setIdel(staffAdminDTO.getIdel());
+//        staff.setRole(staffAdminDTO.getRole());
+//        staff.setDescription(staffAdminDTO.getDescription());
+//
+//        staffAdminRepository.save(staff);
+//
+//        result.setStatus(HttpStatus.OK);
+//        result.setMessage("Update successful");
+//        result.setData(staffMapper.toDto(staff));
+//
+//        return result;
+//    }
+
 
 //    @Override
-//    public ServiceResult<StaffAdminDTO> updateStaff(Long id,StaffAdminDTO staffAdminDTO) {
+//    public ServiceResult<StaffAdminDTO> updateStaff(Long id, StaffAdminDTO staffAdminDTO) {
 //        Optional<Staff> staffOptional = staffAdminRepository.findById(id);
 //
 //        if (staff.getPhone() != null && !staff.getPhone().equals(staffAdminDTO.getPhone())) {
@@ -161,15 +218,15 @@ public class StaffAdminServiceImpl implements StaffAdminService {
 //        return result;
 //    }
 
-    @Override
-    public List<StaffAdminDTO> findByCodeOrPhone(String param) {
-        if (!param.equals("")) {
-            List<StaffAdminDTO> staffAdminDTOList = staffMapper.toDto(staffAdminRepository.findByCodeLikeOrPhoneLike("%" + param + "%", "%" + param + "%"));
-            return staffAdminDTOList;
-        } else {
-            return this.getAllStaff();
-        }
-    }
+//    @Override
+//    public List<StaffAdminDTO> findByCodeOrPhone(String param) {
+//        if (!param.equals("")) {
+//            List<StaffAdminDTO> staffAdminDTOList = staffMapper.toDto(staffAdminRepository.findByCodeLikeOrPhoneLike("%" + param + "%", "%" + param + "%"));
+//            return staffAdminDTOList;
+//        } else {
+//            return this.getAllStaff();
+//        }
+//    }
 
     @Override
     public List<StaffAdminDTO> findByFullnameOrPhoneLike(String params) {

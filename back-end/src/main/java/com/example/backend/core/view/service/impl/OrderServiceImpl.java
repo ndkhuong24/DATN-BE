@@ -228,6 +228,7 @@ public class OrderServiceImpl implements OrderService {
         order.setAddressReceived(orderDTO.getAddressReceived());
         order.setEmail(orderDTO.getEmail());
         order.setType(0);
+
         if (orderDTO.getPaymentType() == 1) {
             order.setPaymentType(orderDTO.getPaymentType());
             order.setTotalPayment(orderDTO.getTotalPayment());
@@ -238,7 +239,9 @@ public class OrderServiceImpl implements OrderService {
             order.setTotalPayment(orderDTO.getTotalPayment());
             order.setStatusPayment(AppConstant.CHUA_THANH_TOAN);
         }
+
         order.setStatus(AppConstant.CHO_XAC_NHAN);
+
         if (StringUtils.isNotBlank(orderDTO.getCodeVoucher())) {
             Voucher voucher = voucherRepository.findByCode(orderDTO.getCodeVoucher());
             if (null != voucher) {
@@ -250,6 +253,7 @@ public class OrderServiceImpl implements OrderService {
                 voucherRepository.save(voucher);
             }
         }
+
         if (StringUtils.isNotBlank(orderDTO.getCodeVoucherShip())) {
             VoucherFreeShip voucherFreeShip = voucherFreeShipRepository.findByCode(orderDTO.getCodeVoucherShip());
             if (null != voucherFreeShip) {
@@ -261,11 +265,14 @@ public class OrderServiceImpl implements OrderService {
                 voucherFreeShipRepository.save(voucherFreeShip);
             }
         }
+
         order = orderRepository.save(order);
         dto = orderMapper.toDto(order);
+
         result.setData(dto);
         result.setStatus(HttpStatus.OK);
         result.setMessage("Success");
+
         return result;
     }
 

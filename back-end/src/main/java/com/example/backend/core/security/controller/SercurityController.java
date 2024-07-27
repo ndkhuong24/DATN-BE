@@ -106,11 +106,9 @@ public class SercurityController {
                 Users users = usersService.findByUsername(signInRequet.getUsername());
                 return ResponseEntity.ok(new JwtResponse(token,new UsersDTO(users.getId(), users.getFullname(), userDetails.getUsername(),users.getRole(),users.getPhone(), users.getEmail())));
             } else {
-                // Sai mật khẩu
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         } else {
-            // Không tìm thấy thông tin người dùng
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

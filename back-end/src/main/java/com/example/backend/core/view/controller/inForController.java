@@ -71,9 +71,10 @@ public class inForController {
             response.put("message", "send mail successfully");
             response.put("status", "200");
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        } else {
-            response.put("message", "Internal Server Error");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }  else {
+            response.put("message", "Mã OTP không hợp lệ hoặc đã hết hạn");
+            response.put("status", "400");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 

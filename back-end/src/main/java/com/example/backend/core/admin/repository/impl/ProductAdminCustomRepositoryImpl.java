@@ -25,7 +25,6 @@ import java.util.List;
 @Repository
 @Transactional
 public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepository {
-
     @Autowired
     private EntityManager entityManager;
 

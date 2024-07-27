@@ -76,34 +76,86 @@ public class ProductServiceImpl implements ProductService {
         return lst;
     }
 
+    //    @Override
+//    public ServiceResult<ProductDTO> getDetailProduct(Long idProduct) {
+//        Optional<Product> product = productRepository.findById(idProduct);
+//
+//        ServiceResult<ProductDTO> result = new ServiceResult<>();
+//
+//        Integer totalQuantity = 0;
+//        if (!product.isPresent()) {
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Product không tồn tại !");
+//            result.setData(null);
+//            return result;
+//        }
+//
+//        ProductDTO productDTO = productMapper.toDto(product.orElse(null));
+//        Optional<Brand> brand = brandRepository.findById(product.get().getIdBrand());
+//        Optional<Material> material = materialRepository.findById(product.get().getIdMaterial());
+//        Optional<Sole> sole = soleRepository.findById(product.get().getIdSole());
+//        Optional<Category> category = categoryRepository.findById(product.get().getIdCategory());
+//        List<ProductDetail> listProductDetail = productDetailRepository.findByIdProduct(idProduct);
+//        MaterialDTO materialDTO = materialMapper.toDto(material.orElse(null));
+//        SoleDTO soleDTO = soleMapper.toDto(sole.orElse(null));
+//        CategoryDTO categoryDTO = categoryMapper.toDto(category.orElse(null));
+//        BrandDTO brandDTO = brandMapper.toDto(brand.orElse(null));
+//
+//        for (ProductDetail pd : listProductDetail) {
+//            totalQuantity += pd.getQuantity();
+//        }
+//
+//        productDTO.setProductDetailDTOList(productDetailMapper.toDto(listProductDetail));
+//        productDTO.setBrandDTO(brandDTO);
+//        productDTO.setMaterialDTO(materialDTO);
+//        productDTO.setSoleDTO(soleDTO);
+//        productDTO.setCategoryDTO(categoryDTO);
+//        productDTO.setTotalQuantity(totalQuantity);
+//
+//        String imageURL = "http://localhost:8081/view/anh/" + idProduct;
+//        productDTO.setImageURL(imageURL);
+//
+//        result.setStatus(HttpStatus.OK);
+//        result.setMessage("Success");
+//        result.setData(productDTO);
+//        return result;
+//    }
     @Override
     public ServiceResult<ProductDTO> getDetailProduct(Long idProduct) {
         Optional<Product> product = productRepository.findById(idProduct);
 
         ServiceResult<ProductDTO> result = new ServiceResult<>();
 
-        Integer totalQuantity = 0;
         if (!product.isPresent()) {
             result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Product không tồn tại !");
+            result.setMessage("Product không tồn tại!");
             result.setData(null);
             return result;
         }
 
-        ProductDTO productDTO = productMapper.toDto(product.orElse(null));
+        // Kiểm tra status của sản phẩm
+        if (product.get().getStatus() != 0) {
+            result.setStatus(HttpStatus.BAD_REQUEST);
+            result.setMessage("Sản phẩm không hợp lệ hoặc đã bị xóa!");
+            result.setData(null);
+            return result;
+        }
+
+        ProductDTO productDTO = productMapper.toDto(product.get());
         Optional<Brand> brand = brandRepository.findById(product.get().getIdBrand());
         Optional<Material> material = materialRepository.findById(product.get().getIdMaterial());
         Optional<Sole> sole = soleRepository.findById(product.get().getIdSole());
         Optional<Category> category = categoryRepository.findById(product.get().getIdCategory());
         List<ProductDetail> listProductDetail = productDetailRepository.findByIdProduct(idProduct);
+
         MaterialDTO materialDTO = materialMapper.toDto(material.orElse(null));
         SoleDTO soleDTO = soleMapper.toDto(sole.orElse(null));
         CategoryDTO categoryDTO = categoryMapper.toDto(category.orElse(null));
         BrandDTO brandDTO = brandMapper.toDto(brand.orElse(null));
 
-        for (ProductDetail pd : listProductDetail) {
-            totalQuantity += pd.getQuantity();
-        }
+        Integer totalQuantity = listProductDetail.stream()
+                .mapToInt(ProductDetail::getQuantity)
+                .sum();
 
         productDTO.setProductDetailDTOList(productDetailMapper.toDto(listProductDetail));
         productDTO.setBrandDTO(brandDTO);
@@ -120,6 +172,7 @@ public class ProductServiceImpl implements ProductService {
         result.setData(productDTO);
         return result;
     }
+
     @Override
     public ServiceResult<List<ProductDTO>> GetAll() {
         List<Product> products = productRepository.findAll();
@@ -179,6 +232,7 @@ public class ProductServiceImpl implements ProductService {
         result.setData(productDTOs);
         return result;
     }
+
     @Override
     public List<ProductDTO> getProductTuongTu(Long idProduct, Long idCategory) {
         List<ProductDTO> productDTOList = productCustomRepository.getProductTuongTu(idProduct, idCategory);

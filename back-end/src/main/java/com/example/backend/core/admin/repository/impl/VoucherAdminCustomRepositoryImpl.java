@@ -541,7 +541,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "v.max_reduced," +
                     "v.allow ," +
                     "  COUNT(CASE WHEN o.status = 3 THEN o.id ELSE NULL END) AS use_voucher ," +
-//                    "  COUNT(o.id) AS use_voucher " +
                     "    v.create_date\n" +
                     "FROM voucher v " +
                     "LEFT JOIN datn.order o ON o.code_voucher = v.code " +
@@ -549,10 +548,6 @@ public class VoucherAdminCustomRepositoryImpl implements VoucherAdminCustomRepos
                     "WHERE v.dele = 0");
 
             if (searchTerm != null && !searchTerm.isEmpty()) {
-//                sql.append(" and LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) ");
-//                sql.append(" and LOWER(c.code) LIKE LOWER(:searchTerm) " +
-//                        "   OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) \") " +
-//                        "   OR c.phone LIKE :searchTerm ");
                 sql.append(" AND (LOWER(c.code) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
                         " OR LOWER(c.fullname) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
                         " OR c.phone LIKE CONCAT('%', :searchTerm, '%'))");

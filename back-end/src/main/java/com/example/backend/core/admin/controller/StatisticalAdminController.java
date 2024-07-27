@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("api/admin")
 public class StatisticalAdminController {
-
     @Autowired
     private StatisticalAdminService statisticalAdminService;
 

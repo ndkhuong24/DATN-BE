@@ -22,16 +22,12 @@ public class StaffAdminController {
     }
 
     @GetMapping("/staff/finbyId/{id}")
-    public ResponseEntity<?> findByIdStaff(
-            @PathVariable("id") Long id
-    ) {
+    public ResponseEntity<?> findByIdStaff(@PathVariable("id") Long id) {
         return ResponseEntity.ok(staffAdminService.findById(id));
     }
 
     @GetMapping("/customer/finbyId/{id}")
-    public ResponseEntity<?> findByIdCustomer(
-            @PathVariable("id") String id
-    ) {
+    public ResponseEntity<?> findByIdCustomer(@PathVariable("id") String id) {
         return ResponseEntity.ok(customerAdminService.findById(id));
     }
 }

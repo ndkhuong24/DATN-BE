@@ -1,6 +1,5 @@
 package com.example.backend.core.admin.service.impl;
 
-import com.example.backend.core.admin.dto.BrandAdminDTO;
 import com.example.backend.core.admin.dto.SoleAdminDTO;
 import com.example.backend.core.admin.mapper.SoleAdminMapper;
 import com.example.backend.core.admin.repository.SoleAdminRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SoleAdminServiceIplm  implements SoleAdminService {
+public class SoleAdminServiceIplm implements SoleAdminService {
     @Autowired
     private SoleAdminRepository soleAdminRepository;
 
@@ -38,14 +36,14 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
 
     @Override
     public List<String> getAllListExport() {
-        return soleAdminRepository.findAll().stream().map(s -> s.getId() + "-" + s.getSoleHeight() +" cm").collect(Collectors.toList());
+        return soleAdminRepository.findAll().stream().map(s -> s.getId() + "-" + s.getSoleHeight() + " cm").collect(Collectors.toList());
     }
 
     @Override
     public ServiceResult<SoleAdminDTO> add(SoleAdminDTO soleAdminDTO) {
         ServiceResult<SoleAdminDTO> result = new ServiceResult<>();
 
-        Sole sole =  soleAdminMapper.toEntity(soleAdminDTO);
+        Sole sole = soleAdminMapper.toEntity(soleAdminDTO);
         sole.setCreateDate(LocalDateTime.now());
         sole.setUpdateDate(LocalDateTime.now());
 
@@ -62,7 +60,7 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
         ServiceResult<SoleAdminDTO> result = new ServiceResult<>();
 
         Optional<Sole> optional = this.soleAdminRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Sole sole = optional.get();
             sole.setId(id);
             sole.setStatus(soleAdminDTO.getStatus());
@@ -77,7 +75,7 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
             result.setStatus(HttpStatus.OK);
             result.setMessage("Sua thanh cong");
             result.setData(updateSoleAdminDTO);
-        }else {
+        } else {
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Id khong ton tai ");
             result.setData(null);
@@ -90,7 +88,7 @@ public class SoleAdminServiceIplm  implements SoleAdminService {
         ServiceResult<SoleAdminDTO> result = new ServiceResult<>();
 
         Optional<Sole> optional = this.soleAdminRepository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             this.soleAdminRepository.deleteById(id);
             result.setStatus(HttpStatus.OK);
             result.setMessage("Xoa thanh cong");

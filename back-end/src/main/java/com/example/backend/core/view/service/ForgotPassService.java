@@ -5,5 +5,6 @@ import jakarta.mail.MessagingException;
 
 public interface ForgotPassService {
     void sendMessageMailOTP(CustomerDTO customerDTO) throws MessagingException;
-    public boolean verifyOTP(CustomerDTO customerDTO);
+
+    boolean verifyOTP(CustomerDTO customerDTO);
 }
