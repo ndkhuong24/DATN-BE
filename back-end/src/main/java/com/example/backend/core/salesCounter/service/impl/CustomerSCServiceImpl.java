@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -46,6 +47,9 @@ public class CustomerSCServiceImpl implements CustomerSCService {
         customer.setUsername(customerDTO.getPhone());
         customer.setCreateDate(LocalDateTime.now());
         customer.setUpdateDate(LocalDateTime.now());
+        customer.setEmail("khachvanglai@gmail.com");
+        customer.setBirthday(LocalDate.now());
+
         customer.setPassword(encoder.encode(customerDTO.getPhone()));
         customer.setStatus(0);
         customer.setIdel(0);
