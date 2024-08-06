@@ -90,6 +90,7 @@ public class StaffAdminServiceImpl implements StaffAdminService {
         staff.setFullname(staffAdminDTO.getFullname());
         staff.setBirthday(staffAdminDTO.getBirthday());
         staff.setGender(staffAdminDTO.getGender());
+        staff.setUsername(staffAdminDTO.getUsername());
 
         if (staffAdminDTO.getPassword() == null) {
             staff.setPassword(staff.getPassword());
