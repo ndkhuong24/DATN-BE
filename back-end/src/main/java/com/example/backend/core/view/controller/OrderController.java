@@ -1,6 +1,5 @@
 package com.example.backend.core.view.controller;
 
-import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.view.dto.OrderDTO;
 import com.example.backend.core.view.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/view/api")
 @CrossOrigin("*")
 public class OrderController {
-
     @Autowired
     private OrderService orderService;
-
-//    @GetMapping("/get-order-detail/by-order/{idOrder}")
-//    public ResponseEntity<?> getAllOrderDetailByOrder(@PathVariable(name = "idOrder") Long idOrder) {
-//        return ResponseEntity.ok(orderService.getAllByOrder(idOrder));
-//    }
 
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {

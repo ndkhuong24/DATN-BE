@@ -1,7 +1,5 @@
 package com.example.backend.core.view.service.impl;
 
-import com.example.backend.core.admin.dto.ColorAdminDTO;
-import com.example.backend.core.admin.dto.SizeAdminDTO;
 import com.example.backend.core.admin.repository.OrderHistoryAdminRepository;
 import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.constant.AppConstant;
@@ -18,7 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -161,6 +160,73 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
+//    @Override
+//    public ServiceResult<OrderDTO> cancelOrderView(OrderDTO orderDTO) {
+//        ServiceResult<OrderDTO> result = new ServiceResult<>();
+//
+//        if (orderDTO.getId() == null) {
+//            result.setData(null);
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
+//            return result;
+//        }
+//
+//        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+//
+//        if (order != null) {
+//            order.setStatus(AppConstant.HUY_DON_HANG);
+//
+//            order = orderRepository.save(order);
+//
+//            List<OrderDetail> orderDetailList = orderDetailRepository.findByIdOrder(order.getId());
+//
+////            for (int i = 0; i < orderDetailList.size(); i++) {
+////                ProductDetail productDetail = productDetailRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
+////
+////                if (order.getStatusPayment() == AppConstant.CHUA_THANH_TOAN && order.getStatus() == AppConstant.CHO_XAC_NHAN) {
+////                    productDetail.setQuantity(productDetail.getQuantity());
+////                }
+////                if (order.getStatusPayment() == AppConstant.CHUA_THANH_TOAN && order.getStatus() == AppConstant.CHO_XU_LY) {
+////                    productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
+////                }
+////                if (order.getStatusPayment() == AppConstant.DA_THANH_TOAN) {
+////                    productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
+////                }
+////
+////                productDetailRepository.save(productDetail);
+////            }
+//
+//            for (OrderDetail orderDetail : orderDetailList) {
+//                ProductDetail productDetail = productDetailRepository.findById(orderDetail.getIdProductDetail()).orElse(null);
+//
+//                if (order.getStatusPayment() == AppConstant.CHUA_THANH_TOAN) {
+//                    if (order.getStatus() == AppConstant.CHO_XAC_NHAN) {
+//                        productDetail.setQuantity(productDetail.getQuantity());
+//                    } else if (order.getStatus() == AppConstant.CHO_XU_LY) {
+//                        productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
+//                    }
+//                } else {
+//                    productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
+//                }
+//
+//                productDetailRepository.save(productDetail);
+//            }
+//
+//            OrderHistory orderHistory = new OrderHistory();
+//            orderHistory.setStatus(AppConstant.HUY_HISTORY);
+//            orderHistory.setCreateDate(LocalDateTime.now());
+//            orderHistory.setIdOrder(order.getId());
+//            orderHistory.setIdCustomer(orderDTO.getIdCustomer());
+//            orderHistory.setNote(orderDTO.getNote());
+//            orderHistoryRepository.save(orderHistory);
+//
+//            result.setData(orderMapper.toDto(order));
+//            result.setStatus(HttpStatus.OK);
+//            result.setMessage("Success");
+//        }
+//        return result;
+//    }
+
     @Override
     public ServiceResult<OrderDTO> cancelOrderView(OrderDTO orderDTO) {
         ServiceResult<OrderDTO> result = new ServiceResult<>();
@@ -172,35 +238,49 @@ public class OrderServiceImpl implements OrderService {
             return result;
         }
 
-        if (orderDTO.getIdCustomer() == null) {
+        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+
+        if (order == null) {
             result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác");
+            result.setStatus(HttpStatus.NOT_FOUND);
+            result.setMessage("Đơn hàng không tồn tại");
             return result;
         }
 
-        Order order = orderRepository.findById(orderDTO.getId()).orElse(null);
+        List<OrderDetail> orderDetailList = orderDetailRepository.findByIdOrder(order.getId());
 
-        if (order != null) {
-            order.setStatus(AppConstant.HUY_DON_HANG);
-            order = orderRepository.save(order);
-            List<OrderDetail> orderDetailList = orderDetailRepository.findByIdOrder(order.getId());
-            for (int i = 0; i < orderDetailList.size(); i++) {
-                ProductDetail productDetail = productDetailRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
-                productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
-                productDetailRepository.save(productDetail);
+        for (OrderDetail orderDetail : orderDetailList) {
+            ProductDetail productDetail = productDetailRepository.findById(orderDetail.getIdProductDetail()).orElse(null);
+
+            if (order.getStatusPayment() == 1) {
+                if (order.getStatus() == 0) {
+                    productDetail.setQuantity(productDetail.getQuantity());
+                } else if (order.getStatus() == 1) {
+                    productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
+                }
+            } else {
+                productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
             }
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setStatus(AppConstant.HUY_HISTORY);
-            orderHistory.setCreateDate(LocalDateTime.now());
-            orderHistory.setIdOrder(order.getId());
-            orderHistory.setIdCustomer(orderDTO.getIdCustomer());
-            orderHistory.setNote(orderDTO.getNote());
-            orderHistoryRepository.save(orderHistory);
-            result.setData(orderMapper.toDto(order));
-            result.setStatus(HttpStatus.OK);
-            result.setMessage("Success");
+
+            productDetailRepository.save(productDetail);
         }
+
+        // Lưu lịch sử đơn hàng
+        OrderHistory orderHistory = new OrderHistory();
+        orderHistory.setStatus(AppConstant.HUY_HISTORY);
+        orderHistory.setCreateDate(LocalDateTime.now());
+        orderHistory.setIdOrder(order.getId());
+        orderHistory.setIdCustomer(orderDTO.getIdCustomer());
+        orderHistory.setNote(orderDTO.getNote());
+        orderHistoryRepository.save(orderHistory);
+
+        // Cập nhật trạng thái đơn hàng
+        order.setStatus(AppConstant.HUY_DON_HANG);
+        order = orderRepository.save(order);
+
+        result.setData(orderMapper.toDto(order));
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
         return result;
     }
 

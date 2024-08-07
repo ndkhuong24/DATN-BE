@@ -109,8 +109,9 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return orderAdminDTOServiceResult;
         } else {
             order.setStatus(AppConstant.CHO_XU_LY);
-            order.setIdStaff(orderAdminDTO.getIdStaff());
+//            order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
+
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.XU_LY_HISTORY);
@@ -119,7 +120,22 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
                 orderHistory.setNote(orderAdminDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
+
+                if (order.getStatusPayment() == AppConstant.CHUA_THANH_TOAN) {
+                    List<OrderDetail> orderDetailList = orderDetailAdminRepository.findByIdOrder(orderAdminDTO.getId());
+
+                    for (OrderDetail orderDetail : orderDetailList) {
+                        int quantity = orderDetail.getQuantity();
+                        Long productId = orderDetail.getIdProductDetail();
+
+                        // Cập nhật số lượng trong kho dựa trên productId và quantity
+                        ProductDetail productDetail = productDetailAdminRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+                        productDetail.setQuantity(productDetail.getQuantity() - quantity);
+                        productDetailAdminRepository.save(productDetail);
+                    }
+                }
             }
+
             orderAdminDTOServiceResult.setData(orderAdminMapper.toDto(order));
             orderAdminDTOServiceResult.setStatus(HttpStatus.OK);
             orderAdminDTOServiceResult.setMessage("Success");
@@ -153,18 +169,36 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             result.setMessage("Đã có lỗi xảy ra khi bạn đang thao tác!");
             return result;
         } else {
-            order.setStatus(AppConstant.HUY_DON_HANG);
-            order.setIdStaff(orderAdminDTO.getIdStaff());
-            order = orderAdminRepository.save(order);
-
             if (order != null) {
                 List<OrderDetail> orderDetailList = orderDetailAdminRepository.findByIdOrder(order.getId());
 
-                for (int i = 0; i < orderDetailList.size(); i++) {
-                    ProductDetail productDetail = productDetailAdminRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
-                    productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
+                for (OrderDetail orderDetail : orderDetailList) {
+                    ProductDetail productDetail = productDetailAdminRepository.findById(orderDetail.getIdProductDetail()).orElse(null);
+
+                    if (order.getStatusPayment() == 1) {
+                        if (order.getStatus() == 0) {
+                            productDetail.setQuantity(productDetail.getQuantity());
+                        } else if (order.getStatus() == 1) {
+                            productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
+                        }
+                    } else {
+                        productDetail.setQuantity(productDetail.getQuantity() + orderDetail.getQuantity());
+                    }
+
                     productDetailAdminRepository.save(productDetail);
                 }
+
+//                for (int i = 0; i < orderDetailList.size(); i++) {
+//                    ProductDetail productDetail = productDetailAdminRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
+//
+//                    if (order.getStatusPayment() == AppConstant.DA_THANH_TOAN) {
+//                        productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
+//                    } else {
+//                        productDetail.setQuantity(productDetail.getQuantity());
+//                    }
+//
+//                    productDetailAdminRepository.save(productDetail);
+//                }
 
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HUY_HISTORY);
@@ -174,6 +208,10 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 orderHistory.setNote(orderAdminDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
             }
+
+            order.setStatus(AppConstant.HUY_DON_HANG);
+//            order.setIdStaff(orderAdminDTO.getIdStaff());
+            order = orderAdminRepository.save(order);
 
             result.setData(orderAdminMapper.toDto(order));
             result.setStatus(HttpStatus.OK);
