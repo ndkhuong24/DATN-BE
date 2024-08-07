@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface BrandService {
     List<BrandDTO> getAllBrandTop();
+
     List<Brand> getAll();
 }

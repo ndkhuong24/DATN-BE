@@ -20,11 +20,12 @@ public class BrandController {
     private BrandService brandService;
 
     @GetMapping("/get-brand-top")
-    public ResponseEntity<?> brandTop(){
+    public ResponseEntity<?> brandTop() {
         return ResponseEntity.ok(brandService.getAllBrandTop());
     }
+
     @GetMapping("/get-all-brand")
-    public ResponseEntity<List<Brand>> getAll(){
+    public ResponseEntity<List<Brand>> getAll() {
         return ResponseEntity.ok(brandService.getAll());
     }
 }
