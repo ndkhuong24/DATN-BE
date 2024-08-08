@@ -27,7 +27,6 @@ public class VoucherFreeShipAdminController {
         return ResponseEntity.ok(voucherFSService.getAllVouchers());
     }
 
-
     @PostMapping()
     public ResponseEntity<?> createVoucher(@RequestBody VoucherFreeShipDTO voucherAdminDTO) {
         return ResponseEntity.ok(voucherFSService.createVoucher(voucherAdminDTO));
@@ -68,7 +67,6 @@ public class VoucherFreeShipAdminController {
     public List<VoucherFreeShipDTO> searchByDateRange(
             @RequestParam(name = "fromDate") String fromDate,
             @RequestParam(name = "toDate") String toDate) {
-
         return voucherFSService.getVouchersByTimeRange(fromDate, toDate);
     }
 
@@ -81,14 +79,18 @@ public class VoucherFreeShipAdminController {
     @GetMapping("/searchByVoucherFS")
     public List<VoucherFreeShipDTO> searchByVoucher(
             @RequestParam(name = "search") String search) {
-
         return voucherFSService.getVouchersByKeyword(search);
+    }
+
+    @GetMapping("/searchByCode")
+    public VoucherFreeShipDTO searchByCode(
+            @RequestParam(name = "code") String code) {
+        return voucherFSService.getVoucherByCode(code);
     }
 
     @GetMapping("/searchByCustomer")
     public List<VoucherFreeShipDTO> searchByCustomer(
             @RequestParam(name = "search") String search) {
-
         return voucherFSService.getVouchersByCustomer(search);
     }
 

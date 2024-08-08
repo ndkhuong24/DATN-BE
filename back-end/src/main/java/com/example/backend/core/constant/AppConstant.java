@@ -74,6 +74,7 @@ public class AppConstant {
             "/api/admin/voucherFS/*",
             "/api/admin/voucherFS/searchByDate*",
             "/api/admin/voucherFS/searchByVoucherFS*",
+            "/api/admin/voucherFS/searchByCode*",
             "/api/admin/voucherFS/searchByCustomer*",
             "/api/admin/voucherFS/kichHoat/*",
             "/api/admin/voucherFS/setIdel/*",

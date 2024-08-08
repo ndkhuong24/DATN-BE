@@ -39,6 +39,7 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
+
     @Autowired
     private VoucherFreeShipAdminRepository voucherFreeShipAdminRepository;
 
@@ -105,6 +106,11 @@ public class VoucherFSAdminServiceImpl implements VoucherFSAdminService {
                 System.out.println("Invalid id format: " + idCustomer);
             }
         }
+    }
+
+    @Override
+    public VoucherFreeShipDTO getVoucherByCode(String code) {
+        return voucherAdminMapper.toDto(voucherFreeShipAdminRepository.getByCode(code));
     }
 
     @Override

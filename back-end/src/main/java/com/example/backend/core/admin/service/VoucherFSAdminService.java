@@ -36,5 +36,7 @@ public interface VoucherFSAdminService {
 
     void sendMessageUsingThymeleafTemplate(VoucherFreeShipDTO voucherAdminDTO) throws MessagingException;
 
+    VoucherFreeShipDTO getVoucherByCode(String code);
+
 //    byte[] exportExcelVoucher() throws IOException;
 }

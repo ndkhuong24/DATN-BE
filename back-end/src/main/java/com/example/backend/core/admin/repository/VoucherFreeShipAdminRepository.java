@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VoucherFreeShipAdminRepository extends JpaRepository<VoucherFreeShip, Long> {
+    VoucherFreeShip getByCode(String code);
 }
