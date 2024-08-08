@@ -109,7 +109,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             return orderAdminDTOServiceResult;
         } else {
             order.setStatus(AppConstant.CHO_XU_LY);
-//            order.setIdStaff(orderAdminDTO.getIdStaff());
+            order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
 
             if (order != null) {
@@ -188,18 +188,6 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                     productDetailAdminRepository.save(productDetail);
                 }
 
-//                for (int i = 0; i < orderDetailList.size(); i++) {
-//                    ProductDetail productDetail = productDetailAdminRepository.findById(orderDetailList.get(i).getIdProductDetail()).orElse(null);
-//
-//                    if (order.getStatusPayment() == AppConstant.DA_THANH_TOAN) {
-//                        productDetail.setQuantity(productDetail.getQuantity() + orderDetailList.get(i).getQuantity());
-//                    } else {
-//                        productDetail.setQuantity(productDetail.getQuantity());
-//                    }
-//
-//                    productDetailAdminRepository.save(productDetail);
-//                }
-
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.HUY_HISTORY);
                 orderHistory.setCreateDate(LocalDateTime.now());
@@ -210,7 +198,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             }
 
             order.setStatus(AppConstant.HUY_DON_HANG);
-//            order.setIdStaff(orderAdminDTO.getIdStaff());
+            order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
 
             result.setData(orderAdminMapper.toDto(order));
@@ -224,18 +212,21 @@ public class OrderAdminServiceImpl implements OrderAdminService {
     @Override
     public ServiceResult<OrderAdminDTO> giaoHangDonHang(OrderAdminDTO orderAdminDTO) {
         ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+
         if (orderAdminDTO.getId() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Error");
             return result;
         }
+
         if (orderAdminDTO.getIdStaff() == null) {
             result.setData(null);
             result.setStatus(HttpStatus.BAD_REQUEST);
             result.setMessage("Error");
             return result;
         }
+
         Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
 
         if (order.getStatus() == AppConstant.DANG_GIAO_HANG) {
@@ -250,6 +241,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             order.setStatus(AppConstant.DANG_GIAO_HANG);
 //        order.setIdStaff(orderAdminDTO.getIdStaff());
             order = orderAdminRepository.save(order);
+
             if (order != null) {
                 OrderHistory orderHistory = new OrderHistory();
                 orderHistory.setStatus(AppConstant.GIAO_HANG_HISTORY);
@@ -259,6 +251,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 orderHistory.setNote(orderAdminDTO.getNote());
                 orderHistoryAdminRepository.save(orderHistory);
             }
+
             result.setData(orderAdminMapper.toDto(order));
             result.setStatus(HttpStatus.OK);
             result.setMessage("Success");
@@ -316,61 +309,61 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         }
     }
 
-    @Override
-    public ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO) {
-        ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
-        if (orderAdminDTO.getId() == null) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Error");
-            return result;
-        }
-        if (orderAdminDTO.getIdStaff() == null) {
-            result.setData(null);
-            result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Error");
-            return result;
-        }
-        Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
-        orderAdminDTO.setMissedOrder(order.getMissedOrder());
-        if (order.getMissedOrder() == null || order.getMissedOrder() == 0) {
-            order.setMissedOrder(AppConstant.BO_LO_LAN1);
-        } else if (order.getMissedOrder() == AppConstant.BO_LO_LAN1) {
-            order.setMissedOrder(AppConstant.BO_LO_LAN2);
-        } else {
-            order.setMissedOrder(AppConstant.BO_LO_LAN3);
-            order.setStatus(AppConstant.HUY_DON_HANG);
-        }
-        order.setIdStaff(orderAdminDTO.getIdStaff());
-        order = orderAdminRepository.save(order);
-        if (orderAdminDTO.getMissedOrder() == null || orderAdminDTO.getMissedOrder() == 0) {
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setStatus(AppConstant.BO_LO_LAN1_HISTORY);
-            orderHistory.setCreateDate(LocalDateTime.now());
-            orderHistory.setIdOrder(order.getId());
-            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
-            orderHistory.setNote(orderAdminDTO.getNote());
-            orderHistoryAdminRepository.save(orderHistory);
-        } else if (orderAdminDTO.getMissedOrder() == AppConstant.BO_LO_LAN1) {
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setStatus(AppConstant.BO_LO_LAN2_HISTORY);
-            orderHistory.setCreateDate(LocalDateTime.now());
-            orderHistory.setIdOrder(order.getId());
-            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
-            orderHistory.setNote(orderAdminDTO.getNote());
-            orderHistoryAdminRepository.save(orderHistory);
-        } else {
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setStatus(AppConstant.BO_LO_LAN3_HISTORY);
-            orderHistory.setCreateDate(LocalDateTime.now());
-            orderHistory.setIdOrder(order.getId());
-            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
-            orderHistory.setNote(orderAdminDTO.getNote());
-            orderHistoryAdminRepository.save(orderHistory);
-        }
-        result.setData(orderAdminMapper.toDto(order));
-        result.setStatus(HttpStatus.OK);
-        result.setMessage("Success");
-        return result;
-    }
+//    @Override
+//    public ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO) {
+//        ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+//        if (orderAdminDTO.getId() == null) {
+//            result.setData(null);
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Error");
+//            return result;
+//        }
+//        if (orderAdminDTO.getIdStaff() == null) {
+//            result.setData(null);
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Error");
+//            return result;
+//        }
+//        Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
+//        orderAdminDTO.setMissedOrder(order.getMissedOrder());
+//        if (order.getMissedOrder() == null || order.getMissedOrder() == 0) {
+//            order.setMissedOrder(AppConstant.BO_LO_LAN1);
+//        } else if (order.getMissedOrder() == AppConstant.BO_LO_LAN1) {
+//            order.setMissedOrder(AppConstant.BO_LO_LAN2);
+//        } else {
+//            order.setMissedOrder(AppConstant.BO_LO_LAN3);
+//            order.setStatus(AppConstant.HUY_DON_HANG);
+//        }
+//        order.setIdStaff(orderAdminDTO.getIdStaff());
+//        order = orderAdminRepository.save(order);
+//        if (orderAdminDTO.getMissedOrder() == null || orderAdminDTO.getMissedOrder() == 0) {
+//            OrderHistory orderHistory = new OrderHistory();
+//            orderHistory.setStatus(AppConstant.BO_LO_LAN1_HISTORY);
+//            orderHistory.setCreateDate(LocalDateTime.now());
+//            orderHistory.setIdOrder(order.getId());
+//            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
+//            orderHistory.setNote(orderAdminDTO.getNote());
+//            orderHistoryAdminRepository.save(orderHistory);
+//        } else if (orderAdminDTO.getMissedOrder() == AppConstant.BO_LO_LAN1) {
+//            OrderHistory orderHistory = new OrderHistory();
+//            orderHistory.setStatus(AppConstant.BO_LO_LAN2_HISTORY);
+//            orderHistory.setCreateDate(LocalDateTime.now());
+//            orderHistory.setIdOrder(order.getId());
+//            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
+//            orderHistory.setNote(orderAdminDTO.getNote());
+//            orderHistoryAdminRepository.save(orderHistory);
+//        } else {
+//            OrderHistory orderHistory = new OrderHistory();
+//            orderHistory.setStatus(AppConstant.BO_LO_LAN3_HISTORY);
+//            orderHistory.setCreateDate(LocalDateTime.now());
+//            orderHistory.setIdOrder(order.getId());
+//            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
+//            orderHistory.setNote(orderAdminDTO.getNote());
+//            orderHistoryAdminRepository.save(orderHistory);
+//        }
+//        result.setData(orderAdminMapper.toDto(order));
+//        result.setStatus(HttpStatus.OK);
+//        result.setMessage("Success");
+//        return result;
+//    }
 }

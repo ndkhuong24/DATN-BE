@@ -1,6 +1,5 @@
 package com.example.backend.core.admin.controller;
 
-
 import com.example.backend.core.admin.dto.OrderAdminDTO;
 import com.example.backend.core.admin.service.OrderAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +43,8 @@ public class OrderAdminController {
         return ResponseEntity.ok(orderAdminService.giaoHangDonHang(orderAdminDTO));
     }
 
-    @PostMapping("/missed-order")
-    public ResponseEntity<?> missedOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
-        return ResponseEntity.ok(orderAdminService.boLoDonHang(orderAdminDTO));
-    }
+//    @PostMapping("/missed-order")
+//    public ResponseEntity<?> missedOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
+//        return ResponseEntity.ok(orderAdminService.boLoDonHang(orderAdminDTO));
+//    }
 }

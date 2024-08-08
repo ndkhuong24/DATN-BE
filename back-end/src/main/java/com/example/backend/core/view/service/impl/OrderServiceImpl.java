@@ -429,14 +429,14 @@ public class OrderServiceImpl implements OrderService {
         if (orderDTO.getId() == null) {
             orderDTOServiceResult.setData(null);
             orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
-            orderDTOServiceResult.setMessage("Error");
+            orderDTOServiceResult.setMessage("Không có ID");
             return orderDTOServiceResult;
         }
 
         if (orderDTO.getIdStaff() == null) {
             orderDTOServiceResult.setData(null);
             orderDTOServiceResult.setStatus(HttpStatus.BAD_REQUEST);
-            orderDTOServiceResult.setMessage("Error");
+            orderDTOServiceResult.setMessage("Không có staff");
             return orderDTOServiceResult;
         }
 

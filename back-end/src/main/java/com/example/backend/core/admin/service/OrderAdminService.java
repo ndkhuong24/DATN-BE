@@ -19,5 +19,5 @@ public interface OrderAdminService {
 
     ServiceResult<OrderAdminDTO> hoanThanhDonHang(OrderAdminDTO orderAdminDTO);
 
-    ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO);
+//    ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO);
 }
