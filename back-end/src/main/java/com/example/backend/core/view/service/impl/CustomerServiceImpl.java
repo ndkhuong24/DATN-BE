@@ -73,4 +73,9 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getInfo(Integer id) {
         return customerMapper.toDto(repository.getReferenceById(Long.valueOf(id)));
     }
+
+    @Override
+    public CustomerDTO findById(Long id) {
+        return customerMapper.toDto(repository.findById(id).get());
+    }
 }

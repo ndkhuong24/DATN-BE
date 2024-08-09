@@ -22,6 +22,11 @@ public class CustomerByPhoneController {
         return ResponseEntity.ok(customerService.findByPhoneLike(phone));
     }
 
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<?> findCustomerById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(customerService.findById(id));
+    }
+
     @PostMapping("/add-customer")
     public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerSCService.addCustomer(customerDTO));

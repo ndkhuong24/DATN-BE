@@ -36,7 +36,7 @@ public class OrderHistoryAdminDTO {
         } else if (status == 6) {
             return "Đơn hàng đã bị hủy";
         } else {
-            return "Xán nhận hoàn thành đơn hàng";
+            return "Xác nhận hoàn thành đơn hàng";
         }
     }
 }

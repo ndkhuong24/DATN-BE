@@ -119,6 +119,28 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
         List<ProductDetailAdminDTO> productDetailAdminDTOList = new ArrayList<>();
 
         try {
+//            StringBuilder sql = new StringBuilder();
+//            sql.append("SELECT \n" +
+//                    "    pd.id,\n" +
+//                    "    pd.id_product,\n" +
+//                    "    pd.id_color,\n" +
+//                    "    pd.id_size,\n" +
+//                    "    pd.shoe_collar,\n" +
+//                    "    pd.price,\n" +
+//                    "    IFNULL(SUM(od.quantity), 0) AS total_sold\n" +
+//                    "FROM\n" +
+//                    "    datn.product_detail pd\n" +
+//                    "        JOIN\n" +
+//                    "    datn.product p ON p.id = pd.id_product\n" +
+//                    "        LEFT JOIN\n" +
+//                    "    datn.order_detail od ON od.id_product_detail = pd.id\n" +
+//                    "        LEFT JOIN\n" +
+//                    "    datn.order o ON o.id = od.id_order\n" +
+//                    "        AND MONTH(o.payment_date) = MONTH(NOW())\n" +
+//                    "        AND o.status = 3\n" +
+//                    "GROUP BY pd.id, pd.id_product, pd.id_color, pd.id_size, pd.shoe_collar, pd.price\n" +
+//                    "ORDER BY total_sold DESC\n" +
+//                    "LIMIT 5;\n");
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT \n" +
                     "    pd.id,\n" +
@@ -136,11 +158,12 @@ public class ProductAdminCustomRepositoryImpl implements ProductAdminCustomRepos
                     "    datn.order_detail od ON od.id_product_detail = pd.id\n" +
                     "        LEFT JOIN\n" +
                     "    datn.order o ON o.id = od.id_order\n" +
-                    "        AND MONTH(o.payment_date) = MONTH(NOW())\n" +
+                    "        AND o.payment_date BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND LAST_DAY(NOW())\n" +
                     "        AND o.status = 3\n" +
                     "GROUP BY pd.id, pd.id_product, pd.id_color, pd.id_size, pd.shoe_collar, pd.price\n" +
                     "ORDER BY total_sold DESC\n" +
                     "LIMIT 5;\n");
+
             Query query = entityManager.createNativeQuery(sql.toString());
 
             List<Object[]> queryResultList = query.getResultList();

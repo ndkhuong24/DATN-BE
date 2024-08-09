@@ -43,6 +43,11 @@ public class OrderAdminController {
         return ResponseEntity.ok(orderAdminService.giaoHangDonHang(orderAdminDTO));
     }
 
+    @PutMapping("/update-order")
+    public ResponseEntity<?> updateOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO){
+        return ResponseEntity.ok(orderAdminService.updateOrderAdmin(orderAdminDTO));
+    }
+
 //    @PostMapping("/missed-order")
 //    public ResponseEntity<?> missedOrderAdmin(@RequestBody OrderAdminDTO orderAdminDTO) {
 //        return ResponseEntity.ok(orderAdminService.boLoDonHang(orderAdminDTO));

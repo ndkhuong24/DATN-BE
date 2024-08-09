@@ -16,4 +16,9 @@ public class OrderDetailAdminController {
     public ResponseEntity<?> getAllOrderDetailAdminByOrder(@PathVariable(name = "idOrder") Long idOrder) {
         return ResponseEntity.ok(orderDetailAdminService.getAllByOrder(idOrder));
     }
+
+    @DeleteMapping("/delete-order-detail/{id}")
+    public ResponseEntity<?> deleteOrderDetail(@PathVariable(name = "id") Long id){
+        return ResponseEntity.ok(orderDetailAdminService.deleteOrderDetail(id));
+    }
 }

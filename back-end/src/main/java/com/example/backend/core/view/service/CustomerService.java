@@ -12,4 +12,6 @@ public interface CustomerService {
     List<CustomerDTO> findByPhoneLike(String phone);
 
     CustomerDTO getInfo(Integer id);
+
+    CustomerDTO findById(Long id);
 }

@@ -309,6 +309,33 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         }
     }
 
+    @Override
+    public ServiceResult<OrderAdminDTO> updateOrderAdmin(OrderAdminDTO orderAdminDTO) {
+        ServiceResult<OrderAdminDTO> result = new ServiceResult<>();
+
+        Order order = orderAdminRepository.findById(orderAdminDTO.getId()).get();
+
+        order.setCodeVoucher(orderAdminDTO.getCodeVoucher());
+        order.setTotalPrice(orderAdminDTO.getTotalPrice());
+        order.setTotalPayment(orderAdminDTO.getTotalPayment());
+
+        order = orderAdminRepository.save(order);
+
+        if (order != null) {
+            OrderHistory orderHistory = new OrderHistory();
+            orderHistory.setStatus(AppConstant.XU_LY_HISTORY);
+            orderHistory.setCreateDate(LocalDateTime.now());
+            orderHistory.setIdOrder(order.getId());
+            orderHistory.setIdStaff(orderAdminDTO.getIdStaff());
+            orderHistory.setNote("Đã cập nhật đơn hàng");
+            orderHistoryAdminRepository.save(orderHistory);
+        }
+        result.setData(orderAdminMapper.toDto(order));
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        return result;
+    }
+
 //    @Override
 //    public ServiceResult<OrderAdminDTO> boLoDonHang(OrderAdminDTO orderAdminDTO) {
 //        ServiceResult<OrderAdminDTO> result = new ServiceResult<>();

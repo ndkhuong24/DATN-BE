@@ -4,6 +4,7 @@ import com.example.backend.core.admin.dto.*;
 import com.example.backend.core.admin.mapper.*;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.OrderDetailAdminService;
+import com.example.backend.core.commons.ServiceResult;
 import com.example.backend.core.model.OrderHistory;
 import com.example.backend.core.view.dto.CustomerDTO;
 import com.example.backend.core.view.dto.OrderHistoryDTO;
@@ -11,6 +12,7 @@ import com.example.backend.core.view.mapper.CustomerMapper;
 import com.example.backend.core.view.mapper.OrderHistoryMapper;
 import com.example.backend.core.view.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import java.util.Map;
 
 @Service
 public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
-
     @Autowired
     private OrderDetailAdminRepository orderDetailAdminRepository;
 
@@ -152,5 +153,19 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
         map.put("orderHistoryAdmin", orderHistoryAdminDTOList);
         map.put("orderHistoryView", orderHistoryViewList);
         return map;
+    }
+
+    @Override
+    public ServiceResult<OrderDetailAdminDTO> deleteOrderDetail(Long id) {
+        ServiceResult<OrderDetailAdminDTO> result = new ServiceResult<>();
+
+        orderDetailAdminRepository.deleteById(id);
+
+        result.setData(null);
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        result.setSuccess(true);
+
+        return result;
     }
 }
