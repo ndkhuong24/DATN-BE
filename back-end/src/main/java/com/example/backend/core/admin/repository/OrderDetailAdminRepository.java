@@ -11,5 +11,8 @@ import java.util.List;
 @Transactional
 public interface OrderDetailAdminRepository extends JpaRepository<OrderDetail, Long> {
     List<OrderDetail> findByIdOrder(Long idOrder);
+
     List<OrderDetail> findByCodeDiscount(String code);
+
+    void deleteByIdOrder(Long idOrder);
 }

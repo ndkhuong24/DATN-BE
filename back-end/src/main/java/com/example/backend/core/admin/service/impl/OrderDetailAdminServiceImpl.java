@@ -5,6 +5,7 @@ import com.example.backend.core.admin.mapper.*;
 import com.example.backend.core.admin.repository.*;
 import com.example.backend.core.admin.service.OrderDetailAdminService;
 import com.example.backend.core.commons.ServiceResult;
+import com.example.backend.core.model.OrderDetail;
 import com.example.backend.core.model.OrderHistory;
 import com.example.backend.core.view.dto.CustomerDTO;
 import com.example.backend.core.view.dto.OrderHistoryDTO;
@@ -15,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
@@ -160,6 +158,55 @@ public class OrderDetailAdminServiceImpl implements OrderDetailAdminService {
         ServiceResult<OrderDetailAdminDTO> result = new ServiceResult<>();
 
         orderDetailAdminRepository.deleteById(id);
+
+        result.setData(null);
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        result.setSuccess(true);
+
+        return result;
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return orderDetailAdminRepository.existsById(id);
+    }
+
+    @Override
+    public ServiceResult<OrderDetailAdminDTO> updateOrderDetail(OrderDetailAdminDTO orderDetailAdminDTO) {
+        ServiceResult<OrderDetailAdminDTO> result = new ServiceResult<>();
+
+        // Tìm kiếm OrderDetail bằng ID, và xử lý trường hợp không tồn tại
+        Optional<OrderDetail> optionalOrderDetail = orderDetailAdminRepository.findById(orderDetailAdminDTO.getId());
+        if (!optionalOrderDetail.isPresent()) {
+            result.setStatus(HttpStatus.NOT_FOUND);
+            result.setMessage("Order detail not found");
+            result.setSuccess(false);
+            return result;
+        }
+
+        // Cập nhật thông tin chi tiết đơn hàng
+        OrderDetail orderDetail = optionalOrderDetail.get();
+        orderDetail.setQuantity(orderDetailAdminDTO.getQuantity());
+        orderDetail.setPrice(orderDetailAdminDTO.getPrice());
+
+        // Lưu thay đổi vào cơ sở dữ liệu
+        orderDetailAdminRepository.save(orderDetail);
+
+        // Đặt giá trị cho kết quả trả về
+        result.setData(orderDetailAdminMapper.toDto(orderDetail));
+        result.setStatus(HttpStatus.OK);
+        result.setMessage("Success");
+        result.setSuccess(true);
+
+        return result;
+    }
+
+    @Override
+    public ServiceResult<OrderDetailAdminDTO> deleteOrderDetailByIdOrder(Long id) {
+        ServiceResult<OrderDetailAdminDTO> result = new ServiceResult<>();
+
+        orderDetailAdminRepository.deleteByIdOrder(id);
 
         result.setData(null);
         result.setStatus(HttpStatus.OK);

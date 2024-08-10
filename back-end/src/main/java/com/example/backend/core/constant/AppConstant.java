@@ -106,6 +106,8 @@ public class AppConstant {
             "/api/admin/total-status-order",
             "/api/admin/get-order-detail/by-order/*",
             "/api/admin/delete-order-detail/*",
+            "/api/admin/delete-order-detail-by-id-order/*",
+            "/api/admin/update-order-detail/*",
             "/api/admin/cancel-order",
             "api/admin/product/search/*",
             "/sales-counter/api/create-order",
