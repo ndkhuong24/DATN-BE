@@ -122,10 +122,16 @@ public class SoleAdminController {
     public String importFromExcel(@RequestParam("file") MultipartFile file) throws IOException {
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
+            // Kiểm tra tên của sheet
+            String expectedSheetName = "Đế Giày"; // Thay đổi tên sheet theo nhu cầu
+            Sheet sheet = workbook.getSheet(expectedSheetName);
+
+            if (sheet == null) {
+                return "Sheet không tồn tại trong file Excel.";
+            }
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Skip header row
+                if (row.getRowNum() == 0) continue; // Bỏ qua dòng tiêu đề
                 Sole sole = new Sole();
                 sole.setDescription(row.getCell(0).getStringCellValue());
                 sole.setSoleHeight(row.getCell(1).getStringCellValue());
@@ -133,7 +139,7 @@ public class SoleAdminController {
                 sole.setCreateDate(LocalDateTime.now());
                 sole.setUpdateDate(LocalDateTime.now());
 
-                // Convert status description to integer
+                // Chuyển đổi mô tả trạng thái thành số nguyên
                 String statusDescription = row.getCell(3).getStringCellValue();
                 Integer status = "Đang hoạt động".equals(statusDescription) ? 0 : 1;
 

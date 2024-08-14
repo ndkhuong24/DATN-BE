@@ -27,6 +27,7 @@ import java.util.Optional;
 public class CloudinaryAdminController {
     @Autowired
     private ImageAdminService imsv;
+
     @Autowired
     private CloudinaryService cloudinaryService;
 
@@ -36,22 +37,6 @@ public class CloudinaryAdminController {
     @Autowired
     private FileUpload fileUpload;
 
-    //    @PostMapping("/upload1")
-//    @ResponseBody
-//    public ResponseEntity<String> upload(@RequestParam MultipartFile multipartFile) throws IOException {
-//        BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
-//        if (bi == null){
-//            return new ResponseEntity<>("Invalid image!", HttpStatus.BAD_REQUEST);
-//        }
-//        Map result = cloudinaryService.upload(multipartFile);
-//
-//        byte[] imageData = multipartFile.getBytes(); // Lấy dữ liệu ảnh dưới dạng mảng byte
-//
-//        // Lưu dữ liệu ảnh vào cơ sở dữ liệu hoặc thực hiện xử lý khác
-////        imsv.save(imageData);
-//
-//        return ResponseEntity.ok("Image saved successfully");
-//    }
     @PostMapping("/upload-img-file")
     public String uploadFile(@RequestParam(value = "file") MultipartFile file,
                              @RequestParam(required = false) Long idProduct) throws IOException {
