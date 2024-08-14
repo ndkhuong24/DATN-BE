@@ -307,6 +307,7 @@ public class OrderServiceImpl implements OrderService {
         order.setReceiverPhone(orderDTO.getReceiverPhone());
         order.setAddressReceived(orderDTO.getAddressReceived());
         order.setEmail(orderDTO.getEmail());
+        order.setDescription(orderDTO.getDescription());
         order.setType(0);
 
         if (orderDTO.getPaymentType() == 1) {

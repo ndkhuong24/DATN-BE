@@ -98,7 +98,7 @@ public class OrderAdminCustomRepositoryImpl implements OrderAdminCustomerReposit
                 orderAdminDTO1.setTotalPayment((BigDecimal) obj[21]);
                 orderAdminDTO1.setType(obj[23] != null ? ((Number) obj[23]).intValue() : null);
                 orderAdminDTO1.setPaymentType((Integer) obj[13]);
-                orderAdminDTO1.setDescription((String) obj[8]);
+                orderAdminDTO1.setDescription((String) obj[7]);
                 orderAdminDTO1.setMissedOrder((Integer) obj[11]);
                 orderAdminDTO1.setStatus((Integer) obj[19]);
                 orderAdminDTO1.setStatusPayment((Integer) obj[20]);
