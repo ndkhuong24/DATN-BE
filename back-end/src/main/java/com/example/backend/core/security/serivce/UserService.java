@@ -8,7 +8,7 @@ import com.example.backend.core.security.entity.Users;
 
 
 public interface UserService {
-    public Users findByUsername(String userName);
+    Users findByUsername(String userName);
     boolean existsByUsername(String userName);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);

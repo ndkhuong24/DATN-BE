@@ -104,7 +104,7 @@ public class SercurityController {
                 String token = jwtUtils.generateToken(authenticatedUser);
 
                 Users users = usersService.findByUsername(signInRequet.getUsername());
-                return ResponseEntity.ok(new JwtResponse(token,new UsersDTO(users.getId(), users.getFullname(), userDetails.getUsername(),users.getRole(),users.getPhone(), users.getEmail())));
+                return ResponseEntity.ok(new JwtResponse(token, new UsersDTO(users.getId(), users.getFullname(), userDetails.getUsername(), users.getRole(), users.getPhone(), users.getEmail(), users.getIdel())));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
