@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ProductAdminRepository extends JpaRepository<Product, Long> {
-    //    @Query("SELECT p FROM Product p WHERE (p.name LIKE %?1% OR p.code LIKE %?1%)")
-//    List<Product> findByNameLikeOrCodeLike(String param, String params);
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1% OR p.code LIKE %?2%")
     List<Product> findByNameLikeOrCodeLike(String nameParam, String codeParam);
 

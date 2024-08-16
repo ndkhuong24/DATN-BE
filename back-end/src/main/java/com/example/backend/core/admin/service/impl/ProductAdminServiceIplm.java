@@ -51,61 +51,10 @@ public class ProductAdminServiceIplm implements ProductAdminService {
     private BrandAdminMapper brandAdminMapper;
 
     @Autowired
-    private ImagesAdminRepository imagesAdminRepository;
-
-    @Autowired
-    private ImagesAdminMapper imagesAdminMapper;
-
-    @Autowired
-    private ProductDetailAdminMapper productDetailAdminMapper;
-
-    @Autowired
     private ProductDetailAdminRepository productDetailAdminRepository;
 
     @Autowired
     private ProductDetailAdminServiceIplm productDetailAdminServiceIplm;
-
-//    @Autowired
-//    private StaffAdminRepository strp;
-
-//    @Autowired
-//    private ProductAdminCustomRepository productAdminCustomRepository;
-//
-//    @Autowired
-//    private BrandAdminService brandAdminService;
-
-//    @Autowired
-//    private CategoryAdminService categoryAdminService;
-
-//    @Autowired
-//    private MaterialAdminService materialAdminService;
-
-//    @Autowired
-//    private SoleAdminService soleAdminService;
-
-//    @Autowired
-//    private ColorAdminMapper colorAdminMapper;
-
-//    @Autowired
-//    private SizeAdminMapper sizeAdminMapper;
-
-//    @Autowired
-//    FileExportUtil fileExportUtil;
-
-//    @Autowired
-//    private ColorAdminRepository colorAdminRepository;
-
-//    @Autowired
-//    private SizeAdminReposiotry sizeAdminReposiotry;
-
-//    @Autowired
-//    private CategoryAdminRepository categoryAdminRepository;
-
-//    @Autowired
-//    private DiscountSCRepository discountSCRepository;
-
-//    @Autowired
-//    private DiscountDetailAdminRepository discountDetailAdminRepository;
 
     @Override
     public List<ProductAdminDTO> getAll() {
@@ -243,9 +192,35 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             }
         }
 
+        ProductAdminDTO productAdminDTO1 = new ProductAdminDTO();
+        productAdminDTO1.setId(product.getId());
+        productAdminDTO1.setCode(product.getCode());
+        productAdminDTO1.setName(product.getName());
+        productAdminDTO1.setCreateDate(product.getCreateDate());
+        productAdminDTO1.setUpdateDate(product.getUpdateDate());
+
+        productAdminDTO1.setIdBrand(product.getIdBrand());
+        productAdminDTO1.setIdCategory(product.getIdCategory());
+        productAdminDTO1.setIdMaterial(product.getIdMaterial());
+        productAdminDTO1.setIdSole(product.getIdSole());
+        productAdminDTO1.setDescription(product.getDescription());
+        productAdminDTO1.setStatus(product.getStatus());
+
+        String imageURL = "http://localhost:8081/view/anh/" + product.getId();
+        productAdminDTO1.setImageURL(imageURL);
+
+        List<ProductDetail> productDetailList = productDetailAdminRepository.findByIdProduct(product.getId());
+        productAdminDTO1.setProductDetailList(productDetailList);
+
+        productAdminDTO1.setBrandAdminDTO(brandAdminDTO);
+        productAdminDTO1.setCategoryAdminDTO(categoryAdminDTO);
+        productAdminDTO1.setSoleAdminDTO(soleAdminDTO);
+        productAdminDTO1.setMaterialAdminDTO(materialAdminDTO);
+
         result.setStatus(HttpStatus.OK);
         result.setMessage("Them thanh cong");
-        result.setData(productAdminMapper.toDto(product));
+        result.setData(productAdminDTO1);
+//        result.setData(productAdminMapper.toDto(product));
 
         return result;
     }

@@ -18,7 +18,7 @@ public class ProductDetailAdminDTO {
     private BigDecimal price;
     private Integer shoeCollar;
 
-    private BigDecimal listedPrice;//gia niem yet
+    private BigDecimal listedPrice;
 
     private BigDecimal totalBestSeller;
 
