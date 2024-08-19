@@ -118,12 +118,46 @@ public class SoleAdminController {
         workbook.close();
     }
 
+    //    @PostMapping("sole/import-data")
+//    public String importFromExcel(@RequestParam("file") MultipartFile file) throws IOException {
+//        try (InputStream inputStream = file.getInputStream()) {
+//            Workbook workbook = new XSSFWorkbook(inputStream);
+//            // Kiểm tra tên của sheet
+//            String expectedSheetName = "Đế Giày"; // Thay đổi tên sheet theo nhu cầu
+//            Sheet sheet = workbook.getSheet(expectedSheetName);
+//
+//            if (sheet == null) {
+//                return "Sheet không tồn tại trong file Excel.";
+//            }
+//
+//            for (Row row : sheet) {
+//                if (row.getRowNum() == 0) continue; // Bỏ qua dòng tiêu đề
+//                Sole sole = new Sole();
+//                sole.setDescription(row.getCell(0).getStringCellValue());
+//                sole.setSoleHeight(row.getCell(1).getStringCellValue());
+//                sole.setSoleMaterial(row.getCell(2).getStringCellValue());
+//                sole.setCreateDate(LocalDateTime.now());
+//                sole.setUpdateDate(LocalDateTime.now());
+//
+//                // Chuyển đổi mô tả trạng thái thành số nguyên
+//                String statusDescription = row.getCell(3).getStringCellValue();
+//                Integer status = "Đang hoạt động".equals(statusDescription) ? 0 : 1;
+//
+//                sole.setStatus(status);
+//
+//                soleAdminRepository.save(sole);
+//            }
+//            workbook.close();
+//        }
+//        return "File imported successfully";
+//    }
     @PostMapping("sole/import-data")
-    public String importFromExcel(@RequestParam("file") MultipartFile file) throws IOException {
-        try (InputStream inputStream = file.getInputStream()) {
-            Workbook workbook = new XSSFWorkbook(inputStream);
+    public String importFromExcel(@RequestParam("file") MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream();
+             Workbook workbook = new XSSFWorkbook(inputStream)) {
+
             // Kiểm tra tên của sheet
-            String expectedSheetName = "Đế Giày"; // Thay đổi tên sheet theo nhu cầu
+            String expectedSheetName = "Đế Giày";
             Sheet sheet = workbook.getSheet(expectedSheetName);
 
             if (sheet == null) {
@@ -131,7 +165,15 @@ public class SoleAdminController {
             }
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Bỏ qua dòng tiêu đề
+                if (row.getRowNum() == 0) continue;
+
+                // Kiểm tra các ô trong mỗi dòng
+                if (row.getCell(0) == null || row.getCell(1) == null ||
+                        row.getCell(2) == null || row.getCell(3) == null) {
+//                    return "Dòng " + (row.getRowNum() + 1) + " có giá trị null trong file Excel.";
+                    return "Có giá trị null trong file Excel.";
+                }
+
                 Sole sole = new Sole();
                 sole.setDescription(row.getCell(0).getStringCellValue());
                 sole.setSoleHeight(row.getCell(1).getStringCellValue());
@@ -147,7 +189,11 @@ public class SoleAdminController {
 
                 soleAdminRepository.save(sole);
             }
-            workbook.close();
+
+        } catch (IOException e) {
+            return "Lỗi khi đọc file Excel.";
+        } catch (Exception e) {
+            return "Lỗi trong quá trình nhập dữ liệu.";
         }
         return "File imported successfully";
     }
