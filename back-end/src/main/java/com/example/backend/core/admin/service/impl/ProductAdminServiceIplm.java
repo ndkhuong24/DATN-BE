@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -253,38 +251,56 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product.setId(id);
             product.setName(productAdminDTO.getName());
             product.setUpdateDate(LocalDateTime.now());
-
             product.setIdBrand(productAdminDTO.getIdBrand());
             product.setIdSole(productAdminDTO.getIdSole());
             product.setIdMaterial(productAdminDTO.getIdMaterial());
             product.setIdCategory(productAdminDTO.getIdCategory());
-
             product.setDescription(productAdminDTO.getDescription());
             product.setStatus(productAdminDTO.getStatus());
 
             product = this.productAdminRepository.save(product);
 
-            this.productDetailAdminRepository.deleteByIdProduct(id);
+            List<ProductDetail> existingProductDetails = this.productDetailAdminRepository.findByIdProduct(id);
+            Map<Long, ProductDetail> existingProductDetailMap = existingProductDetails.stream()
+                    .collect(Collectors.toMap(ProductDetail::getId, Function.identity()));
 
-            if (product != null) {
-                for (int i = 0; i < productAdminDTO.getProductDetailAdminDTOList().size(); i++) {
-                    ProductDetail productDetail = new ProductDetail();
+            Set<Long> newDetailIds = productAdminDTO.getProductDetailAdminDTOList().stream()
+                    .map(ProductDetailAdminDTO::getId)
+                    .collect(Collectors.toSet());
 
-                    productDetail.setId(productAdminDTO.getProductDetailAdminDTOList().get(i).getId());
+            // Cập nhật hoặc thêm các chi tiết sản phẩm mới
+            for (ProductDetailAdminDTO detailDTO : productAdminDTO.getProductDetailAdminDTOList()) {
+                ProductDetail productDetail;
 
+                if (existingProductDetailMap.containsKey(detailDTO.getId())) {
+                    productDetail = existingProductDetailMap.get(detailDTO.getId());
+                    if (productDetail.getQuantity() != detailDTO.getQuantity()) {
+                        productDetail.setQuantity(detailDTO.getQuantity());
+                    }
+                    if (productDetail.getShoeCollar() != detailDTO.getShoeCollar()) {
+                        productDetail.setShoeCollar(detailDTO.getShoeCollar());
+                    }
+                    if (productDetail.getPrice() != detailDTO.getPrice()) {
+                        productDetail.setPrice(detailDTO.getPrice());
+                    }
+                } else {
+                    productDetail = new ProductDetail();
+                    productDetail.setId(detailDTO.getId());
                     productDetail.setIdProduct(product.getId());
+                    productDetail.setIdColor(detailDTO.getColorDTO().getId());
+                    productDetail.setIdSize(detailDTO.getSizeDTO().getId());
+                    productDetail.setPrice(detailDTO.getPrice());
+                    productDetail.setShoeCollar(detailDTO.getShoeCollar());
+                    productDetail.setQuantity(detailDTO.getQuantity());
+                }
 
-                    productDetail.setIdColor(productAdminDTO.getProductDetailAdminDTOList().get(i).getColorDTO().getId());
+                this.productDetailAdminRepository.save(productDetail);
+            }
 
-                    productDetail.setIdSize(productAdminDTO.getProductDetailAdminDTOList().get(i).getSizeDTO().getId());
-
-                    productDetail.setPrice(productAdminDTO.getProductDetailAdminDTOList().get(i).getPrice());
-
-                    productDetail.setShoeCollar(productAdminDTO.getProductDetailAdminDTOList().get(i).getShoeCollar());
-
-                    productDetail.setQuantity(productAdminDTO.getProductDetailAdminDTOList().get(i).getQuantity());
-
-                    this.productDetailAdminRepository.save(productDetail);
+            // Xóa các chi tiết sản phẩm bị loại bỏ
+            for (ProductDetail existingDetail : existingProductDetails) {
+                if (!newDetailIds.contains(existingDetail.getId())) {
+                    this.productDetailAdminRepository.delete(existingDetail);
                 }
             }
 
@@ -294,7 +310,7 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
         } else {
             result.setStatus(HttpStatus.BAD_REQUEST);
-            result.setMessage("Id khong ton tai ");
+            result.setMessage("Id khong ton tai");
             result.setData(null);
         }
         return result;
