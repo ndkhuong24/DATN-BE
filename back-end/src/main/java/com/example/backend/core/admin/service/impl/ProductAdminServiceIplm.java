@@ -261,19 +261,23 @@ public class ProductAdminServiceIplm implements ProductAdminService {
             product = this.productAdminRepository.save(product);
 
             List<ProductDetail> existingProductDetails = this.productDetailAdminRepository.findByIdProduct(id);
-            Map<Long, ProductDetail> existingProductDetailMap = existingProductDetails.stream()
-                    .collect(Collectors.toMap(ProductDetail::getId, Function.identity()));
+            Map<ProductDetailKey, ProductDetail> existingProductDetailMap = existingProductDetails.stream()
+                    .collect(Collectors.toMap(
+                            pd -> new ProductDetailKey(pd.getIdProduct(), pd.getIdColor(), pd.getIdSize()),
+                            Function.identity()
+                    ));
 
-            Set<Long> newDetailIds = productAdminDTO.getProductDetailAdminDTOList().stream()
-                    .map(ProductDetailAdminDTO::getId)
+            Set<ProductDetailKey> newDetailKeys = productAdminDTO.getProductDetailAdminDTOList().stream()
+                    .map(detailDTO -> new ProductDetailKey(detailDTO.getIdProduct(), detailDTO.getColorDTO().getId(), detailDTO.getSizeDTO().getId()))
                     .collect(Collectors.toSet());
 
             // Cập nhật hoặc thêm các chi tiết sản phẩm mới
             for (ProductDetailAdminDTO detailDTO : productAdminDTO.getProductDetailAdminDTOList()) {
+                ProductDetailKey key = new ProductDetailKey(product.getId(), detailDTO.getColorDTO().getId(), detailDTO.getSizeDTO().getId());
                 ProductDetail productDetail;
 
-                if (existingProductDetailMap.containsKey(detailDTO.getId())) {
-                    productDetail = existingProductDetailMap.get(detailDTO.getId());
+                if (existingProductDetailMap.containsKey(key)) {
+                    productDetail = existingProductDetailMap.get(key);
                     if (productDetail.getQuantity() != detailDTO.getQuantity()) {
                         productDetail.setQuantity(detailDTO.getQuantity());
                     }
@@ -299,7 +303,8 @@ public class ProductAdminServiceIplm implements ProductAdminService {
 
             // Xóa các chi tiết sản phẩm bị loại bỏ
             for (ProductDetail existingDetail : existingProductDetails) {
-                if (!newDetailIds.contains(existingDetail.getId())) {
+                ProductDetailKey key = new ProductDetailKey(existingDetail.getIdProduct(), existingDetail.getIdColor(), existingDetail.getIdSize());
+                if (!newDetailKeys.contains(key)) {
                     this.productDetailAdminRepository.delete(existingDetail);
                 }
             }
@@ -315,6 +320,108 @@ public class ProductAdminServiceIplm implements ProductAdminService {
         }
         return result;
     }
+
+//    @Override
+//    public ServiceResult<ProductAdminDTO> update(ProductAdminDTO productAdminDTO, Long id) {
+//        ServiceResult<ProductAdminDTO> result = new ServiceResult<>();
+//
+//        Optional<Product> productOptional = this.productAdminRepository.findById(id);
+//
+//        if (productOptional.isPresent()) {
+//            Product product = productOptional.get();
+//
+//            product.setId(id);
+//            product.setName(productAdminDTO.getName());
+//            product.setUpdateDate(LocalDateTime.now());
+//            product.setIdBrand(productAdminDTO.getIdBrand());
+//            product.setIdSole(productAdminDTO.getIdSole());
+//            product.setIdMaterial(productAdminDTO.getIdMaterial());
+//            product.setIdCategory(productAdminDTO.getIdCategory());
+//            product.setDescription(productAdminDTO.getDescription());
+//            product.setStatus(productAdminDTO.getStatus());
+//
+//            product = this.productAdminRepository.save(product);
+//
+//            List<ProductDetail> existingProductDetails = this.productDetailAdminRepository.findByIdProduct(id);
+//
+//            Map<ProductDetailKey, ProductDetail> existingProductDetailMap = existingProductDetails.stream()
+//                    .collect(Collectors.toMap(
+//                            pd -> new ProductDetailKey(pd.getIdProduct(), pd.getIdColor(), pd.getIdSize()),
+//                            Function.identity()
+//                    ));
+//
+////            Map<Long, ProductDetail> existingProductDetailMap = existingProductDetails.stream()
+////                    .collect(Collectors.toMap(ProductDetail::getIdProduct,ProductDetail::getIdColor,ProductDetail::getIdSize ,Function.identity()));
+//
+////            Set<Long> newDetailIds = productAdminDTO.getProductDetailAdminDTOList().stream()
+////                    .map(ProductDetailAdminDTO::getId)
+////                    .collect(Collectors.toSet());
+//
+//            Set<ProductDetailKey> newDetailIds = productAdminDTO.getProductDetailAdminDTOList().stream()
+//                    .map(detailDTO -> new ProductDetailKey(detailDTO.getIdProduct(), detailDTO.getColorDTO().getId(), detailDTO.getSizeDTO().getId()))
+//                    .collect(Collectors.toSet());
+//
+//            // Cập nhật hoặc thêm các chi tiết sản phẩm mới
+//            for (ProductDetailAdminDTO detailDTO : productAdminDTO.getProductDetailAdminDTOList()) {
+//                ProductDetail productDetail;
+//                ProductDetailKey key = new ProductDetailKey(detailDTO.getIdProduct(), detailDTO.getIdColor(), detailDTO.getIdSize());
+//
+//                if (existingProductDetailMap.containsKey(key)) {
+//                    productDetail = existingProductDetailMap.get(key);
+//                    if (productDetail.getQuantity() != detailDTO.getQuantity()) {
+//                        productDetail.setQuantity(detailDTO.getQuantity());
+//                    }
+//                    if (productDetail.getShoeCollar() != detailDTO.getShoeCollar()) {
+//                        productDetail.setShoeCollar(detailDTO.getShoeCollar());
+//                    }
+//                    if (productDetail.getPrice() != detailDTO.getPrice()) {
+//                        productDetail.setPrice(detailDTO.getPrice());
+//                    }
+//                }
+////                if (existingProductDetailMap.containsKey(detailDTO.getIdProduct(), detailDTO.getIdColor(), detailDTO.getIdSize())) {
+////                    productDetail = existingProductDetailMap.get(detailDTO.getId());
+////                    if (productDetail.getQuantity() != detailDTO.getQuantity()) {
+////                        productDetail.setQuantity(detailDTO.getQuantity());
+////                    }
+////                    if (productDetail.getShoeCollar() != detailDTO.getShoeCollar()) {
+////                        productDetail.setShoeCollar(detailDTO.getShoeCollar());
+////                    }
+////                    if (productDetail.getPrice() != detailDTO.getPrice()) {
+////                        productDetail.setPrice(detailDTO.getPrice());
+////                    }
+////                }
+//                else {
+//                    productDetail = new ProductDetail();
+//                    productDetail.setId(detailDTO.getId());
+//                    productDetail.setIdProduct(product.getId());
+//                    productDetail.setIdColor(detailDTO.getColorDTO().getId());
+//                    productDetail.setIdSize(detailDTO.getSizeDTO().getId());
+//                    productDetail.setPrice(detailDTO.getPrice());
+//                    productDetail.setShoeCollar(detailDTO.getShoeCollar());
+//                    productDetail.setQuantity(detailDTO.getQuantity());
+//                }
+//
+//                this.productDetailAdminRepository.save(productDetail);
+//            }
+//
+//            // Xóa các chi tiết sản phẩm bị loại bỏ
+//            for (ProductDetail existingDetail : existingProductDetails) {
+//                if (!newDetailIds.contains(existingDetail.getId())) {
+//                    this.productDetailAdminRepository.delete(existingDetail);
+//                }
+//            }
+//
+//            result.setStatus(HttpStatus.OK);
+//            result.setMessage("Sua thanh cong");
+//            result.setData(productAdminMapper.toDto(product));
+//
+//        } else {
+//            result.setStatus(HttpStatus.BAD_REQUEST);
+//            result.setMessage("Id khong ton tai");
+//            result.setData(null);
+//        }
+//        return result;
+//    }
 
 //    @Override
 //    public ServiceResult<ProductAdminDTO> add(ProductAdminDTO productAdminDTO) {
