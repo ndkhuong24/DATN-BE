@@ -17,9 +17,9 @@ import java.util.List;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
-
     @Autowired
     private VoucherRepository voucherRepository;
+
     @Autowired
     private VoucherMapper voucherMapper;
 
@@ -28,17 +28,21 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     public List<VoucherDTO> getAllVoucher(VoucherDTO voucherDTO) {
-        if(null != voucherDTO.getIdCustomerLogin()){
+        if (null != voucherDTO.getIdCustomerLogin()) {
             List<Voucher> lst = voucherRepository.getAllVoucherByCustomer(voucherDTO.getCode(), voucherDTO.getIdCustomerLogin());
-            if(lst.isEmpty()){
+
+            if (lst.isEmpty()) {
                 return null;
             }
+
             Iterator<Voucher> iterator = lst.iterator();
+
             while (iterator.hasNext()) {
                 Voucher listItem = iterator.next();
 
                 List<Order> orderList = orderRepository.findByIdCustomerAndCodeVoucher(voucherDTO.getIdCustomerLogin(), listItem.getCode());
-                if(listItem.getOptionCustomer() == 1){
+
+                if (listItem.getOptionCustomer() == 1) {
                     if (orderList.size() >= listItem.getLimitCustomer()) {
                         iterator.remove();
                     }

@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
-
     @Query(value = "SELECT v.*\n" +
             "FROM Voucher v\n" +
             "WHERE v.end_date >= NOW() AND v.quantity > 0 and v.idel = 1\n" +
